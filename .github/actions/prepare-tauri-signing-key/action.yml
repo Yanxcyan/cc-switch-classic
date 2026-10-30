@@ -52,3 +52,28 @@ runs:
           `TAURI_SIGNING_PRIVATE_KEY=${encoded}\nTAURI_SIGNING_PRIVATE_KEY_PASSWORD<<${delimiter}\n${password}\n${delimiter}\n`);
         console.log('Required updater signing key prepared.');
         NODE
+
+    - name: Verify updater credentials before packaging
+      shell: bash
+      run: |
+        set +x
+        node --input-type=module <<'NODE'
+        import { spawnSync } from 'node:child_process';
+        import { readFile, writeFile, rm } from 'node:fs/promises';
+        import path from 'node:path';
+        import { verifyUpdaterSignature } from './scripts/check-classic-release.mjs';
+        const probe = path.join(process.env.RUNNER_TEMP, 'classic-updater-signing-probe.txt');
+        try {
+          await writeFile(probe, 'CC Switch Classic updater credential validation');
+          const result = spawnSync(process.execPath, [
+            path.resolve('node_modules/@tauri-apps/cli/tauri.js'), 'signer', 'sign', probe,
+          ], { encoding: 'utf8', env: process.env });
+          if (result.status !== 0) throw new Error('Cannot sign validation file. Check the updater key and password secrets.');
+          const config = JSON.parse(await readFile('src-tauri/tauri.conf.json', 'utf8'));
+          await verifyUpdaterSignature(probe, (await readFile(`${probe}.sig`, 'utf8')).trim(), config.plugins.updater.pubkey);
+          console.log('Updater credentials and configured public key match.');
+        } finally {
+          await rm(probe, { force: true });
+          await rm(`${probe}.sig`, { force: true });
+        }
+        NODE

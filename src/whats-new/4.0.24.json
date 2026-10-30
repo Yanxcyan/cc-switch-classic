@@ -1,0 +1,33 @@
+{
+  "version": "4.0.24",
+  "items": [
+    {
+      "type": "new",
+      "zh": "Classic 独立发布，更新来自自己的 GitHub 仓库",
+      "zh-TW": "Classic 獨立發佈，更新來自自己的 GitHub 儲存庫",
+      "en": "Independent Classic releases with updates from the Classic GitHub repository",
+      "ja": "Classic を独立公開。更新は Classic の GitHub リポジトリから取得"
+    },
+    {
+      "type": "improve",
+      "zh": "设置六个页签统一加宽，内容随窗口自适应",
+      "zh-TW": "設定六個頁籤統一加寬，內容隨視窗自適應",
+      "en": "All six settings tabs now share a wider, responsive layout",
+      "ja": "設定の全6タブを広げ、ウィンドウ幅に合わせて統一"
+    },
+    {
+      "type": "improve",
+      "zh": "供应商列表保留 Packy 和大厂平台，移除其他中转预设",
+      "zh-TW": "供應商清單保留 Packy 和大廠平台，移除其他中轉預設",
+      "en": "Provider presets now focus on Packy and major platforms",
+      "ja": "プロバイダー一覧を Packy と主要プラットフォームに整理"
+    },
+    {
+      "type": "improve",
+      "zh": "移除其他赞助推广入口，Packy 使用新的注册链接",
+      "zh-TW": "移除其他贊助推廣入口，Packy 使用新的註冊連結",
+      "en": "Removed other sponsor links and updated the Packy registration link",
+      "ja": "他のスポンサーリンクを削除し、Packy の登録リンクを更新"
+    }
+  ]
+}

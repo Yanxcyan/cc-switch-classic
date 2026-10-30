@@ -20,7 +20,7 @@ Classic 继续使用当前用户的 `.cc-switch` 和客户端配置，并保留 
 1. 在 `main` 完成修改和测试。
 2. 同步提升 `package.json`、`src-tauri/tauri.conf.json`、`src-tauri/Cargo.toml` 和 `src-tauri/Cargo.lock` 中应用自身的版本号。
 3. 添加 `src/whats-new/<版本>.json` 和 `docs/release-notes/v<版本>-zh.md`、`-en.md`、`-ja.md`。
-4. 提交后推送对应版本标签，例如 `v4.0.24`。标签和配置版本必须一致。
+4. 提交后推送对应版本标签，例如 `v4.0.25`。标签和配置版本必须一致。
 5. 等待 [Release 工作流](https://github.com/Yanxcyan/cc-switch-classic/actions/workflows/release.yml) 完成全部平台打包、签名和更新信息生成。
 6. 检查 Releases 中的安装包、签名及 `latest.json`。普通版本标签生成正式版本；带预发布后缀的标签不进入稳定更新通道。
 

@@ -38,7 +38,7 @@ pnpm build
 
 v4 数据库不可交给 v3 打开。实际运行 `pnpm dev` 前，应使用独立系统用户/测试数据环境，并准备独立的客户端配置与同步目标；只改 CC Switch 数据目录不足以隔离 Claude、Codex 等客户端文件。不要在日常配置上进行模式切换验收。
 
-Classic v4.0.23 起使用独立产品名、应用标识、Windows 安装升级标识、更新签名与 GitHub 更新地址。发布流程见 [Classic 发布说明](classic-release.md)。仍保留 `ccswitch://` 深链接以及现有用户数据和客户端配置，独立安装标识不代表数据隔离。
+Classic v4.0.24 起使用独立产品名、应用标识、Windows 安装升级标识、更新签名与 GitHub 更新地址。发布流程见 [Classic 发布说明](classic-release.md)。仍保留 `ccswitch://` 深链接以及现有用户数据和客户端配置，独立安装标识不代表数据隔离。
 
 ## 本次验证记录（2026-10-30）
 
