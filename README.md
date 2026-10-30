@@ -41,16 +41,12 @@ AI coding tools like Claude Code, Codex, and Gemini CLI each have their own conf
 
 <table>
 <tr>
-<td align="center" width="50%"><img src="assets/release-notes/v4.0.0/main-en.png" alt="Main interface: sidebar, Direct / Routing / Aggregation tabs, and provider cards" width="400"><br>Main Interface</td>
-<td align="center" width="50%"><img src="assets/release-notes/v4.0.0/apps-en.png" alt="Apps page: versions, installation, and upgrades for every AI coding tool in one place" width="400"><br>Apps Page</td>
+<td align="center" width="50%"><img src="assets/screenshots/classic/main.png" alt="Classic main interface with app tabs, connection modes, and provider cards" width="400"><br>Main Interface</td>
+<td align="center" width="50%"><img src="assets/screenshots/classic/apps.png" alt="Apps page with installed tool versions and upgrade controls" width="400"><br>Apps Page</td>
 </tr>
 <tr>
-<td align="center"><img src="assets/release-notes/v4.0.0/agg-en.png" alt="Aggregation mode: one default provider plus several added providers" width="400"><br>Aggregation Mode</td>
-<td align="center"><img src="assets/release-notes/v4.0.0/agg-codex-en.png" alt="Codex's model picker listing models from several providers" width="400"><br>Aggregated Model List in Codex</td>
-</tr>
-<tr>
-<td align="center"><img src="assets/release-notes/v4.0.0/session-en.png" alt="Session reading view: step summaries, tool call details, and conversation outline" width="400"><br>Session Reading View</td>
-<td align="center"><img src="assets/release-notes/v4.0.0/usage-en.png" alt="Usage: heatmap and request logs" width="400"><br>Usage</td>
+<td align="center"><img src="assets/screenshots/classic/aggregation.png" alt="Aggregation setup with a default provider and available providers" width="400"><br>Aggregation Mode</td>
+<td align="center"><img src="assets/screenshots/classic/usage.png" alt="Usage statistics with token totals, an hourly chart, and request logs" width="400"><br>Usage</td>
 </tr>
 </table>
 

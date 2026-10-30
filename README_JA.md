@@ -39,16 +39,12 @@ Claude Code、Codex、Gemini CLI などの AI コーディングツールは、�
 
 <table>
 <tr>
-<td align="center" width="50%"><img src="assets/release-notes/v4.0.0/main-en.png" alt="メイン画面：サイドバー、直接接続 / ルーティング / 集約タブとプロバイダカード" width="400"><br>メイン画面</td>
-<td align="center" width="50%"><img src="assets/release-notes/v4.0.0/apps-en.png" alt="アプリページ：各 AI コーディングツールのバージョン、インストール、アップグレードを一元管理" width="400"><br>アプリページ</td>
+<td align="center" width="50%"><img src="assets/screenshots/classic/main.png" alt="クラシックなメイン画面：アプリ切り替え、接続モード、プロバイダカード" width="400"><br>メイン画面</td>
+<td align="center" width="50%"><img src="assets/screenshots/classic/apps.png" alt="アプリページ：インストール済みツールのバージョンと更新管理" width="400"><br>アプリページ</td>
 </tr>
 <tr>
-<td align="center"><img src="assets/release-notes/v4.0.0/agg-en.png" alt="集約モード：既定のプロバイダ 1 社に加え、複数のプロバイダを追加" width="400"><br>集約モード</td>
-<td align="center"><img src="assets/release-notes/v4.0.0/agg-codex-en.png" alt="Codex のモデル選択画面に複数のプロバイダのモデルが並ぶ" width="400"><br>Codex の集約モデル一覧</td>
-</tr>
-<tr>
-<td align="center"><img src="assets/release-notes/v4.0.0/session-en.png" alt="セッション閲覧ページ：実行過程の要約、ツール呼び出しの詳細、会話の目次" width="400"><br>セッション閲覧ページ</td>
-<td align="center"><img src="assets/release-notes/v4.0.0/usage-en.png" alt="使用量：ヒートマップとリクエストログ" width="400"><br>使用量</td>
+<td align="center"><img src="assets/screenshots/classic/aggregation.png" alt="集約設定：既定のプロバイダと追加可能なプロバイダ" width="400"><br>集約モード</td>
+<td align="center"><img src="assets/screenshots/classic/usage.png" alt="使用統計：トークン総量、時間別グラフ、リクエストログ" width="400"><br>使用量</td>
 </tr>
 </table>
 

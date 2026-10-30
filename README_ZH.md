@@ -39,16 +39,12 @@ Claude Code、Codex、Gemini CLI 等 AI 编程工具各有各的配置格式。�
 
 <table>
 <tr>
-<td align="center" width="50%"><img src="assets/release-notes/v4.0.0/main-zh.png" alt="主界面：侧边栏、直连 / 路由 / 聚合标签和供应商卡片" width="400"><br>主界面</td>
-<td align="center" width="50%"><img src="assets/release-notes/v4.0.0/apps-zh.png" alt="应用页：集中管理各个 AI 编程工具的版本、安装与升级" width="400"><br>应用页</td>
+<td align="center" width="50%"><img src="assets/screenshots/classic/main.png" alt="经典主界面：应用切换、连接模式和供应商卡片" width="400"><br>主界面</td>
+<td align="center" width="50%"><img src="assets/screenshots/classic/apps.png" alt="应用页：已安装工具的版本和升级管理" width="400"><br>应用页</td>
 </tr>
 <tr>
-<td align="center"><img src="assets/release-notes/v4.0.0/agg-zh.png" alt="聚合模式：一家默认供应商，另外添加了多家" width="400"><br>聚合模式</td>
-<td align="center"><img src="assets/release-notes/v4.0.0/agg-codex-zh.png" alt="Codex 的模型选择器里同时列出多家供应商的模型" width="400"><br>Codex 里的聚合模型列表</td>
-</tr>
-<tr>
-<td align="center"><img src="assets/release-notes/v4.0.0/session-zh.png" alt="会话阅读页：执行过程摘要、工具调用详情和对话目录" width="400"><br>会话阅读页</td>
-<td align="center"><img src="assets/release-notes/v4.0.0/usage-zh.png" alt="用量统计：热力图与请求日志" width="400"><br>用量统计</td>
+<td align="center"><img src="assets/screenshots/classic/aggregation.png" alt="聚合模式：默认供应商和可添加的供应商" width="400"><br>聚合模式</td>
+<td align="center"><img src="assets/screenshots/classic/usage.png" alt="用量统计：Token 总量、小时趋势图和请求日志" width="400"><br>用量统计</td>
 </tr>
 </table>
 

@@ -39,16 +39,12 @@ Claude Code, Codex, Gemini CLI und andere KI-Programmierwerkzeuge haben jeweils 
 
 <table>
 <tr>
-<td align="center" width="50%"><img src="assets/release-notes/v4.0.0/main-en.png" alt="Hauptoberfläche: Seitenleiste, die Tabs Direct / Routing / Aggregation und Anbieterkarten" width="400"><br>Hauptoberfläche</td>
-<td align="center" width="50%"><img src="assets/release-notes/v4.0.0/apps-en.png" alt="Apps-Seite: Version, Installation und Upgrade aller KI-Programmierwerkzeuge an einem Ort" width="400"><br>Apps-Seite</td>
+<td align="center" width="50%"><img src="assets/screenshots/classic/main.png" alt="Klassische Hauptoberfläche mit App-Auswahl, Verbindungsmodi und Anbieterkarten" width="400"><br>Hauptoberfläche</td>
+<td align="center" width="50%"><img src="assets/screenshots/classic/apps.png" alt="Apps-Seite mit installierten Werkzeugversionen und Upgrade-Verwaltung" width="400"><br>Apps-Seite</td>
 </tr>
 <tr>
-<td align="center"><img src="assets/release-notes/v4.0.0/agg-en.png" alt="Aggregationsmodus: ein Standardanbieter, mehrere weitere Anbieter hinzugefügt" width="400"><br>Aggregationsmodus</td>
-<td align="center"><img src="assets/release-notes/v4.0.0/agg-codex-en.png" alt="Die Modellauswahl von Codex listet Modelle mehrerer Anbieter gleichzeitig" width="400"><br>Aggregierte Modellliste in Codex</td>
-</tr>
-<tr>
-<td align="center"><img src="assets/release-notes/v4.0.0/session-en.png" alt="Session-Leseansicht: Zusammenfassung der Ausführung, Details der Tool-Aufrufe und Gesprächsverzeichnis" width="400"><br>Session-Leseansicht</td>
-<td align="center"><img src="assets/release-notes/v4.0.0/usage-en.png" alt="Nutzungsstatistik: Heatmap und Anfrageprotokoll" width="400"><br>Nutzungsstatistik</td>
+<td align="center"><img src="assets/screenshots/classic/aggregation.png" alt="Aggregation mit Standardanbieter und verfügbaren Anbietern" width="400"><br>Aggregationsmodus</td>
+<td align="center"><img src="assets/screenshots/classic/usage.png" alt="Nutzungsstatistik mit Token-Gesamtwerten, Stundendiagramm und Anfrageprotokoll" width="400"><br>Nutzungsstatistik</td>
 </tr>
 </table>
 
