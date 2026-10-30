@@ -139,11 +139,7 @@ export function SettingsSwitchRow({
   );
 }
 
-/** 设置页正文：最大宽度 760，左右 24 的内边距，分节间距 28。 */
+/** 设置页正文：随窗口铺满，与认证、用量统计统一左右 24 的内边距。 */
 export function SettingsBody({ children }: { children: ReactNode }) {
-  return (
-    <div className="mx-auto w-full max-w-[760px] space-y-7 px-6 pb-10 pt-6">
-      {children}
-    </div>
-  );
+  return <div className="w-full space-y-7 px-6 pb-10 pt-6">{children}</div>;
 }
