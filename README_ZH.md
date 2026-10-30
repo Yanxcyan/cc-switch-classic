@@ -1,20 +1,19 @@
 <div align="center">
 
-# CC Switch
+# CC Switch Classic
 
 ### Claude Code、Claude Desktop、Codex、Gemini CLI、Grok Build、OpenCode、OpenClaw、Hermes Agent、Pi、MiniMax Code、Kimi Code、Oh My Pi 的全方位管理工具
 
 **一键切换 API 供应商，统一管理 MCP、Skills 与提示词，不用再手改 JSON / TOML / YAML 配置文件。**
 
-[![Version](https://img.shields.io/github/v/release/farion1231/cc-switch?color=blue&label=version)](https://github.com/farion1231/cc-switch/releases)
-[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/farion1231/cc-switch/releases)
+[![Version](https://img.shields.io/github/v/release/Yanxcyan/cc-switch-classic?color=blue&label=version)](https://github.com/Yanxcyan/cc-switch-classic/releases)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/Yanxcyan/cc-switch-classic/releases)
 [![Built with Tauri](https://img.shields.io/badge/built%20with-Tauri%202-orange.svg)](https://tauri.app/)
-[![Downloads](https://img.shields.io/github/downloads/farion1231/cc-switch/total)](https://github.com/farion1231/cc-switch/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/Yanxcyan/cc-switch-classic/total)](https://github.com/Yanxcyan/cc-switch-classic/releases/latest)
 
-<a href="https://trendshift.io/repositories/15372" target="_blank"><img src="https://trendshift.io/api/badge/repositories/15372" alt="farion1231%2Fcc-switch | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
-<a href="https://www.star-history.com/#farion1231/cc-switch&Date"><picture><source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/badge?repo=farion1231/cc-switch&theme=dark" /><img alt="Star History Rank" src="https://api.star-history.com/badge?repo=farion1231/cc-switch" width="196" height="55" /></picture></a>
+### 🌐 Classic 项目主页: **[Yanxcyan/cc-switch-classic](https://github.com/Yanxcyan/cc-switch-classic)**
 
-### 🌐 唯一官方网站：**[ccswitch.io](https://ccswitch.io)**
+**CC Switch Classic** 是基于 [CC Switch](https://github.com/farion1231/cc-switch) 独立维护的分支。上游由 Jason Young 开发，采用 MIT 许可；本项目保留上游署名和许可证。
 
 [English](README.md) | 中文 | [日本語](README_JA.md) | [Deutsch](README_DE.md) | [更新日志](CHANGELOG.md)
 
@@ -55,6 +54,8 @@ Claude Code、Codex、Gemini CLI 等 AI 编程工具各有各的配置格式。�
 
 ## 下载安装
 
+请从 [Classic Releases](https://github.com/Yanxcyan/cc-switch-classic/releases/latest) 下载 **Classic**。首次需要手动安装 Classic，之后应用内更新检查会使用本仓库的 Classic 发布源；原版 CC Switch 不会自动转入 Classic 更新通道。
+
 ### 系统要求
 
 - **Windows**：Windows 10 及以上
@@ -63,45 +64,30 @@ Claude Code、Codex、Gemini CLI 等 AI 编程工具各有各的配置格式。�
 
 ### Windows 用户
 
-从 [Releases](../../releases) 页面下载最新版本的 `CC-Switch-v{版本号}-Windows.msi` 安装包或 `CC-Switch-v{版本号}-Windows-Portable.zip` 绿色版。ARM 版 Windows 请下载 `CC-Switch-v{版本号}-Windows-arm64.msi` 或 `CC-Switch-v{版本号}-Windows-arm64-Portable.zip`。
+从 [Classic Releases](https://github.com/Yanxcyan/cc-switch-classic/releases/latest) 下载适合系统架构的安装包或绿色版：
+
+- **Windows x64**: `CC-Switch-Classic-v{version}-Windows.msi` / `CC-Switch-Classic-v{version}-Windows-Portable.zip`
+- **Windows ARM64**: `CC-Switch-Classic-v{version}-Windows-arm64.msi` / `CC-Switch-Classic-v{version}-Windows-arm64-Portable.zip`
 
 ### macOS 用户
 
-**方式一：通过 Homebrew 安装（推荐）**
+从 [Classic Releases](https://github.com/Yanxcyan/cc-switch-classic/releases/latest) 下载以下任一包。两者均为 Universal 通用包，支持 Apple Silicon 和 Intel Mac。
 
-```bash
-brew install --cask cc-switch
-```
+`CC-Switch-Classic-v{version}-macOS.dmg` / `CC-Switch-Classic-v{version}-macOS.zip`
 
-更新：
-
-```bash
-brew upgrade --cask cc-switch
-```
-
-**方式二：手动下载**
-
-从 [Releases](../../releases) 页面下载 `CC-Switch-v{版本号}-macOS.dmg`（推荐）或 `.zip`。这是 Universal 通用包，Apple Silicon 和 Intel Mac 均可原生运行。
-
-> **注意**：CC Switch macOS 版本已通过 Apple 代码签名和公证，可直接安装打开。
-
-### Arch Linux 用户
-
-**通过 paru 安装（推荐）**
-
-```bash
-paru -S cc-switch-bin
-```
+> **签名说明**：Classic 当前使用 ad-hoc 签名，尚未通过 Apple 公证。首次尝试打开后，可能需要在 **系统设置 → 隐私与安全性** 中允许打开。
 
 ### Linux 用户
 
-从 [Releases](../../releases) 页面下载最新版本的 Linux 安装包：
+从 [Classic Releases](https://github.com/Yanxcyan/cc-switch-classic/releases/latest) 选择对应架构和发行版的包：
 
-- `CC-Switch-v{版本号}-Linux-x86_64.deb` / `-Linux-arm64.deb`（Debian/Ubuntu）
-- `CC-Switch-v{版本号}-Linux-x86_64.rpm` / `-Linux-arm64.rpm`（Fedora 等提供 WebKitGTK 4.1 的 RPM 发行版）
-- `CC-Switch-v{版本号}-Linux-x86_64.AppImage` / `-Linux-arm64.AppImage`（满足上述系统要求的发行版）
+- **AppImage**: `CC-Switch-Classic-v{version}-Linux-x86_64.AppImage` / `CC-Switch-Classic-v{version}-Linux-arm64.AppImage`
+- **Debian/Ubuntu**: `CC-Switch-Classic-v{version}-Linux-x86_64.deb` / `CC-Switch-Classic-v{version}-Linux-arm64.deb`
+- **Fedora 等兼容 RPM 发行版**: `CC-Switch-Classic-v{version}-Linux-x86_64.rpm` / `CC-Switch-Classic-v{version}-Linux-arm64.rpm`
 
-> **Flatpak**：官方 Release 不包含 Flatpak 包。如需使用，可从 `.deb` 自行构建 — 参见 [`flatpak/README.md`](flatpak/README.md)。
+Arch Linux 可使用 Classic AppImage。上游的 Homebrew cask 和 AUR 包安装的是原版 CC Switch，并非 Classic。
+
+> **Flatpak**：Classic Release 不包含 Flatpak 包。如需从 `.deb` 自行构建，参见 [`flatpak/README.md`](flatpak/README.md)。
 
 ## 快速开始
 
@@ -374,10 +360,6 @@ CC_SWITCH_GDK_BACKEND=wayland ./CC-Switch-*.AppImage
 开发环境、提交前检查和架构说明见 [CONTRIBUTING.md](CONTRIBUTING.md#贡献指南)；使用问题请先看 [SUPPORT.md](SUPPORT.md)；安全漏洞请按 [SECURITY.md](SECURITY.md) 私下报告。
 
 **技术栈**：Tauri 2 · Rust · React 18 · TypeScript · SQLite
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=farion1231/cc-switch&type=Date)](https://www.star-history.com/#farion1231/cc-switch&Date)
 
 ## License
 

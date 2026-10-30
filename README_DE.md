@@ -1,20 +1,19 @@
 <div align="center">
 
-# CC Switch
+# CC Switch Classic
 
 ### Der All-in-One-Manager für Claude Code, Claude Desktop, Codex, Gemini CLI, Grok Build, OpenCode, OpenClaw, Hermes Agent, Pi, MiniMax Code, Kimi Code & Oh My Pi
 
 **API-Anbieter mit einem Klick wechseln und MCP, Skills und Prompts zentral verwalten — ohne JSON-, TOML- oder YAML-Konfigurationsdateien von Hand zu bearbeiten.**
 
-[![Version](https://img.shields.io/github/v/release/farion1231/cc-switch?color=blue&label=version)](https://github.com/farion1231/cc-switch/releases)
-[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/farion1231/cc-switch/releases)
+[![Version](https://img.shields.io/github/v/release/Yanxcyan/cc-switch-classic?color=blue&label=version)](https://github.com/Yanxcyan/cc-switch-classic/releases)
+[![Platform](https://img.shields.io/badge/platform-Windows%20%7C%20macOS%20%7C%20Linux-lightgrey.svg)](https://github.com/Yanxcyan/cc-switch-classic/releases)
 [![Built with Tauri](https://img.shields.io/badge/built%20with-Tauri%202-orange.svg)](https://tauri.app/)
-[![Downloads](https://img.shields.io/github/downloads/farion1231/cc-switch/total)](https://github.com/farion1231/cc-switch/releases/latest)
+[![Downloads](https://img.shields.io/github/downloads/Yanxcyan/cc-switch-classic/total)](https://github.com/Yanxcyan/cc-switch-classic/releases/latest)
 
-<a href="https://trendshift.io/repositories/15372" target="_blank"><img src="https://trendshift.io/api/badge/repositories/15372" alt="farion1231%2Fcc-switch | Trendshift" style="width: 250px; height: 55px;" width="250" height="55"/></a>
-<a href="https://www.star-history.com/#farion1231/cc-switch&Date"><picture><source media="(prefers-color-scheme: dark)" srcset="https://api.star-history.com/badge?repo=farion1231/cc-switch&theme=dark" /><img alt="Star History Rank" src="https://api.star-history.com/badge?repo=farion1231/cc-switch" width="196" height="55" /></picture></a>
+### 🌐 Classic-Projekt: **[Yanxcyan/cc-switch-classic](https://github.com/Yanxcyan/cc-switch-classic)**
 
-### 🌐 Die einzige offizielle Website: **[ccswitch.io](https://ccswitch.io)**
+**CC Switch Classic** ist ein unabhängig gepflegter Fork von [CC Switch](https://github.com/farion1231/cc-switch), ursprünglich von Jason Young entwickelt und unter der MIT-Lizenz veröffentlicht. Die ursprüngliche Urheberangabe und Lizenz bleiben erhalten.
 
 [English](README.md) | [中文](README_ZH.md) | [日本語](README_JA.md) | Deutsch | [Changelog](CHANGELOG.md)
 
@@ -55,6 +54,8 @@ Claude Code, Codex, Gemini CLI und andere KI-Programmierwerkzeuge haben jeweils 
 
 ## Download & Installation
 
+Laden Sie **Classic** von [Classic Releases](https://github.com/Yanxcyan/cc-switch-classic/releases/latest) herunter. Installieren Sie Classic beim ersten Mal manuell; danach verwendet die Update-Prüfung in der App die Classic-Releases dieses Repositorys. Eine Installation des ursprünglichen CC Switch wechselt nicht automatisch zum Classic-Update-Kanal.
+
 ### Systemanforderungen
 
 - **Windows**: Windows 10 und höher
@@ -63,45 +64,30 @@ Claude Code, Codex, Gemini CLI und andere KI-Programmierwerkzeuge haben jeweils 
 
 ### Windows-Nutzer
 
-Laden Sie das neueste Installationsprogramm `CC-Switch-v{version}-Windows.msi` oder die portable Version `CC-Switch-v{version}-Windows-Portable.zip` von der Seite [Releases](../../releases) herunter. Unter Windows on ARM laden Sie `CC-Switch-v{version}-Windows-arm64.msi` oder `CC-Switch-v{version}-Windows-arm64-Portable.zip` herunter.
+Laden Sie das passende Installationsprogramm oder die portable Version von [Classic Releases](https://github.com/Yanxcyan/cc-switch-classic/releases/latest) herunter:
+
+- **Windows x64**: `CC-Switch-Classic-v{version}-Windows.msi` / `CC-Switch-Classic-v{version}-Windows-Portable.zip`
+- **Windows ARM64**: `CC-Switch-Classic-v{version}-Windows-arm64.msi` / `CC-Switch-Classic-v{version}-Windows-arm64-Portable.zip`
 
 ### macOS-Nutzer
 
-**Methode 1: Installation über Homebrew (empfohlen)**
+Laden Sie eines der folgenden Pakete von [Classic Releases](https://github.com/Yanxcyan/cc-switch-classic/releases/latest) herunter. Beide sind Universal-Builds für Apple-Silicon- und Intel-Macs.
 
-```bash
-brew install --cask cc-switch
-```
+`CC-Switch-Classic-v{version}-macOS.dmg` / `CC-Switch-Classic-v{version}-macOS.zip`
 
-Aktualisieren:
-
-```bash
-brew upgrade --cask cc-switch
-```
-
-**Methode 2: Manueller Download**
-
-Laden Sie `CC-Switch-v{version}-macOS.dmg` (empfohlen) oder `.zip` von der Seite [Releases](../../releases) herunter. Es handelt sich um einen Universal-Build, der nativ auf Apple-Silicon- und Intel-Macs läuft.
-
-> **Hinweis**: CC Switch für macOS ist von Apple code-signiert und notarisiert. Sie können es direkt installieren und öffnen.
-
-### Arch-Linux-Nutzer
-
-**Installation über paru (empfohlen)**
-
-```bash
-paru -S cc-switch-bin
-```
+> **Signierung**: Classic verwendet derzeit eine Ad-hoc-Signatur und ist nicht von Apple notarisiert. Nach dem ersten Öffnungsversuch müssen Sie das Öffnen möglicherweise unter **Systemeinstellungen → Datenschutz & Sicherheit** erlauben.
 
 ### Linux-Nutzer
 
-Laden Sie den neuesten Linux-Build von der Seite [Releases](../../releases) herunter:
+Wählen Sie Architektur und Paketformat auf [Classic Releases](https://github.com/Yanxcyan/cc-switch-classic/releases/latest):
 
-- `CC-Switch-v{version}-Linux-x86_64.deb` / `-Linux-arm64.deb` (Debian/Ubuntu)
-- `CC-Switch-v{version}-Linux-x86_64.rpm` / `-Linux-arm64.rpm` (Fedora und andere RPM-Distributionen mit WebKitGTK 4.1)
-- `CC-Switch-v{version}-Linux-x86_64.AppImage` / `-Linux-arm64.AppImage` (jede Distribution, die die obigen Systemanforderungen erfüllt)
+- **AppImage**: `CC-Switch-Classic-v{version}-Linux-x86_64.AppImage` / `CC-Switch-Classic-v{version}-Linux-arm64.AppImage`
+- **Debian/Ubuntu**: `CC-Switch-Classic-v{version}-Linux-x86_64.deb` / `CC-Switch-Classic-v{version}-Linux-arm64.deb`
+- **Fedora und andere kompatible RPM-Distributionen**: `CC-Switch-Classic-v{version}-Linux-x86_64.rpm` / `CC-Switch-Classic-v{version}-Linux-arm64.rpm`
 
-> **Flatpak**: Nicht in den offiziellen Releases enthalten. Sie können es selbst aus dem `.deb` bauen — eine Anleitung finden Sie unter [`flatpak/README.md`](flatpak/README.md).
+Unter Arch Linux können Sie das Classic-AppImage verwenden. Der Homebrew-Cask und das AUR-Paket des Upstream-Projekts installieren das ursprüngliche CC Switch, nicht Classic.
+
+> **Flatpak**: Classic-Releases enthalten kein Flatpak-Paket. Hinweise zum eigenen Bau aus der `.deb` finden Sie unter [`flatpak/README.md`](flatpak/README.md).
 
 ## Schnellstart
 
@@ -374,10 +360,6 @@ Wir freuen uns über Issues mit Fehlerberichten und Vorschlägen! Bitte eröffne
 Entwicklungsumgebung, Prüfungen vor dem Einreichen und Architekturbeschreibung finden Sie in [CONTRIBUTING.md](CONTRIBUTING.md) (auf Englisch); bei Fragen zur Nutzung lesen Sie bitte zuerst [SUPPORT.md](SUPPORT.md); Sicherheitslücken melden Sie bitte vertraulich gemäß [SECURITY.md](SECURITY.md).
 
 **Tech-Stack**: Tauri 2 · Rust · React 18 · TypeScript · SQLite
-
-## Star History
-
-[![Star History Chart](https://api.star-history.com/svg?repos=farion1231/cc-switch&type=Date)](https://www.star-history.com/#farion1231/cc-switch&Date)
 
 ## Lizenz
 
