@@ -19,7 +19,13 @@ import { settingsApi } from "@/lib/api";
 import { useUpdate } from "@/contexts/UpdateContext";
 import { Badge } from "@/components/ui/badge";
 import { WhatsNewDialog } from "@/components/WhatsNewDialog";
-import { WHATS_NEW_ENTRIES, entriesUpTo } from "@/lib/whatsNew";
+import {
+  WHATS_NEW_ENTRIES,
+  changelogUrl,
+  entriesUpTo,
+  resolveWhatsNewLanguage,
+} from "@/lib/whatsNew";
+import { PROJECT_REPOSITORY_URL } from "@/config/project";
 import ccswitchLogo from "@/assets/icons/logo.svg";
 import { extractErrorMessage } from "@/utils/errorUtils";
 
@@ -46,7 +52,7 @@ function readStarPromptDismissed(): boolean {
  * 命令行应用的安装与升级在侧栏「应用」页。
  */
 export function AboutSection({ isPortable }: AboutSectionProps) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   // 惰性初始化自模块缓存：重挂时首帧即渲染上次的值，避免 loading 闪烁；首次挂载缓存
   // 为空则回退到原始初值（null / loading）。
   const [version, setVersion] = useState<string | null>(() => appVersionCache);
@@ -95,31 +101,17 @@ export function AboutSection({ isPortable }: AboutSectionProps) {
 
   const handleOpenReleaseNotes = useCallback(async () => {
     try {
-      const targetVersion = updateInfo?.availableVersion ?? version ?? "";
-      const displayVersion = targetVersion.startsWith("v")
-        ? targetVersion
-        : targetVersion
-          ? `v${targetVersion}`
-          : "";
-
-      if (!displayVersion) {
-        await settingsApi.openExternal(
-          "https://github.com/farion1231/cc-switch/releases",
-        );
-        return;
-      }
-
       await settingsApi.openExternal(
-        `https://github.com/farion1231/cc-switch/releases/tag/${displayVersion}`,
+        changelogUrl(resolveWhatsNewLanguage(i18n.language)),
       );
     } catch (error) {
       console.error("[AboutSection] Failed to open release notes", error);
       toast.error(t("settings.openReleaseNotesFailed"));
     }
-  }, [t, updateInfo?.availableVersion, version]);
+  }, [t, i18n.language]);
 
   const handleOpenGithub = useCallback(() => {
-    void settingsApi.openExternal("https://github.com/farion1231/cc-switch");
+    void settingsApi.openExternal(PROJECT_REPOSITORY_URL);
   }, []);
 
   const handleDismissStarPrompt = useCallback(() => {
@@ -287,10 +279,10 @@ export function AboutSection({ isPortable }: AboutSectionProps) {
           type="button"
           variant="neutral"
           size="compact"
-          onClick={() => settingsApi.openExternal("https://ccswitch.io")}
+          onClick={handleOpenGithub}
         >
           <Globe className="h-3.5 w-3.5" />
-          {t("settings.officialWebsite")}
+          {t("settings.projectHomepage")}
         </Button>
         <Button
           type="button"
@@ -314,8 +306,7 @@ export function AboutSection({ isPortable }: AboutSectionProps) {
         )}
       </div>
 
-      {/* 下载与更新都走 ccswitch.io，用户不再经过仓库页，邀 Star 单独占一行；按钮即 GitHub 入口。
-          关掉后链接行补回 GitHub 按钮 */}
+      {/* 邀 Star 指向 Classic 仓库，关掉后链接行补回 GitHub 按钮。 */}
       {!starPromptDismissed && (
         <div className="flex flex-wrap items-center gap-x-4 gap-y-3 bg-action-soft py-3.5 ps-5 pe-3">
           <div className="flex min-w-0 flex-1 items-center gap-3">

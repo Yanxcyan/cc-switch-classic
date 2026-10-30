@@ -2,7 +2,7 @@
 
 用户升级后第一次打开 CC Switch，会弹一个窗口，列出从上次看过的版本到当前版本之间每一版的几条摘要。数据就是这个目录下的文件，构建时打进安装包（`src/lib/whatsNew.ts`），弹窗不联网。
 
-详细内容仍在 `docs/release-notes/`。弹窗里每个版本的「详情」链到官网 `https://ccswitch.io/<zh|en|ja>/changelog/<version>`，所以发版后要照常同步官网更新日志。
+详细内容在 `docs/release-notes/`。弹窗里每个版本的「详情」链到 Classic 仓库 `main` 分支对应的 `v<version>-<zh|en|ja>.md`，繁中使用简中文档。发布摘要时应同时提交对应语言的更新日志；仓库地址统一在 `src/config/project.ts` 维护。
 
 ## 每个版本一个文件
 
