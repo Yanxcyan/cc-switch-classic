@@ -353,7 +353,7 @@ CC_SWITCH_GDK_BACKEND=wayland ./CC-Switch-*.AppImage
 
 欢迎提交 Issue 反馈问题和建议！新功能开发前，请先开 Issue 讨论实现方案，不适合项目的功能性 PR 有可能会被关闭。
 
-开发环境、提交前检查和架构说明见 [CONTRIBUTING.md](CONTRIBUTING.md#贡献指南)；使用问题请先看 [SUPPORT.md](SUPPORT.md)；安全漏洞请按 [SECURITY.md](SECURITY.md) 私下报告。
+开发环境、提交前检查和架构说明见 [CONTRIBUTING.md](.github/CONTRIBUTING.md#贡献指南)；使用问题请先看 [SUPPORT.md](.github/SUPPORT.md)；安全漏洞请按 [SECURITY.md](.github/SECURITY.md) 私下报告。
 
 **技术栈**：Tauri 2 · Rust · React 18 · TypeScript · SQLite
 

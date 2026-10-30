@@ -29,3 +29,9 @@ copilot-api
 .history
 CODEBUDDY.md
 mainWindow.js
+
+# Local planning documents and validation artifacts
+/cc-switch-经典界面+v4功能-设计方案.md
+/session-manager.md
+/docs/classic-development.md
+/outputs/

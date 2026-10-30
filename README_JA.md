@@ -353,7 +353,7 @@ CC_SWITCH_GDK_BACKEND=wayland ./CC-Switch-*.AppImage
 
 Issue でのバグ報告やご提案を歓迎します！新機能を開発する前に、まず Issue を作成して実装方針をご相談ください。プロジェクトに合わない機能の PR はクローズされる場合があります。
 
-開発環境、提出前のチェック、アーキテクチャの説明は [CONTRIBUTING.md](CONTRIBUTING.md)（英語）をご覧ください。使い方に関する質問は、まず [SUPPORT.md](SUPPORT.md) をご確認ください。セキュリティ上の脆弱性は、[SECURITY.md](SECURITY.md) に従って非公開で報告してください。
+開発環境、提出前のチェック、アーキテクチャの説明は [CONTRIBUTING.md](.github/CONTRIBUTING.md)（英語）をご覧ください。使い方に関する質問は、まず [SUPPORT.md](.github/SUPPORT.md) をご確認ください。セキュリティ上の脆弱性は、[SECURITY.md](.github/SECURITY.md) に従って非公開で報告してください。
 
 **技術スタック**：Tauri 2 · Rust · React 18 · TypeScript · SQLite
 

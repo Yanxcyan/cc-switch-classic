@@ -353,7 +353,7 @@ Weitere Fragen und Antworten finden Sie in den [FAQ des Benutzerhandbuchs](docs/
 
 Wir freuen uns über Issues mit Fehlerberichten und Vorschlägen! Bitte eröffnen Sie vor der Entwicklung einer neuen Funktion zunächst ein Issue, um die Umsetzung zu besprechen; Feature-PRs, die nicht zum Projekt passen, können geschlossen werden.
 
-Entwicklungsumgebung, Prüfungen vor dem Einreichen und Architekturbeschreibung finden Sie in [CONTRIBUTING.md](CONTRIBUTING.md) (auf Englisch); bei Fragen zur Nutzung lesen Sie bitte zuerst [SUPPORT.md](SUPPORT.md); Sicherheitslücken melden Sie bitte vertraulich gemäß [SECURITY.md](SECURITY.md).
+Entwicklungsumgebung, Prüfungen vor dem Einreichen und Architekturbeschreibung finden Sie in [CONTRIBUTING.md](.github/CONTRIBUTING.md) (auf Englisch); bei Fragen zur Nutzung lesen Sie bitte zuerst [SUPPORT.md](.github/SUPPORT.md); Sicherheitslücken melden Sie bitte vertraulich gemäß [SECURITY.md](.github/SECURITY.md).
 
 **Tech-Stack**: Tauri 2 · Rust · React 18 · TypeScript · SQLite
 

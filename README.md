@@ -1,5 +1,3 @@
-> **CC Switch Classic**：本仓库在 `main` 分支维护经典版，以 v4.0.22 业务为基础恢复 v3 经典界面。开发入口、验证命令和发布前检查见 [Classic 开发说明](docs/classic-development.md)。
-
 <div align="center">
 
 # CC Switch Classic
@@ -355,7 +353,7 @@ For more questions, see the [FAQ](docs/user-manual/en/5-faq/5.2-questions.md) in
 
 Issues and suggestions are welcome! Before developing a new feature, please open an issue to discuss the approach first; feature PRs that aren't a good fit for the project may be closed.
 
-For development setup, pre-submit checks, and architecture notes, see [CONTRIBUTING.md](CONTRIBUTING.md); for usage questions, check [SUPPORT.md](SUPPORT.md) first; report security vulnerabilities privately as described in [SECURITY.md](SECURITY.md).
+For development setup, pre-submit checks, and architecture notes, see [CONTRIBUTING.md](.github/CONTRIBUTING.md); for usage questions, check [SUPPORT.md](.github/SUPPORT.md) first; report security vulnerabilities privately as described in [SECURITY.md](.github/SECURITY.md).
 
 **Tech stack**: Tauri 2 · Rust · React 18 · TypeScript · SQLite
 
