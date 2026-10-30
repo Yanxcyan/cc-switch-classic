@@ -4,8 +4,6 @@
   "description": "All-in-One Assistant for Claude Code, Codex & Gemini CLI",
   "type": "module",
   "scripts": {
-    "prepare": "node scripts/install-agent-hooks.mjs",
-    "agent:check": "node scripts/check-agent-log.mjs --worktree",
     "dev": "pnpm tauri dev",
     "build": "pnpm tauri build",
     "tauri": "tauri",
