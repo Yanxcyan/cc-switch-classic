@@ -1,0 +1,19 @@
+{
+  "version": "4.0.25",
+  "items": [
+    {
+      "type": "fix",
+      "zh": "模式切换栏上下留出间距，页签不再贴边",
+      "zh-TW": "模式切換列上下留出間距，頁籤不再貼邊",
+      "en": "The mode switcher bar has more vertical spacing so its tabs no longer touch the edges",
+      "ja": "モード切り替えバーの上下に余白を追加し、タブが端に接しないように"
+    },
+    {
+      "type": "fix",
+      "zh": "用量统计页签的选中项与其他选项高度对齐，计数更清晰",
+      "zh-TW": "用量統計頁籤的選取項與其他選項高度對齊，計數更清晰",
+      "en": "Usage tabs now align the selected tab with the others and show counts more clearly",
+      "ja": "使用統計タブの選択中の項目を他の項目と揃え、件数を見やすく"
+    }
+  ]
+}
