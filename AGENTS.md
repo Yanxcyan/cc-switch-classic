@@ -147,4 +147,11 @@
 - 验证：协作 agent 的 16 项检查器及真实 Git 提交测试通过；本机执行 pnpm run prepare、pnpm agent:check、相关文件 Prettier 和 git diff --check 均通过，core.hooksPath 已为 .githooks。未重复运行应用业务测试，本次未改应用业务代码；GitHub 首次运行将在推送后验证。
 - 注意事项：自动检查按实际变更检查记录，不能证明 agent 身份或文字真实性；未配置 GitHub 分支保护，CI 失败不会撤销直接推送。每位修改者仍需独立登记，主 agent 负责核对。
 
+### 2026-10-31 00:50 +08:00 | /root | 确认维护记录检查在 GitHub 生效
+
+- 改动：补充维护机制首次真实提交与云端运行结果，便于后续 agent 区分已验证机制和待验证的应用功能。
+- 涉及文件：AGENTS.md。
+- 验证：提交 10cc749f 的真实 pre-commit 自动触发并通过；GitHub Agent change log 首次运行的 16 项测试与追加记录检查全部成功，证据为 https://github.com/Yanxcyan/cc-switch-classic/actions/runs/41093262875 。
+- 注意事项：本条证据仅覆盖维护检查机制，不等同于新的应用实机验收；本次没有修改应用业务代码或发布新安装包。后续修改仍须保留本条及其他历史记录并追加新记录。
+
 <!-- agent-change-log:end -->
