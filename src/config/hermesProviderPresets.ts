@@ -262,7 +262,7 @@ export const hermesProviderPresets: HermesProviderPreset[] = [
   {
     name: "PackyCode",
     websiteUrl: "https://www.packyapi.ai",
-    apiKeyUrl: "https://www.packyapi.ai/register?aff=cc-switch",
+    apiKeyUrl: "https://www.packyapi.ai/register?aff=VGGr",
     settingsConfig: {
       name: "packycode",
       base_url: "https://www.packyapi.ai",

@@ -63,6 +63,7 @@ import { RequestHeadersEditor } from "./RequestHeadersEditor";
 import { ProviderPresetSelector } from "./ProviderPresetSelector";
 import type { ProviderFormProps } from "./ProviderForm";
 import { usePresetStep } from "./presetStep";
+import { useApiKeyLink } from "./hooks/useApiKeyLink";
 
 // 新加的行先用这个窗口占位（max_context_size 必填），选中模型后换成查到的值。
 const PLACEHOLDER_CONTEXT_SIZE = 262144;
@@ -146,8 +147,6 @@ export function KimiProviderForm({
       providerKey,
     );
   const keyValid = isEdit || /^[a-z0-9]+(-[a-z0-9]+)*$/.test(providerKey);
-  const preset =
-    presetId === "custom" ? undefined : kimiProviderPresets[Number(presetId)];
   const form = useForm<ProviderFormData>({
     defaultValues: {
       name: initialData?.name ?? "",
@@ -159,6 +158,17 @@ export function KimiProviderForm({
     },
   });
   const name = form.watch("name");
+  const apiKeyLink = useApiKeyLink({
+    includeNativeApiKeyLinks: true,
+    appId: "kimi",
+    category,
+    selectedPresetId: presetId,
+    presetEntries: PRESETS,
+    formWebsiteUrl: form.watch("websiteUrl") || "",
+    formBaseUrl: config.provider.base_url,
+    formIsPartner: initialData?.meta?.isPartner,
+    formPartnerPromotionKey: initialData?.meta?.partnerPromotionKey,
+  });
   const modelsValid =
     Object.entries(config.models).length > 0 &&
     Object.entries(config.models).every(
@@ -595,10 +605,10 @@ export function KimiProviderForm({
                 value={config.provider.api_key ?? ""}
                 onChange={(api_key) => updateProvider({ api_key })}
                 category={category}
-                shouldShowLink={Boolean(preset?.apiKeyUrl)}
-                websiteUrl={preset?.apiKeyUrl ?? ""}
-                isPartner={preset?.isPartner}
-                partnerPromotionKey={preset?.partnerPromotionKey}
+                shouldShowLink={apiKeyLink.shouldShowApiKeyLink}
+                websiteUrl={apiKeyLink.websiteUrl}
+                isPartner={apiKeyLink.isPartner}
+                partnerPromotionKey={apiKeyLink.partnerPromotionKey}
                 required={!config.provider.oauth}
               />
               <EndpointField

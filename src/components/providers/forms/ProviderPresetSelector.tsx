@@ -25,6 +25,7 @@ import {
   type UniversalProviderPreset,
 } from "@/config/universalProviderPresets";
 import { cn } from "@/lib/utils";
+import { isProviderPresetVisible } from "@/config/providerCatalogPolicy";
 import { usePresetStep } from "./presetStep";
 import { SegmentedControl } from "@/components/ui/segmented-control";
 import {
@@ -152,6 +153,10 @@ export function ProviderPresetSelector({
   barAction,
 }: Readonly<ProviderPresetSelectorProps>) {
   const step = usePresetStep();
+  const visibleEntries = useMemo(
+    () => presetEntries.filter(({ preset }) => isProviderPresetVisible(preset)),
+    [presetEntries],
+  );
   const registerSelector = step?.registerSelector;
   useEffect(() => registerSelector?.(), [registerSelector]);
 
@@ -164,7 +169,7 @@ export function ProviderPresetSelector({
     return createPortal(
       <PresetPicker
         appId={step.appId}
-        entries={presetEntries}
+        entries={visibleEntries}
         onPick={pick}
         onUniversalPresetSelect={onUniversalPresetSelect}
         onManageUniversalProviders={onManageUniversalProviders}
@@ -180,12 +185,12 @@ export function ProviderPresetSelector({
 
   if (!step) {
     // 没有两步外壳（单独渲染的表单）：就地显示选择列表，选中多版本的那一家时下面跟版本切换
-    const versions = entry ? presetVersions(presetEntries, entry) : [];
+    const versions = entry ? presetVersions(visibleEntries, entry) : [];
     return (
       <div className="space-y-3" data-preset-selector="">
         <div className="h-[420px] overflow-hidden rounded-panel border border-border">
           <PresetPicker
-            entries={presetEntries}
+            entries={visibleEntries}
             onPick={onPresetChange}
             selectedPresetId={selectedPresetId}
             onUniversalPresetSelect={onUniversalPresetSelect}
@@ -208,7 +213,7 @@ export function ProviderPresetSelector({
       action={barAction}
       appId={step.appId}
       entry={entry}
-      versions={entry ? presetVersions(presetEntries, entry) : []}
+      versions={entry ? presetVersions(visibleEntries, entry) : []}
       onChange={() => step.setStep("pick")}
       // 换版本 = 选了同一家的另一个预设，表单按它重填
       onVersionChange={onPresetChange}

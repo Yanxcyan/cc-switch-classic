@@ -426,6 +426,8 @@ export function ClaudeDesktopProviderForm({
     selectedPresetId,
     presetEntries,
     formWebsiteUrl: form.watch("websiteUrl") || "",
+    formIsPartner: initialData?.meta?.isPartner,
+    formPartnerPromotionKey: initialData?.meta?.partnerPromotionKey,
     formBaseUrl: baseUrl,
   });
 

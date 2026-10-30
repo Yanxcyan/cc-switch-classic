@@ -58,6 +58,45 @@ const original = {
 };
 
 describe("McodeProviderForm", () => {
+  it("edits a saved platform omitted from the picker without changing its config", async () => {
+    const submit = vi.fn();
+    const settings = {
+      ...original,
+      options: { ...original.options, baseURL: "https://openrouter.ai/api/v1" },
+    };
+    const meta = { isPartner: true, partnerPromotionKey: "legacy-sponsor" };
+    render(
+      <McodeProviderForm
+        appId="mcode"
+        providerId="saved-openrouter"
+        initialData={{
+          name: "Saved OpenRouter",
+          category: "aggregator",
+          websiteUrl: "https://openrouter.ai",
+          settingsConfig: settings,
+          meta,
+        }}
+        submitLabel="Save"
+        onSubmit={submit}
+        onCancel={() => {}}
+      />,
+    );
+    expect(screen.queryByRole("button", { name: "OpenRouter" })).toBeNull();
+    expect(screen.queryByRole("link")).toBeNull();
+    fireEvent.change(screen.getByLabelText("provider.name"), {
+      target: { value: "Renamed OpenRouter" },
+    });
+    fireEvent.click(screen.getByRole("button", { name: "Save" }));
+    await waitFor(() => expect(submit).toHaveBeenCalledOnce());
+    const saved = submit.mock.calls[0][0];
+    expect(saved.providerKey).toBe("saved-openrouter");
+    expect(saved.meta).toEqual(meta);
+    expect(JSON.parse(saved.settingsConfig)).toEqual({
+      ...settings,
+      name: "Renamed OpenRouter",
+    });
+  });
+
   it.each([true, false])(
     "edits native fields while preserving model options and unknown settings (explicit API: %s)",
     async (explicitApi) => {

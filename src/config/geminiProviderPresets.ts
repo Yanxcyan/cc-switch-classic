@@ -56,7 +56,7 @@ export const geminiProviderPresets: GeminiProviderPreset[] = [
   {
     name: "PackyCode",
     websiteUrl: "https://www.packyapi.ai",
-    apiKeyUrl: "https://www.packyapi.ai/register?aff=cc-switch",
+    apiKeyUrl: "https://www.packyapi.ai/register?aff=VGGr",
     settingsConfig: {
       env: {
         GOOGLE_GEMINI_BASE_URL: "https://www.packyapi.ai",

@@ -439,7 +439,7 @@ export const codexProviderPresets: CodexProviderPreset[] = [
   {
     name: "PackyCode",
     websiteUrl: "https://www.packyapi.ai",
-    apiKeyUrl: "https://www.packyapi.ai/register?aff=cc-switch",
+    apiKeyUrl: "https://www.packyapi.ai/register?aff=VGGr",
     category: "third_party",
     auth: generateThirdPartyAuth(""),
     config: generateThirdPartyConfig(

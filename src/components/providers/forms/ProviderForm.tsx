@@ -2091,6 +2091,8 @@ function ProviderFormFull({
     selectedPresetId,
     presetEntries,
     formWebsiteUrl: form.watch("websiteUrl") || "",
+    formIsPartner: initialData?.meta?.isPartner,
+    formPartnerPromotionKey: initialData?.meta?.partnerPromotionKey,
     formBaseUrl: baseUrl,
   });
 
@@ -2105,6 +2107,8 @@ function ProviderFormFull({
     selectedPresetId,
     presetEntries,
     formWebsiteUrl: form.watch("websiteUrl") || "",
+    formIsPartner: initialData?.meta?.isPartner,
+    formPartnerPromotionKey: initialData?.meta?.partnerPromotionKey,
     formBaseUrl: codexBaseUrl,
   });
 
@@ -2119,6 +2123,8 @@ function ProviderFormFull({
     selectedPresetId,
     presetEntries,
     formWebsiteUrl: form.watch("websiteUrl") || "",
+    formIsPartner: initialData?.meta?.isPartner,
+    formPartnerPromotionKey: initialData?.meta?.partnerPromotionKey,
     formBaseUrl: geminiBaseUrl,
   });
 
@@ -2133,6 +2139,8 @@ function ProviderFormFull({
     selectedPresetId,
     presetEntries,
     formWebsiteUrl: form.watch("websiteUrl") || "",
+    formIsPartner: initialData?.meta?.isPartner,
+    formPartnerPromotionKey: initialData?.meta?.partnerPromotionKey,
     formBaseUrl: opencodeForm.opencodeBaseUrl,
   });
 
@@ -2148,6 +2156,8 @@ function ProviderFormFull({
     selectedPresetId,
     presetEntries,
     formWebsiteUrl: form.watch("websiteUrl") || "",
+    formIsPartner: initialData?.meta?.isPartner,
+    formPartnerPromotionKey: initialData?.meta?.partnerPromotionKey,
     formBaseUrl: openclawForm.openclawBaseUrl,
   });
 
@@ -2163,6 +2173,8 @@ function ProviderFormFull({
     selectedPresetId,
     presetEntries,
     formWebsiteUrl: form.watch("websiteUrl") || "",
+    formIsPartner: initialData?.meta?.isPartner,
+    formPartnerPromotionKey: initialData?.meta?.partnerPromotionKey,
     formBaseUrl: hermesForm.hermesBaseUrl,
   });
 

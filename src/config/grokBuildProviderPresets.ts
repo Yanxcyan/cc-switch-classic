@@ -84,7 +84,7 @@ export const grokBuildProviderPresets: GrokBuildProviderPreset[] = [
   {
     name: "PackyCode",
     websiteUrl: "https://www.packyapi.ai",
-    apiKeyUrl: "https://www.packyapi.ai/register?aff=cc-switch",
+    apiKeyUrl: "https://www.packyapi.ai/register?aff=VGGr",
     auth: grokAuth(),
     config: grokPresetConfig("PackyCode", "https://www.packyapi.ai/v1"),
     endpointCandidates: [

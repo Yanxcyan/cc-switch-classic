@@ -1,22 +1,20 @@
 import { useMemo } from "react";
 import type { AppId } from "@/lib/api";
 import type { ProviderCategory } from "@/types";
-import type { ProviderPreset } from "@/config/claudeProviderPresets";
-import type { CodexProviderPreset } from "@/config/codexProviderPresets";
-import type { GeminiProviderPreset } from "@/config/geminiProviderPresets";
-import type { OpenCodeProviderPreset } from "@/config/opencodeProviderPresets";
-import type { ClaudeDesktopProviderPreset } from "@/config/claudeDesktopProviderPresets";
 import { extractBaseUrlForUsageDetection } from "@/config/codingPlanProviders";
 import { extractCodexBaseUrl } from "@/utils/providerConfigUtils";
+import { hasProviderPromotion } from "@/config/providerCatalogPolicy";
 
 type PresetEntry = {
   id: string;
-  preset:
-    | ProviderPreset
-    | CodexProviderPreset
-    | GeminiProviderPreset
-    | OpenCodeProviderPreset
-    | ClaudeDesktopProviderPreset;
+  preset: {
+    category?: ProviderCategory;
+    websiteUrl?: string;
+    apiKeyUrl?: string;
+    isPartner?: boolean;
+    partnerPromotionKey?: string;
+    endpointCandidates?: string[];
+  };
 };
 
 interface UseApiKeyLinkProps {
@@ -27,6 +25,10 @@ interface UseApiKeyLinkProps {
   formWebsiteUrl: string;
   /** 表单当前的请求地址；没选预设（编辑已有供应商）时按它反查预设 */
   formBaseUrl?: string;
+  formIsPartner?: boolean;
+  formPartnerPromotionKey?: string;
+  /** Native protocol forms also expose explicit cloud/official API-key consoles. */
+  includeNativeApiKeyLinks?: boolean;
 }
 
 const LINK_CATEGORIES: ReadonlyArray<ProviderCategory | undefined> = [
@@ -35,12 +37,9 @@ const LINK_CATEGORIES: ReadonlyArray<ProviderCategory | undefined> = [
   "third_party",
 ];
 
-/** 链接指向：这三类优先用 apiKeyUrl（可能带推广参数），其余用官网 */
+/** Prefer the API-key console over a generic homepage whenever one is supplied. */
 function presetLinkUrl(preset: PresetEntry["preset"]): string {
-  if (LINK_CATEGORIES.includes(preset.category)) {
-    return preset.apiKeyUrl || preset.websiteUrl || "";
-  }
-  return preset.websiteUrl || "";
+  return preset.apiKeyUrl || preset.websiteUrl || "";
 }
 
 function normalizeBaseUrl(url: string | null | undefined): string {
@@ -58,15 +57,20 @@ function presetBaseUrl(appId: AppId, preset: PresetEntry["preset"]): string {
   if (appId === "claude-desktop") {
     return typeof p.baseUrl === "string" ? p.baseUrl : "";
   }
-  if (appId === "codex") {
+  if (appId === "codex" || appId === "grokbuild") {
     return typeof p.config === "string"
       ? (extractCodexBaseUrl(p.config) ?? "")
       : "";
   }
-  if (appId === "gemini" && typeof p.baseURL === "string") {
+  if (
+    (appId === "gemini" || appId === "agy") &&
+    typeof p.baseURL === "string"
+  ) {
     return p.baseURL;
   }
-  return extractBaseUrlForUsageDetection(appId, p.settingsConfig) ?? "";
+  const configAppId =
+    appId === "dsh" ? "mcode" : appId === "agy" ? "gemini" : appId;
+  return extractBaseUrlForUsageDetection(configAppId, p.settingsConfig) ?? "";
 }
 
 /**
@@ -79,17 +83,10 @@ export function useApiKeyLink({
   presetEntries,
   formWebsiteUrl,
   formBaseUrl,
+  formIsPartner,
+  formPartnerPromotionKey,
+  includeNativeApiKeyLinks = false,
 }: UseApiKeyLinkProps) {
-  // 判断是否显示 API Key 获取链接
-  const shouldShowApiKeyLink = useMemo(() => {
-    return (
-      category !== "official" &&
-      (category === "cn_official" ||
-        category === "aggregator" ||
-        category === "third_party")
-    );
-  }, [category]);
-
   // 获取当前预设条目
   const currentPresetEntry = useMemo(() => {
     if (selectedPresetId && selectedPresetId !== "custom") {
@@ -100,24 +97,30 @@ export function useApiKeyLink({
 
   // 没选预设（编辑已有供应商）：供应商不记来源预设，按请求地址反查。
   // 同一地址的几个预设链接或推广语不一致（如同一家的不同版本）时不猜，退回官网链接。
-  const matchedPreset = useMemo(() => {
-    if (currentPresetEntry) return undefined;
+  const matchingPresets = useMemo(() => {
+    if (currentPresetEntry) return [];
     const target = normalizeBaseUrl(formBaseUrl);
-    if (!target) return undefined;
-    const matches = presetEntries
+    if (!target) return [];
+    return presetEntries
       .map((entry) => entry.preset)
-      .filter(
-        (preset) => normalizeBaseUrl(presetBaseUrl(appId, preset)) === target,
+      .filter((preset) =>
+        [
+          presetBaseUrl(appId, preset),
+          ...(preset.endpointCandidates ?? []),
+        ].some((url) => normalizeBaseUrl(url) === target),
       );
-    const [first] = matches;
+  }, [appId, currentPresetEntry, formBaseUrl, presetEntries]);
+  const matchedPreset = useMemo(() => {
+    const [first] = matchingPresets;
     if (!first || !presetLinkUrl(first)) return undefined;
-    const consistent = matches.every(
+    const consistent = matchingPresets.every(
       (preset) =>
         presetLinkUrl(preset) === presetLinkUrl(first) &&
+        Boolean(preset.isPartner) === Boolean(first.isPartner) &&
         preset.partnerPromotionKey === first.partnerPromotionKey,
     );
     return consistent ? first : undefined;
-  }, [appId, currentPresetEntry, formBaseUrl, presetEntries]);
+  }, [matchingPresets]);
 
   const linkPreset = currentPresetEntry?.preset ?? matchedPreset;
 
@@ -128,21 +131,25 @@ export function useApiKeyLink({
   }, [linkPreset, formWebsiteUrl]);
 
   // 提取合作伙伴信息
-  const isPartner = linkPreset?.isPartner ?? false;
-  const partnerPromotionKey = linkPreset?.partnerPromotionKey;
+  // An ambiguous match must not expose a sponsor's homepage as a fallback link.
+  const isPartner = currentPresetEntry
+    ? Boolean(currentPresetEntry.preset.isPartner)
+    : Boolean(formIsPartner) ||
+      matchingPresets.some((preset) =>
+        hasProviderPromotion({ ...preset, websiteUrl: presetLinkUrl(preset) }),
+      );
+  const partnerPromotionKey = currentPresetEntry
+    ? currentPresetEntry.preset.partnerPromotionKey
+    : (matchedPreset?.partnerPromotionKey ?? formPartnerPromotionKey);
+  const linkCategory =
+    category === "custom" || !category
+      ? (linkPreset?.category ?? category)
+      : category;
 
   return {
     shouldShowApiKeyLink:
-      appId === "claude" ||
-      appId === "claude-desktop" ||
-      appId === "codex" ||
-      appId === "gemini" ||
-      appId === "agy" ||
-      appId === "opencode" ||
-      appId === "openclaw" ||
-      appId === "hermes"
-        ? shouldShowApiKeyLink
-        : false,
+      LINK_CATEGORIES.includes(linkCategory) ||
+      (includeNativeApiKeyLinks && Boolean(linkPreset?.apiKeyUrl)),
     websiteUrl: getWebsiteUrl,
     isPartner,
     partnerPromotionKey,

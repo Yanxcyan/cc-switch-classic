@@ -171,7 +171,7 @@ describe("KimiProviderForm", () => {
 
   it.each([
     { group: "vendor", name: "Kimi" },
-    { group: "thirdparty", name: "88API" },
+    { group: "thirdparty", name: "PackyCode" },
     { group: "cloud", name: "Microsoft Foundry" },
     { group: "local", name: "Ollama" },
     { group: "local", name: "LM Studio" },

@@ -190,7 +190,7 @@ export const providerPresets: ProviderPreset[] = [
   {
     name: "PackyCode",
     websiteUrl: "https://www.packyapi.ai",
-    apiKeyUrl: "https://www.packyapi.ai/register?aff=cc-switch",
+    apiKeyUrl: "https://www.packyapi.ai/register?aff=VGGr",
     settingsConfig: {
       env: {
         ANTHROPIC_BASE_URL: "https://www.packyapi.ai",

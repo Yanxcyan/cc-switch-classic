@@ -327,7 +327,7 @@ export const openclawProviderPresets: OpenClawProviderPreset[] = [
   {
     name: "PackyCode",
     websiteUrl: "https://www.packyapi.ai",
-    apiKeyUrl: "https://www.packyapi.ai/register?aff=cc-switch",
+    apiKeyUrl: "https://www.packyapi.ai/register?aff=VGGr",
     settingsConfig: {
       baseUrl: "https://www.packyapi.ai",
       apiKey: "",

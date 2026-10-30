@@ -266,7 +266,7 @@ const piProviderPresetDefinitions: PiProviderPreset[] = [
     name: "PackyCode",
     providerKey: "cc-switch-packy-code",
     websiteUrl: "https://www.packyapi.ai",
-    apiKeyUrl: "https://www.packyapi.ai/register?aff=cc-switch",
+    apiKeyUrl: "https://www.packyapi.ai/register?aff=VGGr",
     settingsConfig: {
       name: "PackyCode",
       baseUrl: "https://www.packyapi.ai",

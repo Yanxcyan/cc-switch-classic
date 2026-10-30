@@ -1,6 +1,7 @@
 import { useTranslation } from "react-i18next";
 import ApiKeyInput from "../ApiKeyInput";
 import type { ProviderCategory } from "@/types";
+import { getProviderApiKeyUrl } from "@/config/providerCatalogPolicy";
 
 interface ApiKeySectionProps {
   id?: string;
@@ -32,6 +33,7 @@ export function ApiKeySection({
   placeholder,
   disabled,
   required = false,
+  isPartner,
   partnerPromotionKey,
 }: ApiKeySectionProps) {
   const { t } = useTranslation();
@@ -53,7 +55,12 @@ export function ApiKeySection({
     category !== "official" &&
     category !== "cloud_provider";
 
-  const showLink = shouldShowLink && Boolean(websiteUrl);
+  const apiKeyUrl = getProviderApiKeyUrl({
+    websiteUrl,
+    isPartner,
+    partnerPromotionKey,
+  });
+  const showLink = shouldShowLink && Boolean(apiKeyUrl);
   // 推广语跟着「获取 API Key」走，按输入框说明文字的样式写在框下面（v7 不画推广框）
   const promotion =
     showLink && partnerPromotionKey
@@ -78,7 +85,7 @@ export function ApiKeySection({
       labelAside={
         showLink ? (
           <a
-            href={websiteUrl}
+            href={apiKeyUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="text-caption text-blue-400 dark:text-blue-500 hover:text-blue-500 dark:hover:text-blue-400 transition-colors"

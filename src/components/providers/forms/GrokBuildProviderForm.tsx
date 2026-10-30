@@ -53,6 +53,7 @@ import {
 } from "@/utils/grokBuildConfig";
 import { resolveProviderIcon } from "@/utils/providerIcon";
 import { useDraftEditorProjection } from "./hooks/useDraftEditorProjection";
+import { useApiKeyLink } from "./hooks/useApiKeyLink";
 import { GROKBUILD_OFFICIAL_PROVIDER_ID } from "@/utils/providerCapabilities";
 
 type GrokBuildProviderFormProps = Omit<ProviderFormProps, "appId">;
@@ -196,10 +197,16 @@ export function GrokBuildProviderForm({
   });
   const { isSubmitting } = form.formState;
   const websiteUrl = form.watch("websiteUrl") ?? "";
-  // 「获取 API Key」优先用预设的 apiKeyUrl（带推广参数），与 useApiKeyLink 一致
-  const apiKeyLinkUrl =
-    grokPresetEntries.find((entry) => entry.id === selectedPresetId)?.preset
-      .apiKeyUrl || websiteUrl;
+  const apiKeyLink = useApiKeyLink({
+    appId: "grokbuild",
+    category,
+    selectedPresetId,
+    presetEntries: grokPresetEntries,
+    formWebsiteUrl: websiteUrl,
+    formBaseUrl: baseUrl,
+    formIsPartner: initialData?.meta?.isPartner,
+    formPartnerPromotionKey: initialData?.meta?.partnerPromotionKey,
+  });
 
   useEffect(() => {
     onSubmittingChange?.(isSubmitting);
@@ -475,10 +482,10 @@ export function GrokBuildProviderForm({
                 syncStructuredConfig({ apiKey: value });
               }}
               category={category}
-              shouldShowApiKeyLink={Boolean(apiKeyLinkUrl)}
-              websiteUrl={apiKeyLinkUrl}
-              isPartner={isPartner}
-              partnerPromotionKey={partnerPromotionKey}
+              shouldShowApiKeyLink={Boolean(apiKeyLink.websiteUrl)}
+              websiteUrl={apiKeyLink.websiteUrl}
+              isPartner={apiKeyLink.isPartner}
+              partnerPromotionKey={apiKeyLink.partnerPromotionKey}
               shouldShowSpeedTest
               codexBaseUrl={baseUrl}
               onBaseUrlChange={(value) => {

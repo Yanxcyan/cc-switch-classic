@@ -38,6 +38,7 @@ import type { ProviderFormProps, ProviderFormValues } from "./ProviderForm";
 import JsonEditor from "@/components/JsonEditor";
 import { BasicFormFields, REQUIRED_LABEL } from "./BasicFormFields";
 import { ProviderPresetSelector } from "./ProviderPresetSelector";
+import { useApiKeyLink } from "./hooks/useApiKeyLink";
 import { useProvidersQuery } from "@/lib/query/queries";
 import { cn } from "@/lib/utils";
 import {
@@ -908,6 +909,18 @@ export function PiProviderForm({
     [presets],
   );
 
+  const apiKeyLink = useApiKeyLink({
+    includeNativeApiKeyLinks: true,
+    appId: isOmp ? "omp" : "pi",
+    category,
+    selectedPresetId,
+    presetEntries,
+    formWebsiteUrl: form.watch("websiteUrl") || "",
+    formBaseUrl: baseUrl,
+    formIsPartner: initialData?.meta?.isPartner,
+    formPartnerPromotionKey: initialData?.meta?.partnerPromotionKey,
+  });
+
   const selectPreset = (id: string) => {
     setFormError(null);
     setSelectedPresetId(id);
@@ -1671,10 +1684,10 @@ export function PiProviderForm({
               value={apiKey}
               onChange={handleApiKeyChange}
               category={category}
-              shouldShowLink={Boolean(selectedPreset?.apiKeyUrl)}
-              websiteUrl={selectedPreset?.apiKeyUrl ?? ""}
-              isPartner={selectedPreset?.isPartner}
-              partnerPromotionKey={selectedPreset?.partnerPromotionKey}
+              shouldShowLink={apiKeyLink.shouldShowApiKeyLink}
+              websiteUrl={apiKeyLink.websiteUrl}
+              isPartner={apiKeyLink.isPartner}
+              partnerPromotionKey={apiKeyLink.partnerPromotionKey}
             />
 
             <div className="space-y-2">

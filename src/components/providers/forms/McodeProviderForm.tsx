@@ -21,6 +21,7 @@ import { mcodePresetModelSources } from "@/config/presetModelMetadata";
 import { BasicFormFields } from "./BasicFormFields";
 import { OpenCodeFormFields } from "./OpenCodeFormFields";
 import { ProviderPresetSelector } from "./ProviderPresetSelector";
+import { useApiKeyLink } from "./hooks/useApiKeyLink";
 import { usePresetStep } from "./presetStep";
 import { normalizeRequestHeaders } from "./helpers/requestHeaders";
 import {
@@ -149,6 +150,17 @@ export function McodeProviderForm({
     },
   });
   const name = form.watch("name");
+  const apiKeyLink = useApiKeyLink({
+    includeNativeApiKeyLinks: true,
+    appId,
+    category,
+    selectedPresetId: presetId,
+    presetEntries,
+    formWebsiteUrl: form.watch("websiteUrl") || "",
+    formBaseUrl: config.options?.baseURL,
+    formIsPartner: initialData?.meta?.isPartner,
+    formPartnerPromotionKey: initialData?.meta?.partnerPromotionKey,
+  });
   const ready = Boolean(
     !isAccountLogin &&
       jsonValid &&
@@ -328,10 +340,10 @@ export function McodeProviderForm({
             apiKey={config.options?.apiKey ?? ""}
             onApiKeyChange={(apiKey) => updateOptions({ apiKey })}
             category={category}
-            shouldShowApiKeyLink={Boolean(preset?.apiKeyUrl)}
-            websiteUrl={preset?.apiKeyUrl ?? ""}
-            isPartner={preset?.isPartner}
-            partnerPromotionKey={preset?.partnerPromotionKey}
+            shouldShowApiKeyLink={apiKeyLink.shouldShowApiKeyLink}
+            websiteUrl={apiKeyLink.websiteUrl}
+            isPartner={apiKeyLink.isPartner}
+            partnerPromotionKey={apiKeyLink.partnerPromotionKey}
             baseUrl={config.options?.baseURL ?? ""}
             onBaseUrlChange={(baseURL) => updateOptions({ baseURL })}
             headers={config.options?.headers ?? {}}

@@ -45,6 +45,14 @@ import { createTestQueryClient } from "../utils/testQueryClient";
 const TEST_API_KEY = "sk-golden-test";
 const SUBMIT_LABEL = "save-provider";
 
+// These snapshots verify legacy preset payloads, which remain supported for saved
+// providers even when the preset is no longer offered by the curated picker.
+// ProviderCatalog.test.tsx exercises the real picker policy without this override.
+vi.mock("@/config/providerCatalogPolicy", async (importOriginal) => ({
+  ...(await importOriginal<typeof import("@/config/providerCatalogPolicy")>()),
+  isProviderPresetVisible: () => true,
+}));
+
 const toastMocks = vi.hoisted(() => ({
   error: vi.fn(),
 }));

@@ -450,7 +450,6 @@ describe("ProviderPresetSelector", () => {
     ).toEqual([
       "providerPreset.group.login",
       "providerPreset.group.vendor",
-      "providerPreset.group.thirdparty",
       "providerPreset.group.cloud",
       "providerPreset.group.local",
     ]);

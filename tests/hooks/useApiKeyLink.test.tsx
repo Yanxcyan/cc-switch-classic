@@ -111,8 +111,23 @@ describe("useApiKeyLink", () => {
       presetEntries: entries,
       selectedPresetId: "other",
       formBaseUrl: "https://hub.example.com",
+      formIsPartner: true,
+      formPartnerPromotionKey: "old-sponsor",
     });
     expect(link.websiteUrl).toBe("https://other.example/key");
+    expect(link.isPartner).toBe(false);
+    expect(link.partnerPromotionKey).toBeUndefined();
+  });
+
+  it("retains a saved sponsor marker when an unmarked preset matches during editing", () => {
+    const link = render({
+      presetEntries: entries,
+      formBaseUrl: "https://other.example.com/api",
+      formIsPartner: true,
+      formPartnerPromotionKey: "saved-sponsor",
+    });
+    expect(link.isPartner).toBe(true);
+    expect(link.partnerPromotionKey).toBe("saved-sponsor");
   });
 
   it("reads each app's preset address from its own field", () => {
