@@ -16,10 +16,17 @@
     "noFallthroughCasesInSwitch": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@/components/shell/AppPageHeader": [
+        "src/classic/AppPageHeaderAdapter.tsx"
+      ]
     },
     "types": ["vitest/globals"]
   },
   "include": ["src/**/*", "tests/**/*"],
-  "references": [{ "path": "./tsconfig.node.json" }]
+  "references": [
+    {
+      "path": "./tsconfig.node.json"
+    }
+  ]
 }

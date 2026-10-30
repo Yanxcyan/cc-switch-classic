@@ -1,0 +1,158 @@
+/* Classic skin. Keep upstream token names so all v4 business pages inherit it.
+ * The extra specificity makes these overrides independent of import order. */
+:root:root {
+  --background: 0 0% 100%;
+  --foreground: 240 10% 3.9%;
+  --card: 0 0% 100%;
+  --card-foreground: 240 10% 3.9%;
+  --popover: 0 0% 100%;
+  --popover-foreground: 240 10% 3.9%;
+  --primary: 210 100% 56%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 240 4.8% 95.9%;
+  --secondary-foreground: 240 10% 3.9%;
+  --muted: 240 4.8% 95.9%;
+  --muted-foreground: 240 3.8% 46.1%;
+  --accent: 240 4.8% 95.9%;
+  --accent-foreground: 240 10% 3.9%;
+  --border: 240 5.9% 90%;
+  --input: 240 5.9% 90%;
+  --ring: 210 100% 56%;
+  --radius: 0.5rem;
+
+  --bg-app: hsl(var(--background));
+  --bg-sidebar: hsl(var(--background));
+  --bg-subtle: hsl(var(--muted));
+  --bg-selected: hsl(210 100% 56% / 0.1);
+  --bg-card: hsl(var(--card));
+  --border-strong: #d4d4d8;
+  --text-1: hsl(var(--foreground));
+  --text-2: hsl(var(--muted-foreground));
+  --text-3: hsl(240 3.8% 46.1% / 0.7);
+  --action-bg: #0a84ff;
+  --action-hover: #0060df;
+  --action-fg: #ffffff;
+  /* Text links need a darker blue than filled controls on a white surface. */
+  --action-text: #0060df;
+  --action-soft: rgb(10 132 255 / 0.1);
+  --overlay: rgb(0 0 0 / 0.5);
+  --control-off: #e4e4e7;
+
+  --direct-fill: #0a84ff;
+  --direct-text: #0060df;
+  --direct-soft: rgb(10 132 255 / 0.1);
+  --direct-solid: #0a84ff;
+  --direct-on: #ffffff;
+  --direct-border: rgb(10 132 255 / 0.6);
+  --route-fill: #10b981;
+  --route-text: #047857;
+  --route-soft: rgb(16 185 129 / 0.1);
+  --route-solid: #059669;
+  --route-on: #ffffff;
+  --route-border: rgb(16 185 129 / 0.6);
+  --stack-fill: #8b5cf6;
+  --stack-text: #6d28d9;
+  --stack-soft: rgb(139 92 246 / 0.1);
+  --stack-solid: #7c3aed;
+  --stack-on: #ffffff;
+  --stack-border: rgb(139 92 246 / 0.6);
+  --success: #10b981;
+  --success-text: #047857;
+  --success-soft: rgb(16 185 129 / 0.1);
+  --warning: #f59e0b;
+  --warning-text: #b45309;
+  --warning-soft: rgb(245 158 11 / 0.1);
+  --danger: #ef4444;
+  --danger-text: #b91c1c;
+  --danger-soft: rgb(239 68 68 / 0.1);
+  --chart-1: #3b82f6;
+  --chart-2: #22c55e;
+  --chart-usage: #3b82f6;
+  --chart-input: #3b82f6;
+  --chart-output: #22c55e;
+  --chart-cache-creation: #f97316;
+  --chart-cache-read: #a855f7;
+  --chart-cost: #f43f5e;
+  --chart-grid: #e4e4e7;
+  --heat-1: #dbeafe;
+  --heat-2: #93c5fd;
+  --heat-3: #409cff;
+  --heat-4: #0a84ff;
+  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+  --shadow-lg:
+    0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+.dark.dark {
+  --background: 240 5% 12%;
+  --foreground: 0 0% 98%;
+  --card: 240 5% 16%;
+  --card-foreground: 0 0% 98%;
+  --popover: 240 5% 16%;
+  --popover-foreground: 0 0% 98%;
+  --primary: 210 100% 54%;
+  --primary-foreground: 0 0% 100%;
+  --secondary: 240 5% 18%;
+  --secondary-foreground: 0 0% 98%;
+  --muted: 240 5% 18%;
+  --muted-foreground: 240 5% 64.9%;
+  --accent: 240 5% 18%;
+  --accent-foreground: 0 0% 98%;
+  --border: 240 5% 24%;
+  --input: 240 5% 24%;
+  --ring: 210 100% 54%;
+  --bg-selected: hsl(210 100% 54% / 0.15);
+  --border-strong: #48484a;
+  --text-3: hsl(240 5% 64.9% / 0.7);
+  --action-bg: #0060df;
+  --action-hover: #0a84ff;
+  --action-text: #409cff;
+  --action-soft: rgb(10 132 255 / 0.15);
+  --control-off: #2c2c2e;
+  --direct-text: #409cff;
+  --direct-soft: rgb(10 132 255 / 0.15);
+  --direct-solid: #0060df;
+  --route-text: #34d399;
+  --route-soft: rgb(16 185 129 / 0.15);
+  --stack-text: #c4b5fd;
+  --stack-soft: rgb(139 92 246 / 0.15);
+  --success-text: #34d399;
+  --success-soft: rgb(16 185 129 / 0.15);
+  --warning-text: #fbbf24;
+  --warning-soft: rgb(245 158 11 / 0.15);
+  --danger-text: #f87171;
+  --danger-soft: rgb(239 68 68 / 0.15);
+  --chart-grid: #3a3a3c;
+  --heat-1: #1e3a8a;
+  --heat-2: #1d4ed8;
+  --heat-3: #0a84ff;
+  --heat-4: #409cff;
+}
+
+/* Keep scrolling itself functional; long readers may opt into .scroll-overlay. */
+html * {
+  scrollbar-width: none;
+}
+html *::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+}
+html .scroll-overlay {
+  scrollbar-width: thin;
+}
+html .scroll-overlay::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html *,
+  html *::before,
+  html *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

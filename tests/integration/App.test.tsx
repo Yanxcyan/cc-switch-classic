@@ -304,7 +304,9 @@ describe("App integration with MSW", () => {
 
     expect(toastErrorMock).not.toHaveBeenCalled();
     expect(toastSuccessMock).toHaveBeenCalled();
-  }, 10_000);
+    // This case also cold-loads the complete app graph. Windows transforms can
+    // exceed 10 seconds before the first assertion; keep the full flow intact.
+  }, 30_000);
 
   it("refreshes the route pointer when the proxy fails over to another provider", async () => {
     let routeProviderId = "claude-1";
@@ -882,7 +884,9 @@ describe("App integration with MSW", () => {
     await waitFor(() =>
       expect(toastErrorMock).toHaveBeenCalledWith(
         "notifications.removeFromConfigFailed",
-        expect.objectContaining({ description: "kimi.error.defaultModelInUse" }),
+        expect.objectContaining({
+          description: "kimi.error.defaultModelInUse",
+        }),
       ),
     );
     await waitFor(() =>

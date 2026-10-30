@@ -140,7 +140,7 @@ interface ProviderPresetSelectorProps {
 }
 
 /**
- * 添加供应商的预设（v7 两步）：第 1 步在添加页的内容区里选（常驻搜索 + 左侧分类 + 两列列表），
+ * 添加供应商的预设（保留 v4 两步）：第 1 步在添加页的内容区里选（常驻搜索 + 顶部分类 + 胶囊网格），
  * 第 2 步在表单最上面只剩一条「预设条」，点「更换」回到第 1 步。
  */
 export function ProviderPresetSelector({
@@ -685,11 +685,11 @@ function PresetPicker({
         </div>
       </div>
 
-      <div className="flex min-h-0 flex-1 gap-4 px-6 pb-4">
+      <div className="flex min-h-0 flex-1 flex-col gap-4 px-6 pb-4">
         <div
           role="group"
           aria-label={t("providerPreset.categoriesLabel")}
-          className="flex w-[168px] shrink-0 flex-col gap-0.5 overflow-y-auto"
+          className="flex shrink-0 flex-wrap items-center gap-1.5"
         >
           {navItems.map((key) => (
             <CategoryButton
@@ -703,10 +703,8 @@ function PresetPicker({
           ))}
           {onUniversalPresetSelect && (
             <>
-              <div className="my-2 border-t border-border" />
-              <div className="px-2 pb-1 text-badge text-fg-3">
-                {t("providerPreset.crossApp")}
-              </div>
+              <div className="mx-1 h-5 border-s border-border" />
+              <div className="sr-only">{t("providerPreset.crossApp")}</div>
               <CategoryButton
                 label={t("providerPreset.group.universal")}
                 count={countFor("universal")}
@@ -744,7 +742,7 @@ function PresetPicker({
               </Button>
             </div>
           ) : category === "universal" ? (
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2">
               {matchingUniversal.map((preset) => (
                 <PresetRow
                   key={`universal-${preset.providerType}`}
@@ -765,16 +763,18 @@ function PresetPicker({
                 <button
                   type="button"
                   onClick={onManageUniversalProviders}
-                  className="col-span-2 justify-self-start text-caption text-fg-1 underline underline-offset-2 hover:text-fg-2"
+                  className="col-span-full justify-self-start text-caption text-fg-1 underline underline-offset-2 hover:text-fg-2"
                 >
                   {t("providerPreset.manageUniversal")}
                 </button>
               )}
             </div>
           ) : category === "all" ? (
-            // 「全部」按左侧分类分段，段内按名称；自定义配置固定在最上面
+            // 分类沿用 v4 分组与搜索，Classic 用胶囊网格呈现；自定义配置固定在最上面
             <div className="flex flex-col gap-4">
-              <div className="grid grid-cols-2 gap-2">{customRow}</div>
+              <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2">
+                {customRow}
+              </div>
               {sectionPresetRows(shown).map((section) => (
                 <section
                   key={section.group}
@@ -787,14 +787,14 @@ function PresetPicker({
                   >
                     {t(`providerPreset.group.${section.group}`)}
                   </h3>
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2">
                     {section.items.map(renderRow)}
                   </div>
                 </section>
               ))}
             </div>
           ) : (
-            <div className="grid grid-cols-2 gap-2">
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(150px,1fr))] gap-2">
               {customRow}
               {shown.map(renderRow)}
             </div>
@@ -859,13 +859,20 @@ function CategoryButton({
       aria-pressed={active}
       onClick={onClick}
       className={cn(
-        "flex h-8 items-center justify-between gap-2 rounded-control px-2 text-start text-body transition-colors",
-        active ? "bg-selected font-medium text-fg-1" : "hover:bg-subtle",
+        "inline-flex h-8 shrink-0 items-center justify-between gap-2 rounded-full px-3 text-start text-sm transition-colors",
+        active
+          ? "bg-blue-500 font-medium text-white shadow-sm"
+          : "bg-muted/60 hover:bg-muted",
         !active && (dim ? "text-fg-3" : "text-fg-1"),
       )}
     >
       <span className="truncate">{label}</span>
-      <span className="shrink-0 text-caption tabular-nums text-fg-3">
+      <span
+        className={cn(
+          "shrink-0 text-caption tabular-nums",
+          active ? "text-white/80" : "text-fg-3",
+        )}
+      >
         {count}
       </span>
     </button>
@@ -895,21 +902,29 @@ function PresetRow({
       aria-label={name}
       aria-description={detail}
       className={cn(
-        "flex h-[52px] min-w-0 items-center gap-3 rounded-panel border bg-surface px-3 text-start transition-colors hover:bg-subtle",
-        selected ? "border-border-strong" : "border-border",
+        "flex min-h-[60px] min-w-0 items-center gap-2 rounded-full border px-3 py-2 text-start transition-colors",
+        selected
+          ? "border-blue-500 bg-blue-500 text-white shadow-sm"
+          : "border-border bg-card hover:border-primary/50 hover:bg-muted/50",
       )}
     >
       {icon}
       <span className="min-w-0 flex-1">
         <span
-          className="block truncate text-body font-medium text-fg-1"
+          className={cn(
+            "block truncate text-body font-medium",
+            selected ? "text-white" : "text-fg-1",
+          )}
           title={name}
         >
           {name}
         </span>
         {detail && (
           <span
-            className="block truncate text-caption text-fg-2"
+            className={cn(
+              "block truncate text-caption",
+              selected ? "text-white/80" : "text-fg-2",
+            )}
             title={detail}
           >
             {detail}

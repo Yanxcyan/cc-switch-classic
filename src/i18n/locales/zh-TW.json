@@ -1,4 +1,15 @@
 {
+  "profile": { "title": "專案" },
+  "classic": {
+    "settings": {
+      "general": "一般",
+      "proxy": "代理",
+      "auth": "認證",
+      "advanced": "進階",
+      "usage": "使用統計",
+      "about": "關於"
+    }
+  },
   "app": {
     "title": "CC Switch",
     "description": "Claude Code / Codex / Gemini CLI 全方位輔助工具"
@@ -439,12 +450,12 @@
       "quotaDisplayLeft": "剩餘",
       "quotaDisplayUsed": "已用",
       "quotaDisplayHelp": "供應商卡片、授權中心和系統匣裡，各檔額度寫還剩多少還是已經用了多少。餘額和 Credits 始終寫剩下的。",
-      "sidebarAndHeader": "側欄與頁首",
-      "visibleApps": "在側欄顯示哪些應用",
+      "sidebarAndHeader": "應用列與頁首",
+      "visibleApps": "在應用列顯示哪些應用",
       "goToApps": "前往「應用」",
       "updates": "各應用的新版本",
       "checkToolUpdates": "啟動時檢查各應用的新版本",
-      "checkToolUpdatesHelp": "開啟後，每次啟動 CC Switch 會查一次已安裝的命令列應用有沒有新版本，查到了就在側欄「應用」上顯示一個圓點。不會自動升級。",
+      "checkToolUpdatesHelp": "開啟後，每次啟動 CC Switch 會查一次已安裝的命令列應用有沒有新版本，查到了就在應用列「應用」上顯示一個圓點。不會自動升級。",
       "windowAndTerminal": "視窗與終端機",
       "trayStyle": "系統匣樣式",
       "trayStylePanel": "面板",
@@ -4195,6 +4206,7 @@
     "refresh": "重新整理"
   },
   "nav": {
+    "needsAttention": "需要處理",
     "mainLabel": "主導覽",
     "skipToContent": "跳到主要內容",
     "expandSidebar": "展開側欄",
@@ -4209,7 +4221,7 @@
     "prompts": "提示詞",
     "sessions": "工作階段",
     "apps": "應用",
-    "appsTitle": "應用：安裝、升級、在側欄顯示哪些",
+    "appsTitle": "應用：安裝、升級、在應用列顯示哪些",
     "appsHasUpdate": "應用 · 有可用更新",
     "settings": "設定",
     "settingsHasUpdate": "設定 · CC Switch 有新版本",
@@ -4221,11 +4233,11 @@
     "back": "返回"
   },
   "appsPage": {
-    "showInSidebar": "在側欄顯示 {{name}}",
+    "showInSidebar": "在應用列顯示 {{name}}",
     "lastChecked": "上次檢查 {{time}}",
     "neverChecked": "還沒檢查過更新",
     "helpTitle": "應用",
-    "helpBody": "在這裡安裝、升級命令列應用，並選擇在側欄顯示哪些。",
+    "helpBody": "在這裡安裝、升級命令列應用，並選擇在應用列顯示哪些。",
     "checking": "檢查中…",
     "checkUpdates": "檢查更新",
     "moreActions": "更多操作",
@@ -4236,7 +4248,7 @@
     "dragHandle": "拖曳調整 {{name}} 的順序",
     "columnVersion": "版本",
     "columnVisible": "顯示",
-    "visibleHelp": "關掉後，這個應用不再出現在側欄、系統匣選單、MCP / Skills 的應用欄，以及提示詞和工作階段的應用下拉選單裡。只是不顯示：它的供應商、MCP 等設定都還在，它自己的設定檔也不會被改動。",
+    "visibleHelp": "關掉後，這個應用不再出現在應用列、系統匣選單、MCP / Skills 的應用欄，以及提示詞和工作階段的應用下拉選單裡。只是不顯示：它的供應商、MCP 等設定都還在，它自己的設定檔也不會被改動。",
     "desktopHelp": "Claude Desktop 是桌面應用，不能在這裡安裝或升級；CC Switch 透過它的設定檔接入。",
     "desktopUnsupported": "目前系統不支援",
     "desktopConnected": "已接入",
@@ -4266,7 +4278,7 @@
     "viewSessions": "查看工作階段",
     "configDirectory": "設定目錄",
     "installAndUpgrade": "安裝與升級",
-    "hideFromSidebar": "在側欄隱藏",
+    "hideFromSidebar": "在應用列隱藏",
     "providers": "供應商",
     "workspace": "工作區",
     "openclawConfig": "設定",

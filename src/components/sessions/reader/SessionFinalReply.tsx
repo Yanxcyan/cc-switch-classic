@@ -96,7 +96,7 @@ export const SessionFinalReply = memo(function SessionFinalReply({
   const cost = style.showStepCost ? final.cost : undefined;
 
   return (
-    <div className="group/final relative min-w-0 px-1.5 py-1">
+    <div className="group/final relative me-8 min-w-0 rounded-xl bg-blue-500/5 px-4 py-3">
       {/* Agent 名、时间、模型已在头像旁那一行显示；这里只留悬停出现的复制 */}
       <div className="absolute end-0 top-0">
         <HoverTip

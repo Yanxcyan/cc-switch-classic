@@ -3,8 +3,8 @@ import { cn } from "@/lib/utils";
 import { SegmentThumb, useSlidingIndicator } from "./sliding-indicator";
 
 /**
- * 分段控件（v7 AUTHORING「分段控件」+ R1）：按钮组 + aria-pressed，不是 tablist。
- * 轨道 --bg-subtle，内衬 3px；选中项 --bg-card + 小阴影。内圆角 = 外圆角 − 内衬。
+ * Classic pill controls: a button group with aria-pressed, not a tablist.
+ * Muted track with a raised background-colored selected item.
  * 选中块是一块单独的滑块（SegmentThumb），切换时从上一项滑过去。
  */
 export interface SegmentedItem<T extends string> {
@@ -26,7 +26,7 @@ export interface SegmentedControlProps<T extends string> {
   value: T;
   onValueChange: (value: T) => void;
   "aria-label": string;
-  /** 36：模式 tab、页头下的子页面切换；28：面板里的小切换 */
+  /** 40px for mode navigation; 32px for compact in-panel controls. */
   size?: "md" | "sm";
   className?: string;
 }
@@ -49,15 +49,15 @@ export function SegmentedControl<T extends string>({
       role="group"
       aria-label={rest["aria-label"]}
       className={cn(
-        "relative inline-flex items-stretch bg-subtle p-[3px]",
-        size === "md" ? "h-9 rounded-[10px]" : "h-7 rounded-[8px]",
+        "relative inline-flex items-stretch gap-1 bg-muted p-1",
+        size === "md" ? "h-10 rounded-xl" : "h-8 rounded-lg",
         className,
       )}
     >
       <SegmentThumb
         rect={indicator.rect}
         animate={indicator.animate}
-        className={size === "md" ? "rounded-[7px]" : "rounded-[5px]"}
+        className={size === "md" ? "rounded-lg" : "rounded-md"}
       />
       {items.map((item) => {
         const pressed = item.value === value;
@@ -72,8 +72,8 @@ export function SegmentedControl<T extends string>({
             className={cn(
               "relative inline-flex items-center justify-center gap-1.5 whitespace-nowrap font-medium text-fg-2 transition-colors duration-150 hover:text-fg-1 disabled:cursor-not-allowed disabled:opacity-45",
               size === "md"
-                ? "rounded-[7px] px-3.5 text-body"
-                : "rounded-[5px] px-2.5 text-caption",
+                ? "rounded-lg px-3 text-body"
+                : "rounded-md px-2.5 text-caption",
               item.className,
               pressed && "text-fg-1",
             )}

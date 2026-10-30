@@ -4,21 +4,15 @@ import {
   ArrowDown,
   ArrowUp,
   ChevronRight,
-  CircleDot,
-  ListMinus,
-  ListPlus,
+  Check,
+  Copy,
+  FlaskConical,
+  Code,
+  Trash2,
   Loader2,
-  Minus,
   MoreHorizontal,
   Pencil,
-  Play,
-  Plug,
-  Plus,
-  Power,
-  PowerOff,
-  Route,
   SquareTerminal,
-  type LucideIcon,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { DisabledReason } from "@/components/ui/help-tip";
@@ -43,30 +37,10 @@ import type {
   CardTone,
 } from "./presentation";
 
-const DOT: Record<CardTone | "muted", string> = {
-  direct: "bg-direct",
-  route: "bg-route",
-  stack: "bg-stack",
-  muted: "bg-fg-3",
-};
-
-/** 主操作位只放图标，名字由 HoverTip 悬停即显（key 见 presentation.ts）。 */
-const BUTTON_ICON: Record<string, LucideIcon> = {
-  switch: Play,
-  exitAndUse: Plug,
-  routeHere: Route,
-  queueAdd: ListPlus,
-  queueRemove: ListMinus,
-  add: Plus,
-  remove: Minus,
-  enable: Power,
-  disable: PowerOff,
-  openTerminal: SquareTerminal,
-};
-
 interface ProviderCardActionsProps {
   providerName: string;
   presentation: CardPresentation;
+  modeView?: CardTone;
   onEdit: () => void;
   onDelete: () => void;
   onDuplicate?: () => void;
@@ -78,15 +52,11 @@ interface ProviderCardActionsProps {
   openTerminalIsolated?: boolean;
 }
 
-/**
- * 卡片右侧（v7）：主操作位（状态文字或按钮）→ 上移 / 下移（故障转移队列）→ 打开终端（Claude Code）
- * → 编辑 → ⋯。次要操作都在 ⋯ 里：跟当前模式有关的（聚合页、OpenClaw / OpenCode 的「设为默认」）在
- * 最前，然后是复制、检测连通、配置用量查询、删除。
- * 按钮一律纯图标 + HoverTip；有禁用原因时改由 DisabledReason 的说明卡报原因。
- */
+/** Classic actions retain the v4 presentation contract and disabled reasons. */
 export function ProviderCardActions({
   providerName,
   presentation,
+  modeView,
   onEdit,
   onDelete,
   onDuplicate,
@@ -100,59 +70,76 @@ export function ProviderCardActions({
   const { status, buttons, move, menuItems = [] } = presentation;
 
   return (
-    <div className="flex shrink-0 items-center gap-2">
+    <div className="flex shrink-0 items-center gap-1 opacity-0 pointer-events-none transition-opacity duration-200 group-hover:opacity-100 group-hover:pointer-events-auto group-focus-within:opacity-100 group-focus-within:pointer-events-auto [@media(hover:none)]:opacity-100 [@media(hover:none)]:pointer-events-auto">
       {/* 主操作位定宽：图标按钮和「● 使用中」这类状态文字宽度不同，不定宽的话
           切换后左边的用量会被推开、跟其他卡片对不齐。按最长的常见状态留宽，靠右对齐 */}
-      <div className="flex min-w-20 items-center justify-end gap-1">
+      <div className="flex min-w-[4.5rem] items-center justify-end gap-1">
         {status && (
-          <span className="inline-flex items-center gap-1.5 whitespace-nowrap px-1 text-body font-medium text-fg-1">
-            <span
-              aria-hidden="true"
-              className={cn("h-1.5 w-1.5 rounded-full", DOT[status.dot])}
-            />
+          <span className="inline-flex h-8 min-w-[4.5rem] items-center justify-center gap-1 rounded-lg bg-muted px-2 text-xs font-medium text-muted-foreground">
+            <Check aria-hidden="true" className="h-3.5 w-3.5 shrink-0" />
             {status.label}
           </span>
         )}
         {buttons.map((button) => (
-          <PrimaryButton key={button.key} button={button} />
+          <PrimaryButton key={button.key} button={button} modeView={modeView} />
         ))}
       </div>
 
-      {move && (
-        <div className="flex items-center">
-          <HoverTip
-            content={t("providerCard.action.moveUp", { name: providerName })}
-          >
-            <Button
-              variant="quiet"
-              size="icon-compact"
-              aria-label={t("providerCard.action.moveUp", {
-                name: providerName,
-              })}
-              disabled={!move.onUp}
-              onClick={move.onUp}
-            >
-              <ArrowUp className="h-4 w-4" strokeWidth={1.5} />
-            </Button>
-          </HoverTip>
-          <HoverTip
-            content={t("providerCard.action.moveDown", { name: providerName })}
-          >
-            <Button
-              variant="quiet"
-              size="icon-compact"
-              aria-label={t("providerCard.action.moveDown", {
-                name: providerName,
-              })}
-              disabled={!move.onDown}
-              onClick={move.onDown}
-            >
-              <ArrowDown className="h-4 w-4" strokeWidth={1.5} />
-            </Button>
-          </HoverTip>
-        </div>
-      )}
+      <IconAction
+        tip={t("common.edit")}
+        disabledReason={presentation.editDisabledReason}
+      >
+        <Button
+          variant="quiet"
+          size="icon-compact"
+          aria-label={t("providerCard.action.edit", { name: providerName })}
+          onClick={onEdit}
+        >
+          <Pencil className="h-4 w-4" strokeWidth={1.5} />
+        </Button>
+      </IconAction>
 
+      {onDuplicate && (
+        <HoverTip content={t("provider.duplicate")}>
+          <Button
+            variant="quiet"
+            size="icon-compact"
+            aria-label={t("provider.duplicate")}
+            onClick={onDuplicate}
+          >
+            <Copy className="h-4 w-4" />
+          </Button>
+        </HoverTip>
+      )}
+      {onTest && (
+        <HoverTip content={t("provider.connectivityCheck")}>
+          <Button
+            variant="quiet"
+            size="icon-compact"
+            aria-label={t("provider.connectivityCheck")}
+            disabled={isTesting}
+            onClick={onTest}
+          >
+            {isTesting ? (
+              <Loader2 className="h-4 w-4 animate-spin" />
+            ) : (
+              <FlaskConical className="h-4 w-4" />
+            )}
+          </Button>
+        </HoverTip>
+      )}
+      {onConfigureUsage && (
+        <HoverTip content={t("provider.configureUsage")}>
+          <Button
+            variant="quiet"
+            size="icon-compact"
+            aria-label={t("provider.configureUsage")}
+            onClick={onConfigureUsage}
+          >
+            <Code className="h-4 w-4" />
+          </Button>
+        </HoverTip>
+      )}
       {onOpenTerminal && (
         <HoverTip
           content={t(
@@ -175,16 +162,17 @@ export function ProviderCardActions({
       )}
 
       <IconAction
-        tip={t("common.edit")}
-        disabledReason={presentation.editDisabledReason}
+        tip={t("common.delete")}
+        disabledReason={presentation.deleteDisabledReason}
       >
         <Button
           variant="quiet"
           size="icon-compact"
-          aria-label={t("providerCard.action.edit", { name: providerName })}
-          onClick={onEdit}
+          className="hover:bg-red-500/10 hover:text-red-500"
+          aria-label={t("common.delete")}
+          onClick={onDelete}
         >
-          <Pencil className="h-4 w-4" strokeWidth={1.5} />
+          <Trash2 className="h-4 w-4" />
         </Button>
       </IconAction>
 
@@ -206,7 +194,19 @@ export function ProviderCardActions({
           {menuItems.map((item) => (
             <ModeMenuItem key={item.key} item={item} />
           ))}
-          {menuItems.length > 0 && <DropdownMenuSeparator />}
+          {move && (
+            <>
+              <DropdownMenuItem disabled={!move.onUp} onSelect={move.onUp}>
+                <ArrowUp className="h-4 w-4" />
+                {t("providerCard.action.moveUp", { name: providerName })}
+              </DropdownMenuItem>
+              <DropdownMenuItem disabled={!move.onDown} onSelect={move.onDown}>
+                <ArrowDown className="h-4 w-4" />
+                {t("providerCard.action.moveDown", { name: providerName })}
+              </DropdownMenuItem>
+            </>
+          )}
+          {(menuItems.length > 0 || move) && <DropdownMenuSeparator />}
           {onDuplicate && (
             <DropdownMenuItem onSelect={onDuplicate}>
               {t("provider.duplicate")}
@@ -314,18 +314,38 @@ function ModeMenuItem({ item }: { item: CardMenuItem }) {
   );
 }
 
-function PrimaryButton({ button }: { button: CardButton }) {
-  const Icon = BUTTON_ICON[button.key] ?? CircleDot;
-  const icon = <Icon className="h-4 w-4" strokeWidth={1.5} />;
+function PrimaryButton({
+  button,
+  modeView,
+}: {
+  button: CardButton;
+  modeView?: CardTone;
+}) {
+  const isRemove = button.key === "remove" || button.key === "disable";
+  const tone =
+    modeView ??
+    (button.key === "routeHere" ||
+    button.key.startsWith("queue") ||
+    button.key === "add" ||
+    button.key === "enable"
+      ? "route"
+      : "direct");
   return (
     <IconAction tip={button.label} disabledReason={button.disabledReason}>
       <Button
-        variant="quiet"
-        size="icon-compact"
+        variant={isRemove ? "ghost" : tone}
+        size="sm"
+        className={cn(
+          "w-[4.5rem] px-1.5 text-xs",
+          isRemove &&
+            (tone === "stack"
+              ? "bg-violet-500/10 text-violet-600 hover:bg-violet-500/20 dark:text-violet-400"
+              : "bg-muted text-muted-foreground hover:bg-muted/80"),
+        )}
         aria-label={button.label}
         onClick={button.onClick}
       >
-        {icon}
+        <span className="truncate">{button.label}</span>
       </Button>
     </IconAction>
   );

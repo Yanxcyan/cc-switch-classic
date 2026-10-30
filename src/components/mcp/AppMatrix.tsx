@@ -15,7 +15,7 @@ import { cn } from "@/lib/utils";
 
 /**
  * MCP 与 Skills 共用的「应用矩阵」：行 = 服务器 / Skill，列 = 应用。
- * 中性勾选（不用绿色），写入失败显示 ⚠ 可重试；列头点开是批量弹层，批量后给撤销 toast。
+ * Classic brand-colored controls; failed writes keep their retry action.
  */
 
 // ─── 批量作用范围（只在这里决定） ─────────────────────────────────────────
@@ -91,6 +91,26 @@ function useColumnTracking(app: AppId | undefined) {
 // ─── 单元格 ─────────────────────────────────────────────────────────────
 export type MatrixCellState = "on" | "off" | "fail";
 
+const APP_TOGGLE_COLORS: Record<AppId, string> = {
+  claude:
+    "border-orange-500 text-orange-600 dark:text-orange-400 bg-orange-500/10",
+  "claude-desktop":
+    "border-orange-500 text-orange-600 dark:text-orange-400 bg-orange-500/10",
+  codex:
+    "border-emerald-500 text-emerald-600 dark:text-emerald-400 bg-emerald-500/10",
+  gemini: "border-blue-500 text-blue-600 dark:text-blue-400 bg-blue-500/10",
+  grokbuild: "border-cyan-500 text-cyan-600 dark:text-cyan-400 bg-cyan-500/10",
+  opencode: "border-teal-500 text-teal-600 dark:text-teal-400 bg-teal-500/10",
+  openclaw: "border-red-500 text-red-600 dark:text-red-400 bg-red-500/10",
+  hermes: "border-amber-500 text-amber-600 dark:text-amber-400 bg-amber-500/10",
+  pi: "border-violet-500 text-violet-600 dark:text-violet-400 bg-violet-500/10",
+  mcode: "border-rose-500 text-rose-600 dark:text-rose-400 bg-rose-500/10",
+  kimi: "border-sky-500 text-sky-600 dark:text-sky-400 bg-sky-500/10",
+  dsh: "border-indigo-500 text-indigo-700 dark:text-indigo-400 bg-indigo-500/10",
+  agy: "border-teal-500 text-teal-600 dark:text-teal-400 bg-teal-500/10",
+  omp: "border-pink-500 text-pink-600 dark:text-pink-400 bg-pink-500/10",
+};
+
 interface MatrixCellProps {
   state: MatrixCellState;
   /** 所在列：悬停 / 聚焦时高亮这一列的列头 */
@@ -102,8 +122,8 @@ interface MatrixCellProps {
 }
 
 /**
- * 勾选框：开、关、写入失败三种状态是同一个 16px 圆角方框、同一个 28px 点击区，
- * 只换填充和里面的符号（关 = 淡描边空框，开 = 操作色实心 + 勾，失败 = 警告描边 + ⚠）。
+ * Each 28px control carries the application glyph and its brand-colored border.
+ * Failed writes remain visually distinct and independently retryable.
  */
 export function MatrixCell({
   state,
@@ -126,23 +146,29 @@ export function MatrixCell({
             event.stopPropagation();
             onClick();
           }}
-          className="group/cell flex h-7 w-7 items-center justify-center rounded-control outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-45"
+          className={cn(
+            "group/cell flex h-7 w-7 items-center justify-center rounded-lg border outline-none transition-colors focus-visible:ring-2 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-45",
+            state === "on" &&
+              (app
+                ? APP_TOGGLE_COLORS[app]
+                : "border-emerald-500 bg-emerald-500/10 text-emerald-600"),
+            state === "off" &&
+              "border-border text-fg-3 hover:border-primary hover:text-primary",
+            state === "fail" &&
+              "border-amber-500 bg-warning-soft text-warning-text",
+          )}
         >
           <span
             aria-hidden="true"
             className={cn(
-              // 和 ui-checkbox 同一个外观：1.5px 描边、白底；开 = 主题色底 + 勾（勾从中心放大出来）
-              "flex h-4 w-4 items-center justify-center rounded-[4px] border-[1.5px] transition-colors duration-150",
-              state === "on" &&
-                "border-action bg-action text-action-fg group-hover/cell:border-action-hover group-hover/cell:bg-action-hover",
-              state === "off" &&
-                "border-border-strong bg-surface group-hover/cell:border-fg-3",
-              state === "fail" &&
-                "border-warning bg-warning-soft text-warning-text",
+              "flex h-4 w-4 items-center justify-center transition-opacity duration-150",
+              state === "off" && "opacity-40 group-hover/cell:opacity-100",
             )}
           >
             {state === "fail" ? (
               <AlertTriangle className="h-3 w-3" strokeWidth={2.25} />
+            ) : app ? (
+              <AppGlyph app={app} size={16} />
             ) : (
               <Check
                 className={cn(

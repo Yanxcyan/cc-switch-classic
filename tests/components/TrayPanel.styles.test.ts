@@ -41,7 +41,7 @@ describe("TrayPanel backgrounds stay scoped to each platform", () => {
   it.each([false, true])("keeps Windows cards opaque (dark=%s)", (dark) => {
     const style = cardFor("windows", dark);
     expect(style.backgroundColor).toBe(
-      dark ? "rgb(36, 36, 40)" : "rgb(235, 235, 237)",
+      dark ? "rgb(39, 39, 43)" : "rgb(244, 244, 245)",
     );
     expect(getComputedStyle(root).backgroundColor).toBe("rgba(0, 0, 0, 0)");
   });

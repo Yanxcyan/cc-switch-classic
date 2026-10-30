@@ -26,20 +26,36 @@ const TONE: Record<
   NoticeTone,
   { box: string; icon: string; Icon: LucideIcon }
 > = {
-  neutral: { box: "bg-subtle", icon: "text-fg-2", Icon: Info },
+  neutral: {
+    box: "border-sky-500/30 bg-sky-500/10",
+    icon: "text-sky-600 dark:text-sky-400",
+    Icon: Info,
+  },
   warning: {
-    box: "bg-warning-soft",
+    box: "border-amber-500/30 bg-warning-soft",
     icon: "text-warning-text",
     Icon: AlertTriangle,
   },
   danger: {
-    box: "bg-danger-soft",
+    box: "border-red-500/30 bg-danger-soft",
     icon: "text-danger-text",
     Icon: CircleAlert,
   },
-  route: { box: "bg-route-soft", icon: "text-route-text", Icon: Route },
-  stack: { box: "bg-stack-soft", icon: "text-stack-text", Icon: Layers },
-  direct: { box: "bg-direct-soft", icon: "text-direct-text", Icon: Info },
+  route: {
+    box: "border-emerald-500/30 bg-route-soft",
+    icon: "text-route-text",
+    Icon: Route,
+  },
+  stack: {
+    box: "border-violet-500/30 bg-stack-soft",
+    icon: "text-stack-text",
+    Icon: Layers,
+  },
+  direct: {
+    box: "border-blue-500/30 bg-direct-soft",
+    icon: "text-direct-text",
+    Icon: Info,
+  },
 };
 
 export interface NoticeProps {
@@ -72,7 +88,7 @@ export function Notice({
   return (
     <div
       className={cn(
-        "flex gap-2.5 rounded-panel py-2.5 pe-3.5 ps-[19px] text-body text-fg-1",
+        "flex gap-2.5 rounded-lg border px-3.5 py-2.5 text-body text-fg-1",
         // 只有一行时整行上下居中；有第二行时图标对齐第一行
         children ? "items-start" : "items-center",
         style.box,

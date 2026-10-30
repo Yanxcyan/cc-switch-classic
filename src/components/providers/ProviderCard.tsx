@@ -59,6 +59,7 @@ interface ProviderCardProps {
   appId: AppId;
   /** 卡片怎么画：模式色、状态 / 按钮、徽标（由列表按模式算好） */
   presentation: CardPresentation;
+  modeView?: CardTone;
   /** 用来决定官方订阅 / OAuth 额度是否自动查询 */
   isCurrent: boolean;
   onEdit: (provider: Provider) => void;
@@ -74,9 +75,11 @@ interface ProviderCardProps {
 
 /** 当前那张：模式色边框 + 淡底；共存式应用的默认那家同直连色。 */
 const TONE_CLASS: Record<CardTone, string> = {
-  direct: "border-direct-border bg-direct-soft",
-  route: "border-route-border bg-route-soft",
-  stack: "border-stack-border bg-stack-soft",
+  direct: "border-blue-500/60 bg-gradient-to-r from-blue-500/10 to-transparent",
+  route:
+    "border-emerald-500/60 bg-gradient-to-r from-emerald-500/10 to-transparent",
+  stack:
+    "border-violet-500/60 bg-gradient-to-r from-violet-500/10 to-transparent",
 };
 
 const CHIP_CLASS: Record<CardChip["tone"], string> = {
@@ -94,7 +97,7 @@ export function CardChipBadge({ chip }: { chip: CardChip }) {
     <span
       title={chip.title}
       className={cn(
-        "inline-flex h-[18px] shrink-0 items-center whitespace-nowrap rounded-full px-1.5 text-badge",
+        "inline-flex h-[18px] shrink-0 items-center whitespace-nowrap rounded-md px-1.5 text-[10px] font-semibold",
         CHIP_CLASS[chip.tone],
         chip.title && "cursor-help",
       )}
@@ -184,6 +187,7 @@ export function ProviderCard({
   provider,
   appId,
   presentation,
+  modeView,
   isCurrent,
   onEdit,
   onDelete,
@@ -346,14 +350,15 @@ export function ProviderCard({
   return (
     <div
       className={cn(
-        "group relative rounded-panel border transition-[border-color,box-shadow,background-color] duration-150",
+        "group relative rounded-xl border bg-card p-4 transition-[border-color,box-shadow,transform] duration-200",
         presentation.tone
           ? TONE_CLASS[presentation.tone]
-          : "border-border bg-surface hover:border-border-strong hover:shadow-v7-sm",
-        dragHandleProps?.isDragging && "cursor-grabbing shadow-v7-md",
+          : "border-border hover:border-primary/50 hover:shadow-sm",
+        dragHandleProps?.isDragging &&
+          "z-10 scale-105 cursor-grabbing shadow-lg",
       )}
     >
-      <div className="flex min-h-[58px] items-center gap-3 py-2.5 pe-3 ps-2">
+      <div className="flex min-h-12 items-center gap-3">
         {dragHandleProps ? (
           <button
             type="button"
@@ -395,6 +400,18 @@ export function ProviderCard({
             >
               {provider.name}
             </h3>
+            {modeView === "stack" &&
+              presentation.buttons.some(
+                (button) => button.key === "remove",
+              ) && (
+                <CardChipBadge
+                  chip={{
+                    key: "classic-stack-member",
+                    label: t("provider.stackBadge"),
+                    tone: "stack",
+                  }}
+                />
+              )}
             {presentation.chips.map((chip) => (
               <CardChipBadge key={chip.key} chip={chip} />
             ))}
@@ -456,7 +473,7 @@ export function ProviderCard({
                   </span>
                   <button
                     type="button"
-                    className="shrink-0 text-body font-medium text-action-text hover:underline"
+                    className="shrink-0 text-body font-medium text-primary hover:underline"
                     onClick={() => onEdit(provider)}
                   >
                     {t("codex.chooseAccount", {
@@ -523,7 +540,7 @@ export function ProviderCard({
 
         <div className="flex shrink-0 items-center gap-3">
           {/* 额度列 136 宽，带重置倒计时时 194 宽（见 QuotaLines） */}
-          <div className="max-w-[208px] text-end">
+          <div className="max-w-[208px] text-end text-xs tabular-nums">
             <div className="flex items-center justify-end gap-1">
               {isCopilot ? (
                 <CopilotQuotaFooter
@@ -631,6 +648,7 @@ export function ProviderCard({
           <ProviderCardActions
             providerName={provider.name}
             presentation={presentation}
+            modeView={modeView}
             onEdit={() => onEdit(provider)}
             onDelete={() => onDelete(provider)}
             onDuplicate={
@@ -663,7 +681,7 @@ export function ProviderCard({
       </div>
 
       {isExpanded && hasMultiplePlans && (
-        <div className="mx-4 mb-3 border-t border-border pt-3">
+        <div className="mt-3 border-t border-border pt-3">
           <UsageFooter
             provider={provider}
             providerId={provider.id}

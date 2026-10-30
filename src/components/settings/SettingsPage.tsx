@@ -51,6 +51,21 @@ import { useSettings } from "@/hooks/useSettings";
 import { useImportExport } from "@/hooks/useImportExport";
 import type { SettingsFormState } from "@/hooks/useSettings";
 import { isTextEditableTarget } from "@/utils/domUtils";
+import { useUnsavedChangesRegistration } from "@/lib/unsavedChanges";
+
+const DIRECTORY_FIELDS = [
+  "claudeConfigDir",
+  "codexConfigDir",
+  "geminiConfigDir",
+  "grokConfigDir",
+  "opencodeConfigDir",
+  "openclawConfigDir",
+  "hermesConfigDir",
+  "piConfigDir",
+  "ompConfigDir",
+] as const;
+
+const normalizeDirectory = (value?: string) => value?.trim() || undefined;
 
 const SECTION_ICON: Record<
   SettingsSection,
@@ -66,6 +81,9 @@ const SECTION_ICON: Record<
 
 interface SettingsPageProps {
   section: SettingsSection;
+  /** Classic hosts related sections under a single tab, sharing one settings draft. */
+  groupedSections?: SettingsSection[];
+  embedded?: boolean;
   /** 从应用页的「配置目录」进入时，定位到该应用的配置区域。 */
   appConfigScrollTarget?: AppId;
   onImportSuccess?: () => void | Promise<void>;
@@ -81,6 +99,8 @@ interface SettingsPageProps {
  */
 export function SettingsPage({
   section,
+  groupedSections,
+  embedded = false,
   appConfigScrollTarget,
   onImportSuccess,
   onOpenApps,
@@ -363,10 +383,24 @@ export function SettingsPage({
   const appConfigDirty =
     (appConfigDir?.trim() || undefined) !==
     (initialAppConfigDir?.trim() || undefined);
+  const directoriesDirty = Boolean(
+    settings &&
+      savedSettings &&
+      DIRECTORY_FIELDS.some(
+        (field) =>
+          normalizeDirectory(settings[field]) !==
+          normalizeDirectory(savedSettings[field]),
+      ),
+  );
+  // Only directory drafts need an explicit Save. Theme, tray and other toggles
+  // save immediately and must not cause a misleading leave confirmation.
+  useUnsavedChangesRegistration(
+    !isLoading && (appConfigDirty || directoriesDirty),
+  );
 
-  const renderSection = () => {
+  const renderSection = (selectedSection = section) => {
     if (!settings) return null;
-    switch (section) {
+    switch (selectedSection) {
       case "general":
         return (
           <GeneralSection
@@ -528,10 +562,12 @@ export function SettingsPage({
 
   return (
     <>
-      <AppPageHeader
-        icon={<SectionIcon className="h-5 w-5" strokeWidth={1.5} />}
-        title={t(`settings.sections.${section}`)}
-      />
+      {!embedded && (
+        <AppPageHeader
+          icon={<SectionIcon className="h-5 w-5" strokeWidth={1.5} />}
+          title={t(`settings.sections.${section}`)}
+        />
+      )}
       <div
         ref={scrollRef}
         id="main-content"
@@ -542,7 +578,28 @@ export function SettingsPage({
             <Loader2 className="h-8 w-8 animate-spin text-fg-3" />
           </div>
         ) : (
-          <SettingsBody>{renderSection()}</SettingsBody>
+          <SettingsBody>
+            {groupedSections
+              ? groupedSections.map((group) => {
+                  const Icon = SECTION_ICON[group];
+                  return (
+                    <details
+                      key={group}
+                      open
+                      className="glass-card rounded-xl border border-border p-4"
+                    >
+                      <summary className="cursor-pointer text-sm font-semibold">
+                        <Icon className="me-2 inline h-4 w-4 text-primary" />
+                        {t(`settings.sections.${group}`)}
+                      </summary>
+                      <div className="mt-4 space-y-6">
+                        {renderSection(group)}
+                      </div>
+                    </details>
+                  );
+                })
+              : renderSection()}
+          </SettingsBody>
         )}
       </div>
 

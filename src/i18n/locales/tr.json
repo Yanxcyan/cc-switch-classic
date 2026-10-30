@@ -1,4 +1,15 @@
 {
+  "profile": { "title": "Projeler" },
+  "classic": {
+    "settings": {
+      "general": "Genel",
+      "proxy": "Proxy",
+      "auth": "Hesaplar",
+      "advanced": "Gelişmiş",
+      "usage": "Kullanım",
+      "about": "Hakkında"
+    }
+  },
   "app": {
     "title": "CC Switch",
     "description": "Claude Code, Codex ve Gemini CLI için Hepsi Bir Arada Asistan"
@@ -433,12 +444,12 @@
       "quotaDisplayLeft": "Kalan",
       "quotaDisplayUsed": "Kullanılan",
       "quotaDisplayHelp": "Sağlayıcı kartlarındaki, Hesaplar'daki ve tepsideki her kota penceresinin ne kadar kaldığını veya ne kadar kullanıldığını gösterip göstermediği. Bakiyeler ve Krediler her zaman kalanları gösterir.",
-      "sidebarAndHeader": "Kenar çubuğu ve başlık",
-      "visibleApps": "Kenar çubuğunda gösterilen uygulamalar",
+      "sidebarAndHeader": "Uygulama çubuğu ve başlık",
+      "visibleApps": "Uygulama çubuğunda gösterilen uygulamalar",
       "goToApps": "Uygulamaları seç",
       "updates": "Uygulamalarınızın yeni sürümleri",
       "checkToolUpdates": "Açılışta uygulama güncellemelerini kontrol et",
-      "checkToolUpdatesHelp": "CC Switch açıkken, her başlatıldığında yüklü komut satırı uygulamalarınızı yeni sürümler için kontrol eder ve bulursa kenar çubuğunda Uygulamalar üzerinde bir nokta gösterir. Hiçbir şey otomatik olarak yükseltilmez.",
+      "checkToolUpdatesHelp": "CC Switch açıkken, her başlatıldığında yüklü komut satırı uygulamalarınızı yeni sürümler için kontrol eder ve bulursa uygulama çubuğunda Uygulamalar üzerinde bir nokta gösterir. Hiçbir şey otomatik olarak yükseltilmez.",
       "windowAndTerminal": "Pencere ve terminal",
       "trayStyle": "Tepsi simgesi tıklama davranışı",
       "trayStylePanel": "Panel",
@@ -4177,6 +4188,7 @@
     "refresh": "Yenile"
   },
   "nav": {
+    "needsAttention": "İlgilenmeniz gerekiyor",
     "mainLabel": "Ana gezinme",
     "skipToContent": "Ana içeriğe atla",
     "expandSidebar": "Kenar çubuğunu genişlet",
@@ -4191,7 +4203,7 @@
     "prompts": "İstemler",
     "sessions": "Oturumlar",
     "apps": "Uygulamalar",
-    "appsTitle": "Uygulamalar: yükleyin, yükseltin, kenar çubuğunda hangilerinin gösterileceğini seçin",
+    "appsTitle": "Uygulamalar: yükleyin, yükseltin, uygulama çubuğunda hangilerinin gösterileceğini seçin",
     "appsHasUpdate": "Uygulamalar · güncellemeler mevcut",
     "settings": "Ayarlar",
     "settingsHasUpdate": "Ayarlar · yeni bir CC Switch sürümü mevcut",
@@ -4203,11 +4215,11 @@
     "back": "Geri"
   },
   "appsPage": {
-    "showInSidebar": "Kenar çubuğunda {{name}}'yi göster",
+    "showInSidebar": "Uygulama çubuğunda {{name}}'yi göster",
     "lastChecked": "Son kontrol: {{time}}",
     "neverChecked": "Güncellemeler henüz kontrol edilmedi",
     "helpTitle": "Uygulamalar",
-    "helpBody": "Komut satırı uygulamalarını buradan yükleyip yükseltin ve kenar çubuğunda hangilerinin gösterileceğini seçin.",
+    "helpBody": "Komut satırı uygulamalarını buradan yükleyip yükseltin ve uygulama çubuğunda hangilerinin gösterileceğini seçin.",
     "checking": "Kontrol ediliyor…",
     "checkUpdates": "Güncellemeleri kontrol edin",
     "moreActions": "Daha fazla işlem",
@@ -4215,7 +4227,7 @@
     "columnApp": "Uygulama",
     "columnVersion": "Sürüm",
     "columnVisible": "Göster",
-    "visibleHelp": "Kapalıyken uygulama artık kenar çubuğunda, tepsi menüsünde, MCP / Skills uygulama sütunlarında veya İstemler ve Oturumlar'daki uygulama seçicilerde görünmez. Yalnızca gizlenir: sağlayıcıları, MCP sunucuları ve diğer ayarları yerinde kalır, kendi yapılandırma dosyalarına da dokunulmaz.",
+    "visibleHelp": "Kapalıyken uygulama artık uygulama çubuğunda, tepsi menüsünde, MCP / Skills uygulama sütunlarında veya İstemler ve Oturumlar'daki uygulama seçicilerde görünmez. Yalnızca gizlenir: sağlayıcıları, MCP sunucuları ve diğer ayarları yerinde kalır, kendi yapılandırma dosyalarına da dokunulmaz.",
     "desktopHelp": "Claude Desktop bir masaüstü uygulamasıdır ve buraya yüklenemez veya yükseltilemez; CC Switch, yapılandırma dosyası aracılığıyla ona bağlanır.",
     "desktopUnsupported": "Bu sistemde desteklenmiyor",
     "desktopConnected": "Bağlı",
@@ -4248,7 +4260,7 @@
     "viewSessions": "Oturumları görüntüle",
     "configDirectory": "Yapılandırma dizini",
     "installAndUpgrade": "Yükleme ve yükseltme",
-    "hideFromSidebar": "Kenar çubuğundan gizle",
+    "hideFromSidebar": "Uygulama çubuğundan gizle",
     "providers": "Sağlayıcılar",
     "workspace": "Çalışma alanı",
     "openclawConfig": "Yapılandırma",

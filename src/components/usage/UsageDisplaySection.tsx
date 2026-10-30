@@ -1,4 +1,5 @@
-import { useEffect, useId, useState } from "react";
+import { useContext, useEffect, useId, useState } from "react";
+import { ClassicHeaderContext } from "@/classic/ClassicHeaderContext";
 import { useTranslation } from "react-i18next";
 import { cn } from "@/lib/utils";
 import { Input } from "@/components/ui/input";
@@ -51,6 +52,7 @@ export function UsageDisplaySection({
   onChange,
 }: UsageDisplaySectionProps) {
   const { t, i18n } = useTranslation();
+  const isClassic = useContext(ClassicHeaderContext) !== null;
   const lang = getResolvedLang(i18n);
   const rateId = useId();
   const savedCurrency = resolveMoneyDisplay(value).currency;
@@ -225,31 +227,35 @@ export function UsageDisplaySection({
               </div>
             </>
           )}
-          <span className="text-body text-fg-2">
-            {t("usage.display.sidebarToday")}
-          </span>
-          <ChecklistMenu
-            label={t("usage.display.sidebarToday")}
-            className="w-full"
-            summary={
-              todayItems.length > 0
-                ? todayItems.map(todayLabel).join(" + ")
-                : t("usage.display.sidebarTodayItems.none")
-            }
-            items={SIDEBAR_TODAY_ITEMS.map((item) => {
-              const checked = todayItems.includes(item);
-              return {
-                id: item,
-                label: todayLabel(item),
-                checked,
-                disabled: todayFull && !checked,
-              };
-            })}
-            note={t("usage.display.sidebarTodayLimit", {
-              count: SIDEBAR_TODAY_MAX_ITEMS,
-            })}
-            onToggle={(id) => void toggleTodayItem(id as SidebarTodayItem)}
-          />
+          {!isClassic && (
+            <>
+              <span className="text-body text-fg-2">
+                {t("usage.display.sidebarToday")}
+              </span>
+              <ChecklistMenu
+                label={t("usage.display.sidebarToday")}
+                className="w-full"
+                summary={
+                  todayItems.length > 0
+                    ? todayItems.map(todayLabel).join(" + ")
+                    : t("usage.display.sidebarTodayItems.none")
+                }
+                items={SIDEBAR_TODAY_ITEMS.map((item) => {
+                  const checked = todayItems.includes(item);
+                  return {
+                    id: item,
+                    label: todayLabel(item),
+                    checked,
+                    disabled: todayFull && !checked,
+                  };
+                })}
+                note={t("usage.display.sidebarTodayLimit", {
+                  count: SIDEBAR_TODAY_MAX_ITEMS,
+                })}
+                onToggle={(id) => void toggleTodayItem(id as SidebarTodayItem)}
+              />
+            </>
+          )}
         </div>
         {currency !== "USD" && (
           <p

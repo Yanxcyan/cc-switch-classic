@@ -1,4 +1,15 @@
 {
+  "profile": { "title": "プロジェクト" },
+  "classic": {
+    "settings": {
+      "general": "一般",
+      "proxy": "プロキシ",
+      "auth": "認証",
+      "advanced": "詳細",
+      "usage": "使用統計",
+      "about": "情報"
+    }
+  },
   "app": {
     "title": "CC Switch",
     "description": "Claude Code・Codex・Gemini CLI のためのオールインワンアシスタント"
@@ -439,12 +450,12 @@
       "quotaDisplayLeft": "残り",
       "quotaDisplayUsed": "使用済み",
       "quotaDisplayHelp": "プロバイダーカード、アカウント、トレイで、各枠の残量を「残り」と「使用済み」のどちらで表示するかを選びます。残高と Credits は常に残りを表示します。",
-      "sidebarAndHeader": "サイドバーとヘッダー",
-      "visibleApps": "サイドバーに表示するアプリ",
+      "sidebarAndHeader": "アプリバーとヘッダー",
+      "visibleApps": "アプリバーに表示するアプリ",
       "goToApps": "「アプリ」を開く",
       "updates": "各アプリの新しいバージョン",
       "checkToolUpdates": "起動時に各アプリの新しいバージョンを確認",
-      "checkToolUpdatesHelp": "オンにすると、CC Switch の起動時にインストール済みのコマンドラインアプリの新しいバージョンを確認し、見つかればサイドバーの「アプリ」に点を表示します。自動でアップグレードはしません。",
+      "checkToolUpdatesHelp": "オンにすると、CC Switch の起動時にインストール済みのコマンドラインアプリの新しいバージョンを確認し、見つかればアプリバーの「アプリ」に点を表示します。自動でアップグレードはしません。",
       "windowAndTerminal": "ウィンドウとターミナル",
       "trayStyle": "トレイの表示",
       "trayStylePanel": "パネル",
@@ -4194,6 +4205,7 @@
     "refresh": "更新"
   },
   "nav": {
+    "needsAttention": "確認が必要",
     "mainLabel": "メインナビゲーション",
     "skipToContent": "メインコンテンツへスキップ",
     "expandSidebar": "サイドバーを展開",
@@ -4208,7 +4220,7 @@
     "prompts": "プロンプト",
     "sessions": "セッション",
     "apps": "アプリ",
-    "appsTitle": "アプリ：インストール、アップグレード、サイドバーに表示するもの",
+    "appsTitle": "アプリ：インストール、アップグレード、アプリバーに表示するもの",
     "appsHasUpdate": "アプリ · 更新があります",
     "settings": "設定",
     "settingsHasUpdate": "設定 · CC Switch の新しいバージョンがあります",
@@ -4220,11 +4232,11 @@
     "back": "戻る"
   },
   "appsPage": {
-    "showInSidebar": "{{name}} をサイドバーに表示",
+    "showInSidebar": "{{name}} をアプリバーに表示",
     "lastChecked": "最終確認 {{time}}",
     "neverChecked": "まだ更新を確認していません",
     "helpTitle": "アプリ",
-    "helpBody": "ここでコマンドラインアプリをインストール・アップグレードし、サイドバーに表示するものを選びます。",
+    "helpBody": "ここでコマンドラインアプリをインストール・アップグレードし、アプリバーに表示するものを選びます。",
     "checking": "確認中…",
     "checkUpdates": "更新を確認",
     "moreActions": "その他の操作",
@@ -4235,7 +4247,7 @@
     "dragHandle": "ドラッグして {{name}} の順序を変更",
     "columnVersion": "バージョン",
     "columnVisible": "表示",
-    "visibleHelp": "オフにすると、このアプリはサイドバー、トレイメニュー、MCP / Skills のアプリ列、プロンプトとセッションのアプリ選択に表示されなくなります。表示しないだけで、プロバイダーや MCP などの設定はそのまま残り、アプリ自身の設定ファイルも変更されません。",
+    "visibleHelp": "オフにすると、このアプリはアプリバー、トレイメニュー、MCP / Skills のアプリ列、プロンプトとセッションのアプリ選択に表示されなくなります。表示しないだけで、プロバイダーや MCP などの設定はそのまま残り、アプリ自身の設定ファイルも変更されません。",
     "desktopHelp": "Claude Desktop はデスクトップアプリのため、ここではインストールやアップグレードはできません。CC Switch は設定ファイル経由で接続します。",
     "desktopUnsupported": "このシステムには対応していません",
     "desktopConnected": "接続済み",
@@ -4265,7 +4277,7 @@
     "viewSessions": "セッションを見る",
     "configDirectory": "設定ディレクトリ",
     "installAndUpgrade": "インストールとアップグレード",
-    "hideFromSidebar": "サイドバーから隠す",
+    "hideFromSidebar": "アプリバーから隠す",
     "providers": "プロバイダー",
     "workspace": "ワークスペース",
     "openclawConfig": "設定",

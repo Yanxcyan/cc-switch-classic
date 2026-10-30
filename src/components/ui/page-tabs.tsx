@@ -1,11 +1,8 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
-import { TabUnderline, useSlidingIndicator } from "./sliding-indicator";
 
 /**
- * 下划线页签：页面级导航（换的是整块内容，例如用量页的「请求日志 / 供应商 / …」、
- * OpenClaw 的「供应商 / 工作区 / 配置」）。
- * 分段控件只留给模式和页内筛选，两者别混用。
+ * Classic blue page tabs with the upstream keyboard and tabpanel contract.
  */
 export interface PageTabItem<T extends string> {
   value: T;
@@ -25,8 +22,7 @@ export interface PageTabsProps<T extends string> {
   /** 与 tabpanel 关联时传入 */
   controls?: string;
   /**
-   * default：一级页签（36 高、13px）；sm：一级页签下面的二级页签（32 高、12px、
-   * 不画整行底线，只在选中项下面画线），两层叠在一起时层级才分得清。
+   * default: primary navigation (40px); sm: nested navigation (36px).
    */
   size?: "default" | "sm";
   className?: string;
@@ -46,12 +42,9 @@ export function PageTabs<T extends string>({
   const small = size === "sm";
   const refs = React.useRef<Partial<Record<T, HTMLButtonElement | null>>>({});
   const enabled = items.filter((item) => !item.disabled);
-  const indicator = useSlidingIndicator<HTMLDivElement>(
-    '[aria-selected="true"]',
-    value,
-  );
 
   const onKeyDown = (event: React.KeyboardEvent<HTMLButtonElement>) => {
+    if (enabled.length === 0) return;
     const index = enabled.findIndex((item) => item.value === value);
     let next = -1;
     if (event.key === "ArrowRight") next = (index + 1) % enabled.length;
@@ -67,29 +60,15 @@ export function PageTabs<T extends string>({
   };
 
   return (
-    <div
-      className={cn(
-        small
-          ? "flex h-8 items-end gap-3"
-          : "flex h-9 items-end gap-4 border-b border-border",
-        className,
-      )}
-    >
+    <div className={cn("flex items-center gap-3", className)}>
       <div
-        ref={indicator.ref}
         role="tablist"
         aria-label={rest["aria-label"]}
         className={cn(
-          "relative flex h-full items-end",
-          small ? "gap-3" : "gap-4",
+          "inline-flex items-center gap-1 rounded-xl bg-muted/50 p-1",
+          small ? "min-h-9" : "min-h-10",
         )}
       >
-        {/* 下划线单独一条，切换时滑过去；一级页签压住整行底线 */}
-        <TabUnderline
-          rect={indicator.rect}
-          animate={indicator.animate}
-          className={small ? undefined : "-bottom-px"}
-        />
         {items.map((item) => {
           const selected = item.value === value;
           return (
@@ -108,14 +87,11 @@ export function PageTabs<T extends string>({
               onClick={() => onValueChange(item.value)}
               onKeyDown={onKeyDown}
               className={cn(
-                "h-full whitespace-nowrap border-b-2 px-0.5 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:text-fg-3",
-                small
-                  ? "inline-flex items-center gap-1.5 text-caption"
-                  : "-mb-px text-body",
-                "border-transparent",
+                "inline-flex items-center justify-center gap-1.5 whitespace-nowrap rounded-lg px-3 transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring disabled:opacity-50",
+                small ? "h-7 text-caption" : "h-8 min-w-[120px] text-body",
                 selected
-                  ? "font-semibold text-fg-1"
-                  : "font-medium text-fg-2 hover:text-fg-1",
+                  ? "bg-action font-semibold text-action-fg shadow-sm"
+                  : "font-medium text-fg-2 hover:bg-muted hover:text-fg-1",
               )}
             >
               {item.label}

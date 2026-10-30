@@ -45,7 +45,7 @@ const SheetContent = React.forwardRef<
     ref,
   ) => (
     <DialogPrimitive.Portal>
-      <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-overlay data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
+      <DialogPrimitive.Overlay className="fixed inset-0 z-50 bg-overlay backdrop-blur-sm data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0" />
       <DialogPrimitive.Content
         ref={ref}
         style={{ width, ...style }}
@@ -137,7 +137,10 @@ const SheetHeader = ({
   ...props
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
-    className={cn("shrink-0 space-y-1 pe-12 ps-5 pt-4", className)}
+    className={cn(
+      "shrink-0 space-y-1 border-b border-border bg-muted/20 pe-12 ps-5 py-4",
+      className,
+    )}
     {...props}
   />
 );
@@ -161,7 +164,7 @@ const SheetFooter = ({
 }: React.HTMLAttributes<HTMLDivElement>) => (
   <div
     className={cn(
-      "flex shrink-0 items-center justify-end gap-2 border-t border-border px-5 py-3",
+      "flex shrink-0 items-center justify-end gap-2 border-t border-border bg-muted/20 px-5 py-3",
       className,
     )}
     {...props}

@@ -122,14 +122,7 @@ export const SessionQuestion = memo(function SessionQuestion({
           </time>
         ) : null}
       </div>
-      <div
-        className="min-w-0 max-w-full rounded-[16px] rounded-se-[4px] px-3.5 py-2 text-fg-1"
-        style={{
-          // Agent 主题色铺一层浅色：深浅两套下都和左侧无底色的 Agent 输出区分开
-          background:
-            "color-mix(in srgb, var(--reader-accent) 14%, var(--bg-subtle))",
-        }}
-      >
+      <div className="ms-8 min-w-0 max-w-full rounded-xl bg-primary/5 px-4 py-3 text-fg-1">
         {text && <SessionPlainText content={shown} searchQuery={searchQuery} />}
         {long && !forceExpanded && (
           <CollapseToggle

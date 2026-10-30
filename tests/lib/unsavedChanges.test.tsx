@@ -7,6 +7,7 @@ import {
   discardUnsavedChanges,
   hasUnsavedChanges,
   useUnsavedChangesTracker,
+  useUnsavedChangesRegistration,
 } from "@/lib/unsavedChanges";
 
 function Editor({ enabled = true }: { enabled?: boolean }) {
@@ -91,5 +92,25 @@ describe("unsaved changes tracker", () => {
     );
     fireEvent.input(screen.getByRole("textbox", { name: "body" }));
     expect(hasUnsavedChanges()).toBe(true);
+  });
+});
+
+function ControlledEditor({ dirty }: { dirty: boolean }) {
+  useUnsavedChangesRegistration(dirty);
+  return null;
+}
+
+describe("controlled unsaved changes registration", () => {
+  afterEach(() => discardUnsavedChanges());
+
+  it("clears a saved or closed editor without clearing another editor's draft", () => {
+    const first = render(<ControlledEditor dirty />);
+    const second = render(<ControlledEditor dirty />);
+    first.rerender(<ControlledEditor dirty={false} />);
+    expect(hasUnsavedChanges()).toBe(true);
+    first.unmount();
+    expect(hasUnsavedChanges()).toBe(true);
+    second.unmount();
+    expect(hasUnsavedChanges()).toBe(false);
   });
 });

@@ -558,8 +558,8 @@ export function SessionReader({
       case "question":
         // 人的输入靠右，气泡最宽 85%，左边留出 Agent 侧的空间
         return turn.question ? (
-          <div className="flex justify-end pb-3 ps-16">
-            <div className="min-w-0 max-w-[72%]">
+          <div className="flex justify-end pb-3">
+            <div className="min-w-0 max-w-[90%]">
               <SessionQuestion
                 question={turn.question}
                 forceExpanded={row.forceExpanded}
@@ -730,7 +730,9 @@ export function SessionReader({
     <ReaderContext.Provider value={context}>
       <div
         data-reader-style={style.id}
-        className="flex min-h-0 flex-1 flex-col"
+        role="region"
+        aria-label={title}
+        className="flex min-h-0 min-w-0 flex-1 flex-col"
         style={
           { "--reader-accent": `var(${style.accentVar})` } as CSSProperties
         }

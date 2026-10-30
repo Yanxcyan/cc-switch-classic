@@ -653,10 +653,11 @@ describe("UnifiedSkillsPanel", () => {
     m.installed = [makeSkill({ apps: { claude: true } })];
     renderPanel();
     const cells = screen.getAllByRole("button", { name: /appMatrix.cell/ });
-    // 开 / 关是同一个方框，只换填充
+    // Classic controls use brand colors while preserving enabled-state semantics.
     expect(cells[0]).toHaveAttribute("data-state", "on");
     expect(cells[1]).toHaveAttribute("data-state", "off");
-    expect(cells[0].className).toBe(cells[1].className);
+    expect(cells[0]).toHaveAttribute("aria-pressed", "true");
+    expect(cells[1]).toHaveAttribute("aria-pressed", "false");
 
     expect(screen.queryByTestId("matrix-column-name")).not.toBeInTheDocument();
     await user.hover(cells[1]);

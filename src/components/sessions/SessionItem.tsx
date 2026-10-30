@@ -42,6 +42,8 @@ interface SessionItemProps {
   /** 一键恢复用的终端名；为空表示这个平台不能一键恢复 */
   launchTerminal: string | null;
   bordered: boolean;
+  compact?: boolean;
+  active?: boolean;
   openButtonId: string;
   onOpen: () => void;
   onToggleChecked: (checked: boolean) => void;
@@ -62,6 +64,8 @@ export function SessionItem({
   searchQuery,
   launchTerminal,
   bordered,
+  compact = false,
+  active = false,
   openButtonId,
   onOpen,
   onToggleChecked,
@@ -122,9 +126,11 @@ export function SessionItem({
   return (
     <div
       className={cn(
-        "group relative flex h-14 items-center gap-2.5 bg-surface pe-3 ps-4 transition-colors hover:bg-subtle focus-within:bg-subtle",
+        "group relative flex h-16 items-center gap-2 rounded-xl bg-muted/40 transition-colors hover:bg-muted focus-within:bg-muted",
+        compact ? "px-2" : "pe-3 ps-4",
         bordered && "border-t border-border",
         menuOpen && "bg-subtle",
+        active && "bg-primary/10 ring-1 ring-inset ring-primary/30",
       )}
     >
       {selectionMode ? (
@@ -162,7 +168,7 @@ export function SessionItem({
             aria-describedby={hasMeta ? metaId : undefined}
             title={tip}
             onClick={onOpen}
-            className="absolute inset-0 cursor-pointer rounded-none focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
+            className="absolute inset-0 cursor-pointer rounded-xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-ring"
           />
           <Checkbox
             tabIndex={-1}
@@ -236,7 +242,12 @@ export function SessionItem({
         )}
       </div>
 
-      <div className="relative w-[92px] shrink-0 self-stretch">
+      <div
+        className={cn(
+          "relative shrink-0 self-stretch",
+          compact ? "w-[68px]" : "w-[92px]",
+        )}
+      >
         <span
           className={cn(
             "pointer-events-none absolute end-0 whitespace-nowrap text-caption tabular-nums text-fg-2",

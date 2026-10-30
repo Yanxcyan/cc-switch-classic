@@ -1,4 +1,15 @@
 {
+  "profile": { "title": "Projects" },
+  "classic": {
+    "settings": {
+      "general": "General",
+      "proxy": "Proxy",
+      "auth": "Accounts",
+      "advanced": "Advanced",
+      "usage": "Usage",
+      "about": "About"
+    }
+  },
   "app": {
     "title": "CC Switch",
     "description": "All-in-One Assistant for Claude Code, Codex & Gemini CLI"
@@ -439,12 +450,12 @@
       "quotaDisplayLeft": "Left",
       "quotaDisplayUsed": "Used",
       "quotaDisplayHelp": "Whether each quota window on provider cards, in Accounts and in the tray shows how much is left or how much is used. Balances and Credits always show what is left.",
-      "sidebarAndHeader": "Sidebar and header",
-      "visibleApps": "Apps shown in the sidebar",
+      "sidebarAndHeader": "App bar and header",
+      "visibleApps": "Apps shown in the app bar",
       "goToApps": "Open Apps",
       "updates": "New versions of your apps",
       "checkToolUpdates": "Check for new versions of your apps at launch",
-      "checkToolUpdatesHelp": "When on, CC Switch checks your installed command-line apps for new versions each time it starts, and shows a dot on Apps in the sidebar if it finds one. Nothing is upgraded automatically.",
+      "checkToolUpdatesHelp": "When on, CC Switch checks your installed command-line apps for new versions each time it starts, and shows a dot on Apps in the app bar if it finds one. Nothing is upgraded automatically.",
       "windowAndTerminal": "Window and terminal",
       "trayStyle": "Tray style",
       "trayStylePanel": "Panel",
@@ -4194,6 +4205,7 @@
     "refresh": "Refresh"
   },
   "nav": {
+    "needsAttention": "Needs attention",
     "mainLabel": "Main navigation",
     "skipToContent": "Skip to main content",
     "expandSidebar": "Expand sidebar",
@@ -4208,7 +4220,7 @@
     "prompts": "Prompts",
     "sessions": "Sessions",
     "apps": "Apps",
-    "appsTitle": "Apps: install, upgrade, choose which show in the sidebar",
+    "appsTitle": "Apps: install, upgrade, choose which show in the app bar",
     "appsHasUpdate": "Apps · updates available",
     "settings": "Settings",
     "settingsHasUpdate": "Settings · a new CC Switch version is available",
@@ -4220,11 +4232,11 @@
     "back": "Back"
   },
   "appsPage": {
-    "showInSidebar": "Show {{name}} in the sidebar",
+    "showInSidebar": "Show {{name}} in the app bar",
     "lastChecked": "Last checked {{time}}",
     "neverChecked": "Not checked for updates yet",
     "helpTitle": "Apps",
-    "helpBody": "Install and upgrade command-line apps here, and choose which ones show in the sidebar.",
+    "helpBody": "Install and upgrade command-line apps here, and choose which ones show in the app bar.",
     "checking": "Checking…",
     "checkUpdates": "Check for updates",
     "moreActions": "More actions",
@@ -4235,7 +4247,7 @@
     "dragHandle": "Drag to reorder {{name}}",
     "columnVersion": "Version",
     "columnVisible": "Show",
-    "visibleHelp": "When off, the app no longer appears in the sidebar, the tray menu, the MCP / Skills app columns, or the app pickers on Prompts and Sessions. It is only hidden: its providers, MCP servers and other settings stay, and its own config files are left untouched.",
+    "visibleHelp": "When off, the app no longer appears in the app bar, the tray menu, the MCP / Skills app columns, or the app pickers on Prompts and Sessions. It is only hidden: its providers, MCP servers and other settings stay, and its own config files are left untouched.",
     "desktopHelp": "Claude Desktop is a desktop app and can't be installed or upgraded here; CC Switch connects to it through its config file.",
     "desktopUnsupported": "Not supported on this system",
     "desktopConnected": "Connected",
@@ -4265,7 +4277,7 @@
     "viewSessions": "View sessions",
     "configDirectory": "Config directory",
     "installAndUpgrade": "Install and upgrade",
-    "hideFromSidebar": "Hide from sidebar",
+    "hideFromSidebar": "Hide from app bar",
     "providers": "Providers",
     "workspace": "Workspace",
     "openclawConfig": "Config",

@@ -3,10 +3,11 @@
   "items": [
     {
       "type": "improve",
-      "zh": "全新界面：侧边栏布局，模式移到了每个应用页的顶部",
-      "zh-TW": "全新介面：側邊欄佈局，模式移到了每個應用頁的頂部",
-      "en": "Redesigned interface with a sidebar; modes now sit at the top of each app page",
-      "ja": "画面を一新：サイドバー構成になり、モードは各アプリのページ上部へ"
+      "zh": "经典界面：恢复顶部应用切换，保留 v4 的直连、路由和聚合模式",
+      "zh-TW": "經典介面：恢復頂部應用切換，保留 v4 的直連、路由和聚合模式",
+      "en": "Classic interface: top app switcher with v4 direct, route and aggregation modes",
+      "ja": "クラシック画面：上部のアプリ切り替えと v4 の直結・ルート・集約モード",
+      "tr": "Klasik arayüz: üst uygulama seçici ve v4 doğrudan, yönlendirme ve toplama modları"
     },
     {
       "type": "new",

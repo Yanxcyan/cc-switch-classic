@@ -16,7 +16,6 @@
         "label": "main",
         "title": "",
         "titleBarStyle": "Overlay",
-        "trafficLightPosition": { "x": 14, "y": 16 },
         "width": 1000,
         "height": 650,
         "minWidth": 900,

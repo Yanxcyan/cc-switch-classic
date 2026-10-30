@@ -49,7 +49,7 @@ import { countRepoSkills } from "./RepoManagerPanel";
 import { describeRepoFailures, repoFailureKey } from "./repoFailures";
 
 /** 发现列表每行高度（h-14），虚拟化按这个算 */
-const ROW_HEIGHT = 56;
+const ROW_HEIGHT = 72;
 export type SkillsPageSource = "repos" | "skillssh";
 
 type InstallRunner = <T extends { id: string }>(
@@ -666,7 +666,7 @@ export function SkillsPage({
           ) : (
             <ul
               aria-label={t("skillsPage.discover.listLabel")}
-              className="relative m-0 min-w-[520px] list-none p-0"
+              className="relative m-0 min-w-[520px] list-none p-2"
               style={{ height: rowVirtualizer.getTotalSize() }}
             >
               {rowVirtualizer.getVirtualItems().map((item) => {
@@ -688,8 +688,7 @@ export function SkillsPage({
                     aria-setsize={visibleRows.length}
                     aria-posinset={index + 1}
                     className={cn(
-                      "absolute inset-x-0 top-0 flex h-14 items-center gap-3 pe-3 ps-4",
-                      index > 0 && "border-t border-border",
+                      "glass-card absolute inset-x-2 top-0 mt-1 flex h-16 items-center gap-3 rounded-xl pe-3 ps-4 transition-shadow hover:shadow-lg",
                     )}
                     style={{ transform: `translateY(${item.start}px)` }}
                   >
@@ -802,7 +801,7 @@ export function SkillsPage({
                       ) : isInstalling ? (
                         <Button
                           type="button"
-                          variant="neutral"
+                          variant="mcp"
                           size="compact"
                           aria-disabled="true"
                           aria-label={t("skillsPage.discover.installingAria", {
@@ -816,7 +815,7 @@ export function SkillsPage({
                       ) : (
                         <Button
                           type="button"
-                          variant="neutral"
+                          variant="mcp"
                           size="compact"
                           disabled={!row.repoOwner}
                           aria-label={

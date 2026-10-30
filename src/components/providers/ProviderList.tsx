@@ -547,6 +547,7 @@ export function ProviderList({
       provider={provider}
       appId={appId}
       presentation={presentation}
+      modeView={switchMode?.view}
       isCurrent={isCurrentFor(provider)}
       onEdit={onEdit}
       onDelete={onDelete}
@@ -713,6 +714,7 @@ interface SortableProviderCardProps {
   provider: Provider;
   appId: AppId;
   presentation: CardPresentation;
+  modeView?: "direct" | "route" | "stack";
   isCurrent: boolean;
   onEdit: (provider: Provider) => void;
   onDelete: (provider: Provider) => void;

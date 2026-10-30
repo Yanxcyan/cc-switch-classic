@@ -119,8 +119,8 @@ type SessionListRow =
     }
   | { kind: "session"; key: string; session: SessionMeta; bordered: boolean };
 
-/** 虚拟列表每种行的固定高度：时间分组标题 h-7、项目分组标题 h-9、会话行 h-14 */
-const LIST_ROW_HEIGHT = { time: 28, project: 36, session: 56 } as const;
+/** Virtual heights must match the Classic row height (h-16). */
+const LIST_ROW_HEIGHT = { time: 28, project: 36, session: 64 } as const;
 
 const linkButton =
   "h-[22px] rounded-[4px] px-0.5 text-caption text-fg-1 underline decoration-border-strong underline-offset-[3px] hover:decoration-fg-2";
@@ -643,6 +643,8 @@ export function SessionManagerPage({
         searchQuery={trimmedQuery}
         launchTerminal={terminalName}
         bordered={bordered}
+        compact={Boolean(readerSession)}
+        active={readerKey === key}
         openButtonId={openButtonId(key)}
         onOpen={() => openReader(session)}
         onToggleChecked={(checked) => toggleSelected(session, checked)}
@@ -1017,46 +1019,61 @@ export function SessionManagerPage({
         />
       )}
 
-      <div id="main-content" className="flex min-h-0 flex-1 flex-col">
+      <div
+        id="main-content"
+        className={cn(
+          "flex min-h-0 flex-1 flex-col",
+          readerSession && "md:grid md:grid-cols-[320px_minmax(0,1fr)]",
+        )}
+      >
         {readerSession && (
-          <SessionReader
-            key={readerKey}
-            session={readerSession}
-            appName={appName(readerSession.providerId)}
-            transcript={transcript}
-            listQuery={trimmedQuery}
-            launchTerminal={terminalName}
-            hasPrev={readerIndex > 0}
-            hasNext={
-              readerIndex >= 0 && readerIndex < orderedSessions.length - 1
-            }
-            onPrev={() =>
-              readerIndex > 0 &&
-              setReaderKey(getSessionKey(orderedSessions[readerIndex - 1]))
-            }
-            onNext={() =>
-              readerIndex >= 0 &&
-              readerIndex < orderedSessions.length - 1 &&
-              setReaderKey(getSessionKey(orderedSessions[readerIndex + 1]))
-            }
-            onBack={backToList}
-            onLaunch={() => void handleLaunch(readerSession)}
-            onCopy={handleCopy}
-            onOpenTerminalSettings={onOpenTerminalSettings ?? (() => undefined)}
-            onReload={() => void reloadMessages()}
-            onDelete={() => openDelete([readerSession], "reader")}
-          />
+          <div className="flex min-h-0 min-w-0 flex-1 flex-col md:col-start-2 md:row-start-1">
+            <SessionReader
+              key={readerKey}
+              session={readerSession}
+              appName={appName(readerSession.providerId)}
+              transcript={transcript}
+              listQuery={trimmedQuery}
+              launchTerminal={terminalName}
+              hasPrev={readerIndex > 0}
+              hasNext={
+                readerIndex >= 0 && readerIndex < orderedSessions.length - 1
+              }
+              onPrev={() =>
+                readerIndex > 0 &&
+                setReaderKey(getSessionKey(orderedSessions[readerIndex - 1]))
+              }
+              onNext={() =>
+                readerIndex >= 0 &&
+                readerIndex < orderedSessions.length - 1 &&
+                setReaderKey(getSessionKey(orderedSessions[readerIndex + 1]))
+              }
+              onBack={backToList}
+              onLaunch={() => void handleLaunch(readerSession)}
+              onCopy={handleCopy}
+              onOpenTerminalSettings={
+                onOpenTerminalSettings ?? (() => undefined)
+              }
+              onReload={() => void reloadMessages()}
+              onDelete={() => openDelete([readerSession], "reader")}
+            />
+          </div>
         )}
 
-        {/* 列表在阅读页打开时只是藏起来，返回后滚动位置还在 */}
+        {/* Keep the list mounted to preserve scrolling; narrow windows use a single pane. */}
         <div
-          hidden={Boolean(readerSession)}
           className={cn(
-            "flex min-h-0 flex-1 flex-col",
-            readerSession && "hidden",
+            "flex min-h-0 min-w-0 flex-1 flex-col",
+            readerSession &&
+              "hidden border-e border-border md:col-start-1 md:row-start-1 md:flex",
           )}
         >
-          <div className="flex shrink-0 items-center gap-2 px-6 pt-3.5">
+          <div
+            className={cn(
+              "flex shrink-0 items-center gap-2 pt-3.5",
+              readerSession ? "flex-wrap px-3" : "px-6",
+            )}
+          >
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button
@@ -1145,7 +1162,12 @@ export function SessionManagerPage({
               </DropdownMenuContent>
             </DropdownMenu>
 
-            <div className="relative min-w-0 flex-1">
+            <div
+              className={cn(
+                "relative min-w-0 flex-1",
+                readerSession && "order-3 basis-full",
+              )}
+            >
               <SearchField
                 id="session-search"
                 ref={searchRef}
@@ -1317,7 +1339,10 @@ export function SessionManagerPage({
                   defaultValue: "会话列表",
                 })}
                 ref={listScrollRef}
-                className="mx-6 mt-3 min-h-0 shrink overflow-y-auto scroll-stable overscroll-contain rounded-panel border border-border bg-surface"
+                className={cn(
+                  "mt-3 min-h-0 shrink overflow-y-auto scroll-stable overscroll-contain rounded-xl border border-border bg-surface",
+                  readerSession ? "mx-2" : "mx-6",
+                )}
                 style={{ scrollPaddingTop: groupMode === "project" ? 44 : 8 }}
               >
                 {renderList()}

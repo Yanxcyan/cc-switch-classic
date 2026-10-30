@@ -2,6 +2,7 @@ import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import { beforeAll, describe, expect, it, vi } from "vitest";
 import { UsageDisplaySection } from "@/components/usage/UsageDisplaySection";
+import { ClassicHeaderContext } from "@/classic/ClassicHeaderContext";
 
 const pickCurrency = async (
   user: ReturnType<typeof userEvent.setup>,
@@ -16,6 +17,39 @@ const pickCurrency = async (
 };
 
 describe("UsageDisplaySection", () => {
+  it("hides sidebar-only preferences in Classic while preserving them for the sidebar layout", () => {
+    const onChange = vi.fn();
+    const section = (
+      <UsageDisplaySection
+        value={{ sidebarTodayItems: ["cost"] }}
+        onChange={onChange}
+      />
+    );
+    const view = render(
+      <ClassicHeaderContext.Provider
+        value={{ titleHost: null, actionsHost: null }}
+      >
+        {section}
+      </ClassicHeaderContext.Provider>,
+    );
+    expect(
+      screen.queryByText("usage.display.sidebarToday"),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", { name: "usage.display.currency" }),
+    ).toBeInTheDocument();
+    expect(
+      screen.getByRole("combobox", { name: "usage.display.trendChartType" }),
+    ).toBeInTheDocument();
+    expect(onChange).not.toHaveBeenCalled();
+    view.rerender(
+      <ClassicHeaderContext.Provider value={null}>
+        {section}
+      </ClassicHeaderContext.Provider>,
+    );
+    expect(screen.getByText("usage.display.sidebarToday")).toBeInTheDocument();
+  });
+
   // jsdom 没有 scrollIntoView，下拉打开时会调
   beforeAll(() => {
     Element.prototype.scrollIntoView = vi.fn();

@@ -13,6 +13,12 @@ body.tray-panel {
   cursor: default;
 }
 
+/* The panel imports the Classic tokens via index.css. Its lightweight switch
+   is a bespoke control, so give it the same emerald on-state as Switch. */
+body.tray-panel [role="switch"][aria-checked="true"] > span.relative {
+  background-color: #10b981;
+}
+
 .tp-card {
   position: absolute;
   display: flex;
@@ -71,12 +77,13 @@ html.dark[data-glass="frosted"] .tp-card {
 /* Windows：移除整窗 Acrylic 后，卡片自己提供完整底色，避免桌面内容透进菜单。
    保留卡片上的控件、选中态和用量区块的层次；只有卡片之外的画布透明。 */
 html [data-platform="windows"] .tp-card {
-  background: #ebebed;
+  /* Opaque Classic surface, also available before the shared theme loads. */
+  background: rgb(244, 244, 245);
   -webkit-backdrop-filter: none;
   backdrop-filter: none;
 }
 html.dark [data-platform="windows"] .tp-card {
-  background: #242428;
+  background: rgb(39, 39, 43);
 }
 
 /* 两栏时子面板和主面板之间一条分隔线 */

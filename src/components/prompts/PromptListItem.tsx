@@ -2,6 +2,7 @@ import React from "react";
 import { useTranslation } from "react-i18next";
 import { MoreHorizontal, Pencil } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { Switch } from "@/components/ui/switch";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -32,13 +33,12 @@ interface PromptListItemProps {
   deleteBlockedReason?: string;
 }
 
-/** 提示库的一行（高 60）：点行打开编辑抽屉，右边是启用 / 停用、编辑、⋯。 */
+/** Classic prompt row: opening and toggling retain the v4 action handlers. */
 const PromptListItem: React.FC<PromptListItemProps> = ({
   id,
   prompt,
   active,
   detail,
-  first,
   disabled = false,
   onToggle,
   onEdit,
@@ -59,9 +59,8 @@ const PromptListItem: React.FC<PromptListItemProps> = ({
         onEdit(id);
       }}
       className={cn(
-        "flex h-[60px] cursor-pointer items-center gap-3 pe-2 ps-4 transition-colors duration-150 hover:bg-subtle",
-        !first && "border-t border-border",
-        active && "bg-subtle",
+        "flex h-16 cursor-pointer items-center gap-3 rounded-xl border border-transparent bg-muted/50 pe-3 ps-4 transition-colors duration-150 hover:border-primary/30 hover:bg-muted",
+        active && "border-emerald-500/30 bg-emerald-500/5",
       )}
     >
       <div className="flex min-w-0 flex-1 flex-col">
@@ -86,19 +85,15 @@ const PromptListItem: React.FC<PromptListItemProps> = ({
         </span>
       </div>
 
-      <Button
-        type="button"
-        variant="neutral"
-        size="compact"
+      <Switch
+        checked={active}
         disabled={disabled}
         aria-label={t(active ? "prompts.disableAria" : "prompts.enableAria", {
           name: prompt.name,
         })}
-        onClick={() => onToggle(id, !active)}
-        className="min-w-14 shrink-0"
-      >
-        {t(active ? "prompts.disable" : "prompts.enable")}
-      </Button>
+        onCheckedChange={(enabled) => onToggle(id, enabled)}
+        className="shrink-0"
+      />
 
       <div className="flex shrink-0 gap-1">
         <HoverTip content={t("common.edit")}>

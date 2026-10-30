@@ -778,7 +778,7 @@ const UnifiedMcpPanel: React.FC<UnifiedMcpPanelProps> = ({
             >
               <MatrixColumnHighlight>
                 <div className="min-w-[560px]">
-                  <div className="sticky top-0 z-10 flex h-11 items-center border-b border-border bg-subtle pe-2 ps-4">
+                  <div className="glass sticky top-0 z-10 flex h-11 items-center border-b border-border pe-2 ps-4">
                     <span className="min-w-0 flex-1 text-caption font-semibold text-fg-2">
                       {t("mcpPage.columnName")}
                     </span>
@@ -859,8 +859,8 @@ const UnifiedMcpPanel: React.FC<UnifiedMcpPanelProps> = ({
                             key={id}
                             onClick={() => openEdit(id)}
                             className={cn(
-                              "flex h-14 cursor-pointer items-center pe-2 ps-4 transition-colors duration-150 hover:bg-subtle",
-                              index > 0 && "border-t border-border",
+                              "mx-2 mb-2 flex h-16 cursor-pointer items-center rounded-xl border border-transparent bg-muted/40 pe-2 ps-4 transition-colors duration-150 hover:border-primary/30 hover:bg-muted",
+                              index === 0 && "mt-2",
                             )}
                           >
                             <div className="flex min-w-0 flex-1 flex-col pe-3">

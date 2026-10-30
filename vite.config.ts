@@ -30,6 +30,10 @@ export default defineConfig(({ command }) => ({
   },
   resolve: {
     alias: {
+      "@/components/shell/AppPageHeader": path.resolve(
+        __dirname,
+        "./src/classic/AppPageHeaderAdapter.tsx",
+      ),
       "@": path.resolve(__dirname, "./src"),
     },
   },

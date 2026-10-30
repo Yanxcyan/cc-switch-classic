@@ -93,7 +93,7 @@ export const SessionOutline = memo(function SessionOutline({
   return (
     <nav
       aria-label={rt("outlineTitle")}
-      className="flex min-h-0 w-[260px] shrink-0 flex-col border-s border-border max-lg:hidden"
+      className="flex min-h-0 w-[260px] shrink-0 flex-col border-s border-border max-xl:hidden"
     >
       <div className="flex h-9 shrink-0 items-center px-4 text-caption font-semibold text-fg-2">
         {rt("outlineTitle")}

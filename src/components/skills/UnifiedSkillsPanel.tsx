@@ -1138,7 +1138,7 @@ const UnifiedSkillsPanel: React.FC<UnifiedSkillsPanelProps> = ({
       >
         <MatrixColumnHighlight>
           <div className="min-w-[600px]">
-            <div className="sticky top-0 z-10 flex h-11 items-center border-b border-border bg-subtle px-2">
+            <div className="glass sticky top-0 z-10 flex h-11 items-center border-b border-border px-2">
               <span className="flex w-6 shrink-0 justify-center">
                 <Checkbox
                   aria-label={t("skillsPage.selectAllAria")}
@@ -1830,9 +1830,9 @@ function InstalledRow({
       id={`sk-row-${skill.id}`}
       tabIndex={-1}
       className={cn(
-        "group relative flex h-14 items-center px-2 outline-none transition-colors duration-150 hover:bg-subtle",
-        !first && "border-t border-border",
-        highlighted && "bg-subtle",
+        "group relative mx-2 mb-2 flex h-16 items-center rounded-xl border border-transparent bg-muted/40 px-2 outline-none transition-colors duration-150 hover:border-primary/30 hover:bg-muted",
+        first && "mt-2",
+        highlighted && "border-primary/40 bg-primary/5",
       )}
     >
       <span className="flex w-6 shrink-0 justify-center">

@@ -44,7 +44,8 @@ import {
   queueMoveSortUpdates,
 } from "@/components/providers/presentation";
 import { APP_DISPLAY_NAME } from "@/components/shell/AppGlyph";
-import { ModeTabs, MODE_TONE } from "./ModeTabs";
+import { MODE_TONE } from "./ModeTabs";
+import { ModeBar } from "@/classic/ModeBar";
 import { ModeDialog, type ModeDialogState } from "./ModeDialog";
 import {
   sameStackSubagent,
@@ -90,7 +91,7 @@ interface SwitchModePanelProps extends ListCallbacks {
   onViewChange?: (app: ModeAppId, view: AppMode) => void;
 }
 
-/** Gemini CLI、Grok Build、Claude Desktop 没有聚合模式（Q6）：那一格隐藏，前两格位置不变。 */
+/** 聚合只对 Claude Code、Codex 和 Claude Desktop 开放。 */
 const modesFor = (app: ModeAppId): AppMode[] =>
   isStackAppId(app) ? ["direct", "route", "stack"] : ["direct", "route"];
 
@@ -126,10 +127,15 @@ export function SwitchModePanel({
   const routeId = modeView?.routeProviderId ?? null;
 
   // 离开页面再回来、或生效的模式变了，一律落在生效的那格（「查看中」不持久化）
-  const [view, setView] = useState<AppMode>(active);
+  const [browsing, setBrowsing] = useState({ app, active, view: active });
+  // The first mode query can resolve after mount. Never show a stale Direct tab
+  // (and its activation button) for a frame while the real mode is already Stack.
+  const view =
+    browsing.app === app && browsing.active === active ? browsing.view : active;
+  const setView = (view: AppMode) => setBrowsing({ app, active, view });
   const [searchSlot, setSearchSlot] = useState<HTMLDivElement | null>(null);
   useEffect(() => {
-    setView(active);
+    setBrowsing({ app, active, view: active });
   }, [app, active]);
   useEffect(() => {
     onViewChange?.(app, view);
@@ -502,90 +508,70 @@ export function SwitchModePanel({
       />,
     );
   }
-  if (view !== active) {
-    const cta =
-      view === "route"
-        ? t("mode.activate.route")
-        : view === "stack"
-          ? t("mode.activate.stack")
-          : t("mode.activate.direct");
-    notices.push(
-      <Notice
-        key="activate"
-        tone="neutral"
-        title={t("mode.activate.viewing", {
-          view: t(`mode.names.${view}`),
-          app: appName,
-          active: t(`mode.names.${active}`),
-        })}
-        actions={
-          <Button
-            variant={view}
-            size="regular"
-            disabled={modeActions.pending}
-            onClick={() =>
-              setDialog(
-                view === "direct"
-                  ? { kind: "exit" }
-                  : { kind: "enter", target: view },
-              )
-            }
-          >
-            {cta}
-          </Button>
-        }
-      />,
-    );
-  }
+
+  const connectionStatus = (
+    <HoverTip content={`${status.lead} ${status.value}`}>
+      <span
+        tabIndex={0}
+        aria-label={`${status.lead} ${status.value}`}
+        className={cn(
+          badgeVariants({ variant: "outline" }),
+          "max-w-full gap-1 border-transparent bg-transparent px-1 py-1 text-xs font-normal",
+        )}
+      >
+        <span
+          aria-hidden="true"
+          className={cn(
+            "me-1 h-1.5 w-1.5 shrink-0 rounded-full",
+            (
+              active === "direct"
+                ? Boolean(directId && providers[directId])
+                : serviceRunning &&
+                  modeView?.attached &&
+                  Boolean(routeId && providers[routeId])
+            )
+              ? MODE_TONE[active].dot
+              : "bg-fg-3",
+          )}
+        />
+        <span className="shrink-0 text-fg-2">{t(`mode.names.${active}`)}</span>
+        <span aria-hidden="true" className="text-fg-3">
+          ·
+        </span>
+        <span className="min-w-0 truncate font-medium text-fg-1">
+          {active === "stack" ? nameOf(routeId) : status.value}
+        </span>
+      </span>
+    </HoverTip>
+  );
 
   return (
     <>
-      {statusSlot &&
-        createPortal(
-          <HoverTip content={`${status.lead} ${status.value}`}>
-            <span
-              tabIndex={0}
-              aria-label={`${status.lead} ${status.value}`}
-              className={cn(
-                badgeVariants({ variant: "outline" }),
-                "max-w-full gap-1 border-border bg-surface px-2.5 py-1 text-body font-normal",
-              )}
-            >
-              <span
-                aria-hidden="true"
-                className={cn(
-                  "me-1 h-1.5 w-1.5 shrink-0 rounded-full",
-                  (
-                    active === "direct"
-                      ? Boolean(directId && providers[directId])
-                      : serviceRunning &&
-                        modeView?.attached &&
-                        Boolean(routeId && providers[routeId])
-                  )
-                    ? MODE_TONE[active].dot
-                    : "bg-fg-3",
-                )}
-              />
-              <span className="shrink-0 text-fg-2">
-                {t(`mode.names.${active}`)}
-              </span>
-              <span aria-hidden="true" className="text-fg-3">
-                ·
-              </span>
-              <span className="min-w-0 truncate font-medium text-fg-1">
-                {active === "stack" ? nameOf(routeId) : status.value}
-              </span>
-            </span>
-          </HoverTip>,
-          statusSlot,
-        )}
-      <ModeTabs
+      {statusSlot && createPortal(connectionStatus, statusSlot)}
+      <ModeBar
         modes={modes}
         active={active}
         view={view}
         onView={setView}
+        status={!statusSlot ? connectionStatus : undefined}
+        activate={
+          view !== active
+            ? {
+                label: t(`mode.activate.${view}`),
+                disabled: modeActions.pending,
+                onClick: () =>
+                  setDialog(
+                    view === "direct"
+                      ? { kind: "exit" }
+                      : { kind: "enter", target: view },
+                  ),
+              }
+            : undefined
+        }
+        searchOpen={listCallbacks.searchOpen}
+        onSearchOpenChange={listCallbacks.onSearchOpenChange}
         failover={
-          hasFailover && view === "route" && active === "route"
+          hasFailover && view === "route"
             ? {
                 enabled: failoverOn,
                 disabled: setFailover.isPending,
@@ -594,12 +580,12 @@ export function SwitchModePanel({
             : undefined
         }
         onOpenRouteSettings={
-          hasFailover && view === "route" && active === "route"
+          hasFailover && view === "route"
             ? () => setRouteSettingsOpen(true)
             : undefined
         }
         onOpenStackSettings={
-          app === "codex" && view === "stack" && active === "stack"
+          app === "codex" && view === "stack"
             ? () => setStackSettingsOpen(true)
             : undefined
         }
