@@ -50,7 +50,7 @@ export function ModeBar({
     : t("mode.stackSettings.title");
 
   return (
-    <div className="relative flex min-h-11 shrink-0 items-center gap-2 border-b border-border/50 px-6 py-0.5">
+    <div className="relative flex min-h-14 shrink-0 items-center gap-2 border-b border-border/50 px-6 py-2">
       <div
         role="group"
         aria-label={t("mode.tabsLabel")}

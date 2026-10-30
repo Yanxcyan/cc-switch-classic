@@ -818,14 +818,21 @@ export function UsageDashboard({
     >
       <PageTabs<UsageTab>
         aria-label={t("usage.tabs.label")}
-        className="h-11 pe-2 ps-4"
+        className="min-h-14 py-2 pe-2 ps-4"
         items={TABS.map((id) => ({
           value: id,
           label: (
             <span className="inline-flex items-center gap-1.5">
               {tabLabel[id]}
               {tabCount[id] != null && (
-                <span className="rounded-[4px] bg-subtle px-1.5 text-caption font-medium tabular-nums text-fg-3">
+                <span
+                  className={cn(
+                    "rounded-[4px] px-1.5 text-caption font-medium tabular-nums",
+                    tab === id
+                      ? "bg-white/20 text-action-fg"
+                      : "bg-background text-fg-3",
+                  )}
+                >
                   {fmtInt(tabCount[id], locale)}
                 </span>
               )}

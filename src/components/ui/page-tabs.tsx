@@ -65,7 +65,7 @@ export function PageTabs<T extends string>({
         role="tablist"
         aria-label={rest["aria-label"]}
         className={cn(
-          "inline-flex items-center gap-1 rounded-xl bg-muted/50 p-1",
+          "inline-flex items-center gap-1 rounded-xl bg-muted p-1",
           small ? "min-h-9" : "min-h-10",
         )}
       >
