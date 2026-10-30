@@ -1,4 +1,4 @@
-> **Classic 开发分支**：以 v4.0.22 业务为基础恢复 v3 经典界面。开发入口、验证命令和发布前检查见 [Classic 开发说明](docs/classic-development.md)。
+> **CC Switch Classic**：本仓库在 `main` 分支维护经典版，以 v4.0.22 业务为基础恢复 v3 经典界面。开发入口、验证命令和发布前检查见 [Classic 开发说明](docs/classic-development.md)。
 
 <div align="center">
 

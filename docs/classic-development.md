@@ -2,7 +2,7 @@
 
 ## 基线与结构
 
-本分支 `classic` 基于上游 `farion1231/cc-switch` 的 `7569b27af4f485172950fb6989f5643163842bd1`（v4.0.22）。视觉参考 `v3.20.4`，原 MIT 许可证保留。
+本独立仓库 [Yanxcyan/cc-switch-classic](https://github.com/Yanxcyan/cc-switch-classic) 使用 `main` 分支维护 Classic 版本，基于上游 `farion1231/cc-switch` 的 `7569b27af4f485172950fb6989f5643163842bd1`（v4.0.22）。视觉参考 `v3.20.4`，原 MIT 许可证保留。
 
 - `src/main.tsx` 挂载 `src/classic/ClassicApp.tsx`；上游 `src/App.tsx` 保留供比对。
 - `src/classic/` 管理顶栏、应用切换、模式条、六页签设置及主题覆盖。
