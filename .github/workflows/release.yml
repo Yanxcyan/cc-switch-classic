@@ -1,10 +1,10 @@
-name: Release
+name: Classic Release
 
 on:
   push:
     tags:
-      - 'v*'
-  # 手动触发即干跑：完整编译、签名、公证，产物只留在 workflow 里，不建 GitHub Release
+      - "v*"
+  # 手动触发即干跑：完整编译、更新签名和可用的 Apple 签名，产物只留在 workflow 里，不建 GitHub Release
   workflow_dispatch:
 
 permissions:
@@ -21,7 +21,11 @@ jobs:
   # 放在最前面查，不白跑编译。推 tag 和 push main 同时发生，不能指望 CI 先跑完单测，
   # 所以这里自己跑一遍检查所有随包摘要的那份单测。
   whats-new-check:
-    name: Check in-app what's new summaries
+    name: Check Classic release configuration and summaries
+    outputs:
+      version: ${{ steps.classic-config.outputs.version }}
+      tag: ${{ steps.classic-config.outputs.tag }}
+      prerelease: ${{ steps.classic-config.outputs.prerelease }}
     runs-on: ubuntu-22.04
     steps:
       - name: Checkout
@@ -43,7 +47,14 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: "20"
+
+      - name: Check independent Classic release configuration
+        id: classic-config
+        run: node scripts/check-classic-release.mjs --config
+
+      - name: Test release verification
+        run: node --test scripts/check-classic-release.test.mjs
 
       - name: Setup pnpm
         env:
@@ -92,7 +103,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: "20"
 
       # rust-toolchain.toml 是编译器版本的唯一来源：直接装它，免得先装 stable 再被 rustup 换掉
       - name: Read pinned Rust toolchain
@@ -217,8 +228,8 @@ jobs:
         run: |
           $ErrorActionPreference = 'Stop'
           New-Item -ItemType Directory -Force -Path release-assets | Out-Null
-          # e.g., v3.5.0；手动干跑时是分支名，斜杠会被当成目录，换成 -
-          $VERSION = $env:GITHUB_REF_NAME -replace '/', '-'
+          # Asset versions come from validated configuration, including manual dry runs.
+          $VERSION = "v" + (Get-Content src-tauri/tauri.conf.json -Raw | ConvertFrom-Json).version
           $isArm64 = $env:WINDOWS_RELEASE_ARCH -eq 'arm64'
           $targetRoot = if ($isArm64) { 'src-tauri/target/aarch64-pc-windows-msvc/release' } else { 'src-tauri/target/release' }
           $assetSuffix = if ($isArm64) { '-arm64' } else { '' }
@@ -244,7 +255,7 @@ jobs:
             }
             Write-Host "MSI REBOOT property: $reboot"
 
-            $dest = "CC-Switch-$VERSION-Windows$assetSuffix.msi"
+            $dest = "CC-Switch-Classic-$VERSION-Windows$assetSuffix.msi"
             Copy-Item $msi.FullName (Join-Path release-assets $dest)
             Write-Host "Installer copied: $dest"
             $sigPath = "$($msi.FullName).sig"
@@ -269,31 +280,31 @@ jobs:
           }
           $exePath = $exeCandidates | Where-Object { Test-Path $_ } | Select-Object -First 1
           if ($null -ne $exePath) {
-            $portableDir = 'release-assets/CC-Switch-Portable'
+            $portableDir = 'release-assets/CC-Switch-Classic-Portable'
             New-Item -ItemType Directory -Force -Path $portableDir | Out-Null
             Copy-Item $exePath $portableDir
             $portableIniPath = Join-Path $portableDir 'portable.ini'
             $portableContent = if ($isArm64) {
               @(
-                '# CC Switch portable ARM64 build marker',
+                '# CC Switch Classic portable ARM64 build marker',
                 'portable=true',
                 'arch=arm64'
               )
             } else {
               @(
-                '# CC Switch portable build marker',
+                '# CC Switch Classic portable build marker',
                 'portable=true'
               )
             }
             $portableContent | Set-Content -Path $portableIniPath -Encoding UTF8
-            $portableZip = "release-assets/CC-Switch-$VERSION-Windows$assetSuffix-Portable.zip"
+            $portableZip = "release-assets/CC-Switch-Classic-$VERSION-Windows$assetSuffix-Portable.zip"
             Compress-Archive -Path "$portableDir/*" -DestinationPath $portableZip -Force
             Remove-Item -Recurse -Force $portableDir
-            Write-Host "Windows portable zip created: CC-Switch-$VERSION-Windows$assetSuffix-Portable.zip"
+            Write-Host "Windows portable zip created: CC-Switch-Classic-$VERSION-Windows$assetSuffix-Portable.zip"
           } elseif ($isArm64) {
             throw 'Portable ARM64 exe not found'
           } else {
-            Write-Warning 'Portable exe not found'
+            throw 'Portable x64 exe not found'
           }
 
       - name: Prepare Linux Assets
@@ -302,8 +313,8 @@ jobs:
         run: |
           set -euxo pipefail
           mkdir -p release-assets
-          # e.g., v3.5.0；手动干跑时是分支名，斜杠会被当成目录，换成 -
-          VERSION="${GITHUB_REF_NAME//\//-}"
+          # Asset versions come from validated configuration, including manual dry runs.
+          VERSION="v$(node -p "require('./src-tauri/tauri.conf.json').version")"
           ARCH="${{ matrix.arch || 'x86_64' }}"
           # Updater artifact: AppImage（含对应 .sig）
           APPIMAGE=$(find src-tauri/target/release/bundle -name "*.AppImage" | head -1 || true)
@@ -315,7 +326,7 @@ jobs:
             echo "❌ Updater signature not found: $APPIMAGE.sig" >&2
             exit 1
           fi
-          NEW_APPIMAGE="CC-Switch-${VERSION}-Linux-${ARCH}.AppImage"
+          NEW_APPIMAGE="CC-Switch-Classic-${VERSION}-Linux-${ARCH}.AppImage"
           cp "$APPIMAGE" "release-assets/$NEW_APPIMAGE"
           cp "$APPIMAGE.sig" "release-assets/$NEW_APPIMAGE.sig"
           echo "AppImage copied: $NEW_APPIMAGE"
@@ -329,7 +340,7 @@ jobs:
             echo "❌ Updater signature not found: $DEB.sig" >&2
             exit 1
           fi
-          NEW_DEB="CC-Switch-${VERSION}-Linux-${ARCH}.deb"
+          NEW_DEB="CC-Switch-Classic-${VERSION}-Linux-${ARCH}.deb"
           cp "$DEB" "release-assets/$NEW_DEB"
           cp "$DEB.sig" "release-assets/$NEW_DEB.sig"
           echo "Deb package copied: $NEW_DEB"
@@ -343,7 +354,7 @@ jobs:
             echo "❌ Updater signature not found: $RPM.sig" >&2
             exit 1
           fi
-          NEW_RPM="CC-Switch-${VERSION}-Linux-${ARCH}.rpm"
+          NEW_RPM="CC-Switch-Classic-${VERSION}-Linux-${ARCH}.rpm"
           cp "$RPM" "release-assets/$NEW_RPM"
           cp "$RPM.sig" "release-assets/$NEW_RPM.sig"
           echo "RPM package copied: $NEW_RPM"
@@ -392,7 +403,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: "20"
 
       # rust-toolchain.toml 是编译器版本的唯一来源：直接装它，免得先装 stable 再被 rustup 换掉
       - name: Read pinned Rust toolchain
@@ -451,6 +462,8 @@ jobs:
   # 已经过了 release 的批准，这里再挂会在半路要求第二次批准。secret 都是仓库级的。
   macos-release:
     name: Bundle macOS release
+    outputs:
+      signing-mode: ${{ steps.apple-signing.outputs.mode }}
     runs-on: macos-14
     needs: macos-binary
 
@@ -461,7 +474,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v6
         with:
-          node-version: '20'
+          node-version: "20"
 
       # rust-toolchain.toml 是编译器版本的唯一来源：直接装它，免得先装 stable 再被 rustup 换掉
       - name: Read pinned Rust toolchain
@@ -507,46 +520,54 @@ jobs:
           private-key: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY }}
           password: ${{ secrets.TAURI_SIGNING_PRIVATE_KEY_PASSWORD }}
 
-      - name: Import Apple signing certificate
+      - name: Select macOS signing mode
+        id: apple-signing
         shell: bash
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+          APPLE_ID: ${{ secrets.APPLE_ID }}
+          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
+          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
         run: |
+          set +x
           set -euo pipefail
-          # Decode .p12 certificate from base64
-          CERT_PATH="$RUNNER_TEMP/certificate.p12"
-          printf '%s' "${{ secrets.APPLE_CERTIFICATE }}" | (base64 --decode 2>/dev/null || base64 -D) > "$CERT_PATH"
+          if [ -n "$APPLE_CERTIFICATE" ] && [ -n "$APPLE_CERTIFICATE_PASSWORD" ] && [ -n "$APPLE_ID" ] && [ -n "$APPLE_PASSWORD" ] && [ -n "$APPLE_TEAM_ID" ]; then
+            echo "mode=notarized" >> "$GITHUB_OUTPUT"
+            echo "Complete Apple credentials found; Developer ID signing and notarization are required."
+          else
+            echo "mode=adhoc" >> "$GITHUB_OUTPUT"
+            echo "APPLE_SIGNING_IDENTITY=-" >> "$GITHUB_ENV"
+            echo "Apple credentials are incomplete; using ad-hoc signing without notarization."
+          fi
 
-          # Save original default keychain for cleanup
+      - name: Import Apple signing certificate
+        if: steps.apple-signing.outputs.mode == 'notarized'
+        shell: bash
+        env:
+          APPLE_CERTIFICATE: ${{ secrets.APPLE_CERTIFICATE }}
+          APPLE_CERTIFICATE_PASSWORD: ${{ secrets.APPLE_CERTIFICATE_PASSWORD }}
+        run: |
+          set +x
+          set -euo pipefail
+          umask 077
+          CERT_PATH="$RUNNER_TEMP/certificate.p12"
+          trap 'rm -f "$CERT_PATH"' EXIT
+          printf '%s' "$APPLE_CERTIFICATE" | (base64 --decode 2>/dev/null || base64 -D) > "$CERT_PATH"
           ORIGINAL_DEFAULT_KEYCHAIN=$(security default-keychain -d user | tr -d '"' | xargs)
           echo "ORIGINAL_DEFAULT_KEYCHAIN=$ORIGINAL_DEFAULT_KEYCHAIN" >> "$GITHUB_ENV"
-
-          # Create temporary keychain
           KEYCHAIN_PATH="$RUNNER_TEMP/build.keychain-db"
-          security create-keychain -p "${{ secrets.KEYCHAIN_PASSWORD }}" "$KEYCHAIN_PATH"
+          KEYCHAIN_PASSWORD=$(openssl rand -hex 32)
+          echo "::add-mask::$KEYCHAIN_PASSWORD"
+          security create-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
           security set-keychain-settings -lut 21600 "$KEYCHAIN_PATH"
           security default-keychain -s "$KEYCHAIN_PATH"
-          security unlock-keychain -p "${{ secrets.KEYCHAIN_PASSWORD }}" "$KEYCHAIN_PATH"
-
-          # Import certificate
-          security import "$CERT_PATH" \
-            -k "$KEYCHAIN_PATH" \
-            -P "${{ secrets.APPLE_CERTIFICATE_PASSWORD }}" \
-            -T /usr/bin/codesign \
-            -T /usr/bin/security
-          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "${{ secrets.KEYCHAIN_PASSWORD }}" "$KEYCHAIN_PATH"
-
-          # Dynamically resolve signing identity (must be "Developer ID Application")
-          IDENTITY=$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" \
-            | grep "Developer ID Application" | grep -oE '"[^"]+"' | head -1 | tr -d '"')
-          if [ -z "$IDENTITY" ]; then
-            echo "❌ No 'Developer ID Application' identity found — listing all identities:" >&2
-            security find-identity -v -p codesigning "$KEYCHAIN_PATH"
-            exit 1
-          fi
-          echo "✅ Signing identity: $IDENTITY"
+          security unlock-keychain -p "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH"
+          security import "$CERT_PATH" -k "$KEYCHAIN_PATH" -P "$APPLE_CERTIFICATE_PASSWORD" -T /usr/bin/codesign -T /usr/bin/security
+          security set-key-partition-list -S apple-tool:,apple:,codesign: -s -k "$KEYCHAIN_PASSWORD" "$KEYCHAIN_PATH" >/dev/null
+          IDENTITY=$(security find-identity -v -p codesigning "$KEYCHAIN_PATH" | grep "Developer ID Application" | grep -oE '"[^"]+"' | head -1 | tr -d '"')
+          test -n "$IDENTITY" || { echo "::error::No Developer ID Application identity found."; exit 1; }
           echo "APPLE_SIGNING_IDENTITY=$IDENTITY" >> "$GITHUB_ENV"
-
-          # Cleanup certificate file
-          rm -f "$CERT_PATH"
 
       - name: Download macOS binaries
         uses: actions/download-artifact@v8
@@ -570,22 +591,23 @@ jobs:
 
       # 只打 .app（连同 updater 的 .app.tar.gz 和 .sig）：发布用的 DMG 在下面由 create-dmg 制作，
       # Tauri 自己的 DMG 从来不上传。失败只重试这一步，不会重编。
-      - name: Bundle, sign and notarize (macOS)
+      - name: Bundle and sign macOS (notarize only with complete Apple credentials)
         shell: bash
         timeout-minutes: 45
         env:
           APPLE_SIGNING_IDENTITY: ${{ env.APPLE_SIGNING_IDENTITY }}
-          APPLE_ID: ${{ secrets.APPLE_ID }}
-          APPLE_PASSWORD: ${{ secrets.APPLE_PASSWORD }}
-          APPLE_TEAM_ID: ${{ secrets.APPLE_TEAM_ID }}
+          APPLE_ID: ${{ steps.apple-signing.outputs.mode == 'notarized' && secrets.APPLE_ID || '' }}
+          APPLE_PASSWORD: ${{ steps.apple-signing.outputs.mode == 'notarized' && secrets.APPLE_PASSWORD || '' }}
+          APPLE_TEAM_ID: ${{ steps.apple-signing.outputs.mode == 'notarized' && secrets.APPLE_TEAM_ID || '' }}
         run: |
           set -euo pipefail
+          if [ "$APPLE_SIGNING_IDENTITY" = "-" ]; then unset APPLE_ID APPLE_PASSWORD APPLE_TEAM_ID; fi
           max_attempts=3
           for attempt in $(seq 1 "$max_attempts"); do
-            echo "=== macOS bundle/notarization attempt ${attempt}/${max_attempts} ==="
+            echo "=== macOS bundle/signing attempt ${attempt}/${max_attempts} ==="
             bundle_log="$RUNNER_TEMP/tauri-bundle-macos-${attempt}.log"
             if pnpm tauri bundle --target universal-apple-darwin --bundles app 2>&1 | tee "$bundle_log"; then
-              echo "✅ macOS bundle/notarization succeeded"
+              echo "✅ macOS bundle/signing succeeded"
               exit 0
             fi
 
@@ -598,22 +620,24 @@ jobs:
             fi
 
             if [ "$attempt" -eq "$max_attempts" ]; then
-              echo "❌ macOS bundle/notarization failed after ${max_attempts} attempts" >&2
+              echo "❌ macOS bundle/signing failed after ${max_attempts} attempts" >&2
               exit 1
             fi
 
             sleep_seconds=$((attempt * 60))
-            echo "⚠️ macOS bundle/notarization failed, retrying in ${sleep_seconds}s..."
+            echo "⚠️ macOS bundle/signing failed, retrying in ${sleep_seconds}s..."
             sleep "$sleep_seconds"
           done
 
       - name: Prepare macOS Assets
         shell: bash
+        env:
+          APPLE_NOTARIZED: ${{ steps.apple-signing.outputs.mode == 'notarized' }}
         run: |
           set -euxo pipefail
           mkdir -p release-assets
-          # e.g., v3.5.0；手动干跑时是分支名，斜杠会被当成目录，换成 -
-          VERSION="${GITHUB_REF_NAME//\//-}"
+          # Asset versions come from validated configuration, including manual dry runs.
+          VERSION="v$(node -p "require('./src-tauri/tauri.conf.json').version")"
 
           # Locate bundle artifacts
           TAR_GZ=""; APP_PATH=""
@@ -638,11 +662,13 @@ jobs:
           fi
 
           # Staple notarization ticket to .app (Tauri already notarized it)
-          xcrun stapler staple "$APP_PATH"
-          echo "✅ .app stapled"
+          if [ "$APPLE_NOTARIZED" = "true" ]; then
+            xcrun stapler staple "$APP_PATH"
+            echo "Apple notarization ticket stapled to app."
+          fi
 
           # 1) Collect .tar.gz (updater artifact)
-          NEW_TAR_GZ="CC-Switch-${VERSION}-macOS.tar.gz"
+          NEW_TAR_GZ="CC-Switch-Classic-${VERSION}-macOS.tar.gz"
           cp "$TAR_GZ" "release-assets/$NEW_TAR_GZ"
           if [ ! -f "$TAR_GZ.sig" ]; then
             echo "❌ Updater signature not found: $TAR_GZ.sig" >&2
@@ -652,7 +678,7 @@ jobs:
           echo "macOS updater artifact copied: $NEW_TAR_GZ"
 
           # 2) Collect .app as zip
-          NEW_ZIP="CC-Switch-${VERSION}-macOS.zip"
+          NEW_ZIP="CC-Switch-Classic-${VERSION}-macOS.zip"
           ditto -c -k --sequesterRsrc --keepParent "$APP_PATH" "release-assets/$NEW_ZIP"
           echo "macOS zip ready: $NEW_ZIP"
 
@@ -663,20 +689,20 @@ jobs:
           fi
 
           HOMEBREW_NO_AUTO_UPDATE=1 brew install create-dmg
-          NEW_DMG="CC-Switch-${VERSION}-macOS.dmg"
+          NEW_DMG="CC-Switch-Classic-${VERSION}-macOS.dmg"
           DMG_STAGE_DIR="$RUNNER_TEMP/dmg-stage"
           rm -rf "$DMG_STAGE_DIR"
           mkdir -p "$DMG_STAGE_DIR"
-          ditto "$APP_PATH" "$DMG_STAGE_DIR/CC Switch.app"
+          ditto "$APP_PATH" "$DMG_STAGE_DIR/CC Switch Classic.app"
 
           create-dmg \
-            --volname "CC Switch" \
+            --volname "CC Switch Classic" \
             --background "src-tauri/icons/dmg-background.png" \
             --window-size 660 400 \
             --window-pos 200 120 \
             --icon-size 80 \
-            --icon "CC Switch.app" 180 220 \
-            --hide-extension "CC Switch.app" \
+            --icon "CC Switch Classic.app" 180 220 \
+            --hide-extension "CC Switch Classic.app" \
             --app-drop-link 480 220 \
             --codesign "$APPLE_SIGNING_IDENTITY" \
             --no-internet-enable \
@@ -687,6 +713,7 @@ jobs:
           echo "✅ Styled DMG created: $NEW_DMG"
 
       - name: Notarize macOS DMG
+        if: steps.apple-signing.outputs.mode == 'notarized'
         shell: bash
         timeout-minutes: 30
         env:
@@ -727,8 +754,10 @@ jobs:
             sleep "$sleep_seconds"
           done
 
-      - name: Verify macOS code signing and notarization
+      - name: Verify macOS signatures and any required notarization
         shell: bash
+        env:
+          APPLE_NOTARIZED: ${{ steps.apple-signing.outputs.mode == 'notarized' }}
         run: |
           set -euo pipefail
 
@@ -751,10 +780,12 @@ jobs:
           echo "=== Verifying .app: $APP_PATH ==="
           codesign --verify --deep --strict --verbose=2 "$APP_PATH"
           echo "✅ codesign verification passed"
-          spctl -a -t exec -vv "$APP_PATH"
-          echo "✅ spctl assessment passed"
-          xcrun stapler validate "$APP_PATH"
-          echo "✅ .app stapler validation passed"
+          if [ "$APPLE_NOTARIZED" = "true" ]; then
+            spctl -a -t exec -vv "$APP_PATH"
+            xcrun stapler validate "$APP_PATH"
+          else
+            echo "Ad-hoc app signature verified; this build is not Apple notarized."
+          fi
 
           # Verify .dmg (from release-assets/, created by create-dmg + notarized)
           DMG_PATH=$(find release-assets -maxdepth 1 -name "*.dmg" -type f | head -1 || true)
@@ -762,10 +793,10 @@ jobs:
             echo "=== Verifying .dmg: $DMG_PATH ==="
             codesign --verify --verbose=2 "$DMG_PATH"
             echo "✅ .dmg codesign verification passed"
-            spctl -a -t open --context context:primary-signature -vv "$DMG_PATH"
-            echo "✅ .dmg spctl assessment passed"
-            xcrun stapler validate "$DMG_PATH"
-            echo "✅ .dmg stapler validation passed"
+            if [ "$APPLE_NOTARIZED" = "true" ]; then
+              spctl -a -t open --context context:primary-signature -vv "$DMG_PATH"
+              xcrun stapler validate "$DMG_PATH"
+            fi
           else
             echo "❌ No .dmg found for verification — release would ship without verified DMG" >&2
             exit 1
@@ -802,15 +833,20 @@ jobs:
           fi
 
   publish-release:
-    name: Publish GitHub Release
+    name: Verify all platforms and publish Classic release
     runs-on: ubuntu-22.04
-    needs: [release, macos-release]
-    # 只有推 tag 才发布。手动触发时也能选 tag 作为运行版本，单看 ref_type 会把干跑当成正式发布，
-    # 覆盖已发布 release 的正文和安装包
-    if: github.event_name == 'push' && github.ref_type == 'tag'
+    needs: [whats-new-check, release, macos-release]
     permissions:
       contents: write
     steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: "20"
+
       - name: Download built release artifacts
         uses: actions/download-artifact@v8
         with:
@@ -818,163 +854,74 @@ jobs:
           path: release-assets
           merge-multiple: true
 
-      - name: List downloaded release artifacts
-        shell: bash
-        run: |
-          set -euo pipefail
-          ls -la release-assets
+      # Dry runs perform the same verification but never create a GitHub release.
+      - name: Verify all updater signatures and generate latest.json
+        run: node scripts/check-classic-release.mjs --assets release-assets
 
-      # 签名就在刚下载的产物里：latest.json 随安装包一起上传。缺平台时在建 release 之前就失败，
-      # 不会留下一个缺 latest.json 的半成品 release。
-      - name: Generate latest.json
-        env:
-          REPO: ${{ github.repository }}
-          TAG: ${{ github.ref_name }}
-        run: |
-          set -euo pipefail
-          VERSION="${TAG#v}"
-          PUB_DATE=$(date -u +%Y-%m-%dT%H:%M:%SZ)
-          base_url="https://github.com/$REPO/releases/download/$TAG"
-          # 初始化空平台映射
-          mac_url=""; mac_sig=""
-          win_x64_url=""; win_x64_sig=""
-          win_arm64_url=""; win_arm64_sig=""
-          linux_x64_url=""; linux_x64_sig=""
-          linux_arm64_url=""; linux_arm64_sig=""
-          linux_x64_deb_url=""; linux_x64_deb_sig=""
-          linux_arm64_deb_url=""; linux_arm64_deb_sig=""
-          linux_x64_rpm_url=""; linux_x64_rpm_sig=""
-          linux_arm64_rpm_url=""; linux_arm64_rpm_sig=""
-          shopt -s nullglob
-          for sig in release-assets/*.sig; do
-            base=${sig%.sig}
-            fname=$(basename "$base")
-            url="$base_url/$fname"
-            sig_content=$(cat "$sig")
-            case "$fname" in
-              *.tar.gz)
-                # 视为 macOS updater artifact
-                mac_url="$url"; mac_sig="$sig_content";;
-              *-Windows-arm64.msi)
-                win_arm64_url="$url"; win_arm64_sig="$sig_content";;
-              *-Windows.msi)
-                win_x64_url="$url"; win_x64_sig="$sig_content";;
-              *-Linux-arm64.AppImage|*-Linux-arm64.appimage)
-                linux_arm64_url="$url"; linux_arm64_sig="$sig_content";;
-              *-Linux-x86_64.AppImage|*-Linux-x86_64.appimage)
-                linux_x64_url="$url"; linux_x64_sig="$sig_content";;
-              *-Linux-arm64.deb)
-                linux_arm64_deb_url="$url"; linux_arm64_deb_sig="$sig_content";;
-              *-Linux-x86_64.deb)
-                linux_x64_deb_url="$url"; linux_x64_deb_sig="$sig_content";;
-              *-Linux-arm64.rpm)
-                linux_arm64_rpm_url="$url"; linux_arm64_rpm_sig="$sig_content";;
-              *-Linux-x86_64.rpm)
-                linux_x64_rpm_url="$url"; linux_x64_rpm_sig="$sig_content";;
-            esac
-          done
-          # 缺任一平台都不能发：缺的那批用户会静默收不到更新
-          missing=""
-          [ -n "$mac_sig" ] || missing="$missing macOS"
-          [ -n "$win_x64_sig" ] || missing="$missing windows-x86_64"
-          [ -n "$win_arm64_sig" ] || missing="$missing windows-aarch64"
-          [ -n "$linux_x64_sig" ] || missing="$missing linux-x86_64"
-          [ -n "$linux_arm64_sig" ] || missing="$missing linux-aarch64"
-          [ -n "$linux_x64_deb_sig" ] || missing="$missing linux-x86_64-deb"
-          [ -n "$linux_arm64_deb_sig" ] || missing="$missing linux-aarch64-deb"
-          [ -n "$linux_x64_rpm_sig" ] || missing="$missing linux-x86_64-rpm"
-          [ -n "$linux_arm64_rpm_sig" ] || missing="$missing linux-aarch64-rpm"
-          if [ -n "$missing" ]; then
-            echo "❌ Missing updater signatures for:$missing" >&2
-            exit 1
-          fi
-          # 构造 JSON
-          tmp_json=$(mktemp)
-          {
-            echo '{'
-            echo "  \"version\": \"$VERSION\",";
-            echo "  \"notes\": \"Release $TAG\",";
-            echo "  \"pub_date\": \"$PUB_DATE\",";
-            echo '  "platforms": {'
-            first=1
-            if [ -n "$mac_url" ] && [ -n "$mac_sig" ]; then
-              # 为兼容 arm64 / x64，重复写入两个键，指向同一 universal 包
-              for key in darwin-aarch64 darwin-x86_64; do
-                [ $first -eq 0 ] && echo ','
-                echo "    \"$key\": {\"signature\": \"$mac_sig\", \"url\": \"$mac_url\"}"
-                first=0
-              done
-            fi
-            if [ -n "$win_x64_url" ] && [ -n "$win_x64_sig" ]; then
-              [ $first -eq 0 ] && echo ','
-              echo "    \"windows-x86_64\": {\"signature\": \"$win_x64_sig\", \"url\": \"$win_x64_url\"}"
-              first=0
-            fi
-            if [ -n "$win_arm64_url" ] && [ -n "$win_arm64_sig" ]; then
-              [ $first -eq 0 ] && echo ','
-              echo "    \"windows-aarch64\": {\"signature\": \"$win_arm64_sig\", \"url\": \"$win_arm64_url\"}"
-              first=0
-            fi
-            if [ -n "$linux_x64_url" ] && [ -n "$linux_x64_sig" ]; then
-              [ $first -eq 0 ] && echo ','
-              echo "    \"linux-x86_64\": {\"signature\": \"$linux_x64_sig\", \"url\": \"$linux_x64_url\"}"
-              first=0
-            fi
-            if [ -n "$linux_arm64_url" ] && [ -n "$linux_arm64_sig" ]; then
-              [ $first -eq 0 ] && echo ','
-              echo "    \"linux-aarch64\": {\"signature\": \"$linux_arm64_sig\", \"url\": \"$linux_arm64_url\"}"
-              first=0
-            fi
-            if [ -n "$linux_x64_deb_url" ] && [ -n "$linux_x64_deb_sig" ]; then
-              [ $first -eq 0 ] && echo ','
-              echo "    \"linux-x86_64-deb\": {\"signature\": \"$linux_x64_deb_sig\", \"url\": \"$linux_x64_deb_url\"}"
-              first=0
-            fi
-            if [ -n "$linux_arm64_deb_url" ] && [ -n "$linux_arm64_deb_sig" ]; then
-              [ $first -eq 0 ] && echo ','
-              echo "    \"linux-aarch64-deb\": {\"signature\": \"$linux_arm64_deb_sig\", \"url\": \"$linux_arm64_deb_url\"}"
-              first=0
-            fi
-            if [ -n "$linux_x64_rpm_url" ] && [ -n "$linux_x64_rpm_sig" ]; then
-              [ $first -eq 0 ] && echo ','
-              echo "    \"linux-x86_64-rpm\": {\"signature\": \"$linux_x64_rpm_sig\", \"url\": \"$linux_x64_rpm_url\"}"
-              first=0
-            fi
-            if [ -n "$linux_arm64_rpm_url" ] && [ -n "$linux_arm64_rpm_sig" ]; then
-              [ $first -eq 0 ] && echo ','
-              echo "    \"linux-aarch64-rpm\": {\"signature\": \"$linux_arm64_rpm_sig\", \"url\": \"$linux_arm64_rpm_url\"}"
-              first=0
-            fi
-            echo '  }'
-            echo '}'
-          } > "$tmp_json"
-          echo "Generated latest.json:" && cat "$tmp_json"
-          mv "$tmp_json" release-assets/latest.json
-      - name: Upload Release Assets
+      - name: Retain validated updater manifest
+        uses: actions/upload-artifact@v7
+        with:
+          name: validated-updater-manifest
+          path: release-assets/latest.json
+          if-no-files-found: error
+
+      - name: Publish complete release
+        id: upload-release
+        if: github.event_name == 'push' && github.ref_type == 'tag'
         uses: softprops/action-gh-release@v3
         with:
-          tag_name: ${{ github.ref_name }}
-          name: CC Switch ${{ github.ref_name }}
-          prerelease: true
+          tag_name: ${{ needs.whats-new-check.outputs.tag }}
+          name: CC Switch Classic ${{ needs.whats-new-check.outputs.tag }}
+          draft: true
+          prerelease: ${{ needs.whats-new-check.outputs.prerelease == 'true' }}
+          make_latest: ${{ needs.whats-new-check.outputs.prerelease == 'false' && 'true' || 'false' }}
+          fail_on_unmatched_files: true
           body: |
-            ## CC Switch ${{ github.ref_name }}
+            ## CC Switch Classic ${{ needs.whats-new-check.outputs.tag }}
 
-            🌐 **Only Official Website / 唯一官方网站 / 唯一の公式サイト**: [ccswitch.io](https://ccswitch.io)
-
-            Claude Code 供应商切换工具
+            独立维护的经典界面版本，基于 MIT 许可的 CC Switch。
+            项目与更新来源：[Yanxcyan/cc-switch-classic](https://github.com/Yanxcyan/cc-switch-classic)
 
             ### 下载
+            - macOS: CC-Switch-Classic-${{ needs.whats-new-check.outputs.tag }}-macOS.dmg / .zip（Apple Silicon 与 Intel universal）
+            - Windows x86_64: CC-Switch-Classic-${{ needs.whats-new-check.outputs.tag }}-Windows.msi / -Windows-Portable.zip
+            - Windows ARM64: CC-Switch-Classic-${{ needs.whats-new-check.outputs.tag }}-Windows-arm64.msi / -Windows-arm64-Portable.zip
+            - Linux x86_64: CC-Switch-Classic-${{ needs.whats-new-check.outputs.tag }}-Linux-x86_64.AppImage / .deb / .rpm
+            - Linux ARM64: CC-Switch-Classic-${{ needs.whats-new-check.outputs.tag }}-Linux-arm64.AppImage / .deb / .rpm
 
-            - **macOS**: `CC-Switch-${{ github.ref_name }}-macOS.dmg`（推荐）或 `CC-Switch-${{ github.ref_name }}-macOS.zip`（解压即用）
-            - **Windows (x86_64)**: `CC-Switch-${{ github.ref_name }}-Windows.msi`（安装版）或 `CC-Switch-${{ github.ref_name }}-Windows-Portable.zip`（绿色版）
-            - **Windows (ARM64)**: `CC-Switch-${{ github.ref_name }}-Windows-arm64.msi`（安装版）或 `CC-Switch-${{ github.ref_name }}-Windows-arm64-Portable.zip`（绿色版）
-            - **Linux (x86_64)**: `CC-Switch-${{ github.ref_name }}-Linux-x86_64.AppImage` / `.deb` / `.rpm`
-            - **Linux (ARM64)**: `CC-Switch-${{ github.ref_name }}-Linux-arm64.AppImage` / `.deb` / `.rpm`
+            所有自动更新安装包均通过 Classic 独立更新公钥验证。.tar.gz 和 .sig 是自动更新使用的文件。
 
-            > `.tar.gz` 为 Tauri updater 自动更新专用，无需手动下载。
-
-            ---
-            macOS 版本已通过 Apple 代码签名和公证，可直接安装使用。
+            macOS 签名状态：${{ needs.macos-release.outputs.signing-mode == 'notarized' && '已通过 Developer ID 签名与 Apple 公证。' || '仅使用 ad-hoc 临时签名，未通过 Apple 公证；首次打开可能需要在系统「隐私与安全性」中允许。' }}
           files: release-assets/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      # Keep the release invisible while assets upload; expose it only after the
+      # action above has successfully uploaded every verified artifact.
+      - name: Publish uploaded draft and select latest channel
+        if: github.event_name == 'push' && github.ref_type == 'tag'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_ID: ${{ steps.upload-release.outputs.id }}
+          RELEASE_TAG: ${{ needs.whats-new-check.outputs.tag }}
+          RELEASE_PRERELEASE: ${{ needs.whats-new-check.outputs.prerelease }}
+        run: |
+          set -euo pipefail
+          node --input-type=module <<'NODE'
+          import { writeFileSync } from 'node:fs';
+          import path from 'node:path';
+          if (!/^\d+$/.test(process.env.RELEASE_ID ?? '')) throw new Error('Missing uploaded release ID');
+          if (!/^v\d+\.\d+\.\d+(?:-[0-9A-Za-z.-]+)?$/.test(process.env.RELEASE_TAG ?? '')) throw new Error('Invalid release tag');
+          if (!['true', 'false'].includes(process.env.RELEASE_PRERELEASE)) throw new Error('Invalid release channel');
+          const prerelease = process.env.RELEASE_PRERELEASE === 'true';
+          writeFileSync(path.join(process.env.RUNNER_TEMP, 'publish-classic-release.json'), JSON.stringify({
+            tag_name: process.env.RELEASE_TAG,
+            draft: false,
+            prerelease,
+            make_latest: prerelease ? 'false' : 'true',
+          }));
+          NODE
+          gh api --method PATCH "repos/$GH_REPO/releases/$RELEASE_ID" \
+            --input "$RUNNER_TEMP/publish-classic-release.json" --jq '.html_url'

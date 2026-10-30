@@ -1,8 +1,8 @@
 {
   "$schema": "https://schema.tauri.app/config/2",
-  "productName": "CC Switch",
-  "version": "4.0.22",
-  "identifier": "com.ccswitch.desktop",
+  "productName": "CC Switch Classic",
+  "version": "4.0.23",
+  "identifier": "com.yanxcyan.ccswitch.classic",
   "build": {
     "frontendDist": "../dist",
     "devUrl": "http://localhost:3000",
@@ -47,12 +47,15 @@
     ],
     "windows": {
       "wix": {
-        "template": "wix/per-user-main.wxs"
+        "template": "wix/per-user-main.wxs",
+        "upgradeCode": "0686eca2-6787-4d6f-91cf-d76518970c35"
       }
     },
     "macOS": {
-      "minimumSystemVersion": "12.0"
-    }
+      "minimumSystemVersion": "12.0",
+      "signingIdentity": "-"
+    },
+    "publisher": "Yanxcyan"
   },
   "plugins": {
     "deep-link": {
@@ -61,10 +64,9 @@
       }
     },
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEM4MDI4QzlBNTczOTI4RTMKUldUaktEbFhtb3dDeUM5US9kT0FmdGR5Ti9vQzcwa2dTMlpibDVDUmQ2M0VGTzVOWnd0SGpFVlEK",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDk3NjY5RUFCQjg4MkEwNDIKUldSQ29JSzRxNTVtbDVzbUJicnpBRXBtZE12dTFDTnIyd1lrRDJWYWlCQldUbnN6WXg5cmZrRFEK",
       "endpoints": [
-        "https://dl.ccswitch.io/latest.json",
-        "https://github.com/farion1231/cc-switch/releases/latest/download/latest.json"
+        "https://github.com/Yanxcyan/cc-switch-classic/releases/latest/download/latest.json"
       ]
     }
   }

@@ -1,0 +1,19 @@
+{
+  "version": "4.0.23",
+  "items": [
+    {
+      "type": "new",
+      "zh": "Classic 独立发布，更新来自自己的 GitHub 仓库",
+      "zh-TW": "Classic 獨立發佈，更新來自自己的 GitHub 儲存庫",
+      "en": "Independent Classic releases with updates from the Classic GitHub repository",
+      "ja": "Classic を独立公開。更新は Classic の GitHub リポジトリから取得"
+    },
+    {
+      "type": "improve",
+      "zh": "设置六个页签统一加宽，内容随窗口自适应",
+      "zh-TW": "設定六個頁籤統一加寬，內容隨視窗自適應",
+      "en": "All six settings tabs now share a wider, responsive layout",
+      "ja": "設定の全6タブを広げ、ウィンドウ幅に合わせて統一"
+    }
+  ]
+}

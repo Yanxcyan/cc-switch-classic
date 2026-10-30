@@ -13,8 +13,9 @@ import {
   AlertTriangle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { PROJECT_REPOSITORY_URL } from "@/config/project";
 
-const RELEASES_URL = "https://github.com/farion1231/cc-switch/releases";
+const RELEASES_URL = `${PROJECT_REPOSITORY_URL}/releases`;
 
 interface DatabaseUpgradeProps {
   payload: {
