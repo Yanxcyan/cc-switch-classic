@@ -108,6 +108,7 @@ export interface HermesProviderPreset extends PresetFamilyFields {
   nameKey?: string;
   websiteUrl: string;
   apiKeyUrl?: string;
+  endpointCandidates?: string[];
   settingsConfig: HermesProviderSettingsConfig;
   isOfficial?: boolean;
   isPartner?: boolean;
@@ -1361,12 +1362,16 @@ export const hermesProviderPresets: HermesProviderPreset[] = [
     },
   },
   {
+    endpointCandidates: [
+      "https://api.a6api.vip/v1",
+      "https://api.a6api.com/v1",
+    ],
     name: "A6API",
-    websiteUrl: "https://www.a6api.com",
-    apiKeyUrl: "https://a6api.com/register?aff=AqNr",
+    websiteUrl: "https://www.a6api.vip",
+    apiKeyUrl: "https://a6api.vip/register?aff=AqNr",
     settingsConfig: {
       name: "a6api",
-      base_url: "https://api.a6api.com/v1",
+      base_url: "https://api.a6api.vip/v1",
       api_key: "",
       api_mode: "chat_completions",
       models: [
@@ -2117,7 +2122,6 @@ export const hermesProviderPresets: HermesProviderPreset[] = [
       model: { default: "Hermes-4-405B", provider: "nous" },
     },
   },
-
   // 字段映射：env.ANTHROPIC_BASE_URL → base_url；env.ANTHROPIC_AUTH_TOKEN → api_key；
   // apiFormat "anthropic"(默认) → api_mode "anthropic_messages"；
   // apiFormat "openai_chat" → api_mode "chat_completions"；
@@ -2392,6 +2396,10 @@ export const hermesProviderPresets: HermesProviderPreset[] = [
     },
   },
   {
+    endpointCandidates: [
+      "https://maas.qianwenaiapi.com/compatible-mode/v1",
+      "https://dashscope.aliyuncs.com/compatible-mode/v1",
+    ],
     name: "千问AI平台",
     family: "qianwen",
     planKey: "payg",
@@ -2400,7 +2408,7 @@ export const hermesProviderPresets: HermesProviderPreset[] = [
       "https://platform.qianwenai.com/home/api-keys?utm_content=g_20000002972",
     settingsConfig: {
       name: "qianwenai",
-      base_url: "https://dashscope.aliyuncs.com/compatible-mode/v1",
+      base_url: "https://maas.qianwenaiapi.com/compatible-mode/v1",
       api_key: "",
       api_mode: "chat_completions",
       models: [
@@ -2441,6 +2449,10 @@ export const hermesProviderPresets: HermesProviderPreset[] = [
     },
   },
   {
+    endpointCandidates: [
+      "https://token-plan.maas.qianwenaiapi.com/apps/anthropic",
+      "https://token-plan.cn-beijing.maas.aliyuncs.com/apps/anthropic",
+    ],
     name: "千问AI平台 Token Plan",
     family: "qianwen",
     planKey: "tokenPlan",
@@ -2450,8 +2462,7 @@ export const hermesProviderPresets: HermesProviderPreset[] = [
       "https://platform.qianwenai.com/home/api-keys?utm_content=g_20000002978",
     settingsConfig: {
       name: "qianwenai_token_plan",
-      base_url:
-        "https://token-plan.cn-beijing.maas.aliyuncs.com/apps/anthropic",
+      base_url: "https://token-plan.maas.qianwenaiapi.com/apps/anthropic",
       api_key: "",
       api_mode: "anthropic_messages",
       models: [
@@ -2471,6 +2482,10 @@ export const hermesProviderPresets: HermesProviderPreset[] = [
   // QwenCloud 与 Token Plan 都用 anthropic_messages，地址不带 /v1（与官方
   // hermes 文档一致，这点和 OpenCode / OpenClaw 不同，勿互相照搬）。
   {
+    endpointCandidates: [
+      "https://ap-southeast-1.maas.qwencloudapi.com/apps/anthropic",
+      "https://dashscope-intl.aliyuncs.com/apps/anthropic",
+    ],
     name: "QwenCloud",
     family: "qwencloud",
     planKey: "payg",
@@ -2478,7 +2493,7 @@ export const hermesProviderPresets: HermesProviderPreset[] = [
     apiKeyUrl: "https://home.qwencloud.com/api-keys?utm_content=g_20000002975",
     settingsConfig: {
       name: "qwencloud",
-      base_url: "https://dashscope-intl.aliyuncs.com/apps/anthropic",
+      base_url: "https://ap-southeast-1.maas.qwencloudapi.com/apps/anthropic",
       api_key: "",
       api_mode: "anthropic_messages",
       models: [
@@ -2523,6 +2538,10 @@ export const hermesProviderPresets: HermesProviderPreset[] = [
     },
   },
   {
+    endpointCandidates: [
+      "https://token-plan.maas.qwencloudapi.com/apps/anthropic",
+      "https://token-plan.ap-southeast-1.maas.aliyuncs.com/apps/anthropic",
+    ],
     name: "QwenCloud Token Plan",
     family: "qwencloud",
     planKey: "tokenPlan",
@@ -2531,8 +2550,7 @@ export const hermesProviderPresets: HermesProviderPreset[] = [
     apiKeyUrl: "https://home.qwencloud.com/api-keys?utm_content=g_20000002981",
     settingsConfig: {
       name: "qwencloud_token_plan",
-      base_url:
-        "https://token-plan.ap-southeast-1.maas.aliyuncs.com/apps/anthropic",
+      base_url: "https://token-plan.maas.qwencloudapi.com/apps/anthropic",
       api_key: "",
       api_mode: "anthropic_messages",
       models: [

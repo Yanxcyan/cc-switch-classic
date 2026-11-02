@@ -68,6 +68,31 @@ function baseUrl(app: AppId, preset: object): string {
 
 describe("API Key links across provider catalogs", () => {
   it.each(Object.entries(catalogs))(
+    "%s recognizes a saved A6API endpoint from before the domain change",
+    (app, presets) => {
+      const appId = app as AppId;
+      const preset = presets.find((preset) => preset.name === "A6API")!;
+      expect(preset).toBeDefined();
+      const oldEndpoint = baseUrl(appId, preset).replace(
+        "a6api.vip",
+        "a6api.com",
+      );
+      expect(oldEndpoint).toContain("api.a6api.com");
+      render(
+        <LinkPreview
+          appId={appId}
+          category="third_party"
+          selectedPresetId={null}
+          presetEntries={[{ id: "a6api", preset }]}
+          formWebsiteUrl="https://www.a6api.com"
+          formBaseUrl={oldEndpoint}
+        />,
+      );
+      expect(screen.queryByRole("link")).toBeNull();
+    },
+  );
+
+  it.each(Object.entries(catalogs))(
     "%s preserves Packy and hides other sponsor links in add and edit modes",
     (app, presets) => {
       const appId = app as AppId;

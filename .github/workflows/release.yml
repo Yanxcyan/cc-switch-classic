@@ -390,7 +390,7 @@ jobs:
   macos-binary:
     name: Build macOS binary (${{ matrix.target }})
     needs: whats-new-check
-    runs-on: macos-14
+    runs-on: macos-15
     environment: release
     strategy:
       matrix:
@@ -464,7 +464,7 @@ jobs:
     name: Bundle macOS release
     outputs:
       signing-mode: ${{ steps.apple-signing.outputs.mode }}
-    runs-on: macos-14
+    runs-on: macos-15
     needs: macos-binary
 
     steps:

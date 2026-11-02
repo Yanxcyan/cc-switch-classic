@@ -853,12 +853,13 @@ export const providerPresets: ProviderPreset[] = [
     iconColor: "#000000",
   },
   {
+    endpointCandidates: ["https://api.a6api.vip", "https://api.a6api.com"],
     name: "A6API",
-    websiteUrl: "https://www.a6api.com",
-    apiKeyUrl: "https://a6api.com/register?aff=AqNr",
+    websiteUrl: "https://www.a6api.vip",
+    apiKeyUrl: "https://a6api.vip/register?aff=AqNr",
     settingsConfig: {
       env: {
-        ANTHROPIC_BASE_URL: "https://api.a6api.com",
+        ANTHROPIC_BASE_URL: "https://api.a6api.vip",
         ANTHROPIC_AUTH_TOKEN: "",
       },
     },
@@ -1677,7 +1678,7 @@ export const providerPresets: ProviderPreset[] = [
       "https://platform.qianwenai.com/home/api-keys?utm_content=g_20000002972",
     settingsConfig: {
       env: {
-        ANTHROPIC_BASE_URL: "https://dashscope.aliyuncs.com/apps/anthropic",
+        ANTHROPIC_BASE_URL: "https://maas.qianwenaiapi.com/apps/anthropic",
         ANTHROPIC_AUTH_TOKEN: "",
         ANTHROPIC_MODEL: "qwen3.8-max[1M]",
         ANTHROPIC_DEFAULT_HAIKU_MODEL: "qwen3.8-flash[1M]",
@@ -1690,6 +1691,10 @@ export const providerPresets: ProviderPreset[] = [
       },
     },
     category: "cn_official",
+    endpointCandidates: [
+      "https://maas.qianwenaiapi.com/apps/anthropic",
+      "https://dashscope.aliyuncs.com/apps/anthropic",
+    ],
     icon: "qianwenai",
     iconColor: "#624AFF",
   },
@@ -1720,7 +1725,7 @@ export const providerPresets: ProviderPreset[] = [
     settingsConfig: {
       env: {
         ANTHROPIC_BASE_URL:
-          "https://token-plan.cn-beijing.maas.aliyuncs.com/apps/anthropic",
+          "https://token-plan.maas.qianwenaiapi.com/apps/anthropic",
         ANTHROPIC_AUTH_TOKEN: "",
         ANTHROPIC_MODEL: "qwen3.8-max[1M]",
         ANTHROPIC_DEFAULT_HAIKU_MODEL: "qwen3.8-flash[1M]",
@@ -1732,6 +1737,10 @@ export const providerPresets: ProviderPreset[] = [
       },
     },
     category: "cn_official",
+    endpointCandidates: [
+      "https://token-plan.maas.qianwenaiapi.com/apps/anthropic",
+      "https://token-plan.cn-beijing.maas.aliyuncs.com/apps/anthropic",
+    ],
     icon: "qianwenai",
     iconColor: "#624AFF",
   },
@@ -1748,7 +1757,7 @@ export const providerPresets: ProviderPreset[] = [
     settingsConfig: {
       env: {
         ANTHROPIC_BASE_URL:
-          "https://dashscope-intl.aliyuncs.com/apps/anthropic",
+          "https://ap-southeast-1.maas.qwencloudapi.com/apps/anthropic",
         ANTHROPIC_AUTH_TOKEN: "",
         ANTHROPIC_MODEL: "qwen3.8-max[1M]",
         ANTHROPIC_DEFAULT_HAIKU_MODEL: "qwen3.8-flash[1M]",
@@ -1757,6 +1766,10 @@ export const providerPresets: ProviderPreset[] = [
       },
     },
     category: "cn_official",
+    endpointCandidates: [
+      "https://ap-southeast-1.maas.qwencloudapi.com/apps/anthropic",
+      "https://dashscope-intl.aliyuncs.com/apps/anthropic",
+    ],
     icon: "qwencloud",
     iconColor: "#6336E7",
   },
@@ -1791,7 +1804,7 @@ export const providerPresets: ProviderPreset[] = [
     settingsConfig: {
       env: {
         ANTHROPIC_BASE_URL:
-          "https://token-plan.ap-southeast-1.maas.aliyuncs.com/apps/anthropic",
+          "https://token-plan.maas.qwencloudapi.com/apps/anthropic",
         ANTHROPIC_AUTH_TOKEN: "",
         ANTHROPIC_MODEL: "qwen3.8-max[1M]",
         ANTHROPIC_DEFAULT_HAIKU_MODEL: "qwen3.8-flash[1M]",
@@ -1803,6 +1816,10 @@ export const providerPresets: ProviderPreset[] = [
       },
     },
     category: "cn_official",
+    endpointCandidates: [
+      "https://token-plan.maas.qwencloudapi.com/apps/anthropic",
+      "https://token-plan.ap-southeast-1.maas.aliyuncs.com/apps/anthropic",
+    ],
     icon: "qwencloud",
     iconColor: "#6336E7",
   },
@@ -3175,5 +3192,31 @@ export const providerPresets: ProviderPreset[] = [
     },
     category: "aggregator",
     icon: "aicoming",
+  },
+  {
+    // OpenAI 平台 API Key（按量计费，和上面 ChatGPT 登录的「Codex」卡是两套额度），
+    // 经路由转成 Responses 发往 /v1/responses。
+    name: "OpenAI API",
+    websiteUrl: "https://platform.openai.com",
+    apiKeyUrl: "https://platform.openai.com/api-keys",
+    settingsConfig: {
+      env: {
+        ANTHROPIC_BASE_URL: "https://api.openai.com",
+        ANTHROPIC_AUTH_TOKEN: "",
+        ANTHROPIC_MODEL: "gpt-6.1-sol",
+        ANTHROPIC_DEFAULT_HAIKU_MODEL: "gpt-6-luna",
+        ANTHROPIC_DEFAULT_SONNET_MODEL: "gpt-6.1-sol",
+        ANTHROPIC_DEFAULT_OPUS_MODEL: "gpt-6.1-sol",
+        // 非 Claude 模型名 Claude Code 按 200K 算；272K 以上 OpenAI 按长上下文档加价，
+        // 同「Codex」卡钉两个值（GPT_CONTEXT_WINDOW_CAP）。
+        CLAUDE_CODE_MAX_CONTEXT_TOKENS: "272000",
+        CLAUDE_CODE_AUTO_COMPACT_WINDOW: "272000",
+      },
+    },
+    category: "cn_official",
+    apiFormat: "openai_responses",
+    endpointCandidates: ["https://api.openai.com"],
+    icon: "openai",
+    iconColor: "#00A67E",
   },
 ];

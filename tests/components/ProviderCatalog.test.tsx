@@ -43,6 +43,38 @@ const catalogs = {
 };
 
 describe("curated provider catalog", () => {
+  // These indices shipped in Classic v4.0.25. Upstream may remove or insert
+  // entries, but saved preset IDs must continue to resolve to the same provider.
+  it.each([
+    ["claude", 14, 138],
+    ["claude-desktop", 14, 128],
+    ["codex", 15, 136],
+    ["gemini", 5, 37],
+    ["grokbuild", 9, 54],
+    ["hermes", 12, 121],
+    ["openclaw", 12, 121],
+    ["opencode", 12, 109],
+    ["pi", 12, 115],
+    ["omp", 12, 115],
+  ] as const)(
+    "%s preserves legacy preset positions",
+    (app, ditIndex, lastIndex) => {
+      expect(catalogs[app][ditIndex].name).toBe("DIT.ai");
+      expect(isProviderPresetVisible(catalogs[app][ditIndex])).toBe(false);
+      expect(catalogs[app][lastIndex].name).toBe("AIComing");
+    },
+  );
+
+  it("appends new official presets and keeps new sponsor presets filtered", () => {
+    expect(providerPresets[139].name).toBe("OpenAI API");
+    expect(isProviderPresetVisible(providerPresets[139])).toBe(true);
+    const addedGemini = geminiProviderPresets.slice(38);
+    expect(addedGemini).toHaveLength(13);
+    expect(
+      addedGemini.filter(isProviderPresetVisible).map((p) => p.name),
+    ).toEqual(["Compshare"]);
+  });
+
   it.each(Object.entries(catalogs))(
     "%s offers Packy and Qiniu with original IDs and omits removed platforms even in search",
     (appId, presets) => {

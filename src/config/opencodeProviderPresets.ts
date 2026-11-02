@@ -7,6 +7,7 @@ export interface OpenCodeProviderPreset extends PresetFamilyFields {
   nameKey?: string; // i18n key for localized display name
   websiteUrl: string;
   apiKeyUrl?: string;
+  endpointCandidates?: string[];
   settingsConfig: OpenCodeProviderConfig;
   isOfficial?: boolean;
   isPartner?: boolean;
@@ -508,7 +509,6 @@ export const opencodeProviderPresets: OpenCodeProviderPreset[] = [
       },
     },
   },
-
   {
     name: "PackyCode",
     websiteUrl: "https://www.packyapi.ai",
@@ -1792,14 +1792,18 @@ export const opencodeProviderPresets: OpenCodeProviderPreset[] = [
     },
   },
   {
+    endpointCandidates: [
+      "https://api.a6api.vip/v1",
+      "https://api.a6api.com/v1",
+    ],
     name: "A6API",
-    websiteUrl: "https://www.a6api.com",
-    apiKeyUrl: "https://a6api.com/register?aff=AqNr",
+    websiteUrl: "https://www.a6api.vip",
+    apiKeyUrl: "https://a6api.vip/register?aff=AqNr",
     settingsConfig: {
       npm: "@ai-sdk/openai-compatible",
       name: "A6API",
       options: {
-        baseURL: "https://api.a6api.com/v1",
+        baseURL: "https://api.a6api.vip/v1",
         apiKey: "",
         setCacheKey: true,
       },
@@ -2907,6 +2911,10 @@ export const opencodeProviderPresets: OpenCodeProviderPreset[] = [
     },
   },
   {
+    endpointCandidates: [
+      "https://maas.qianwenaiapi.com/compatible-mode/v1",
+      "https://dashscope.aliyuncs.com/compatible-mode/v1",
+    ],
     name: "千问AI平台",
     family: "qianwen",
     planKey: "payg",
@@ -2917,7 +2925,7 @@ export const opencodeProviderPresets: OpenCodeProviderPreset[] = [
       npm: "@ai-sdk/openai-compatible",
       name: "千问AI平台",
       options: {
-        baseURL: "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        baseURL: "https://maas.qianwenaiapi.com/compatible-mode/v1",
         apiKey: "",
         setCacheKey: true,
       },
@@ -2942,8 +2950,8 @@ export const opencodeProviderPresets: OpenCodeProviderPreset[] = [
     templateValues: {
       baseURL: {
         label: "Base URL",
-        placeholder: "https://dashscope.aliyuncs.com/compatible-mode/v1",
-        defaultValue: "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        placeholder: "https://maas.qianwenaiapi.com/compatible-mode/v1",
+        defaultValue: "https://maas.qianwenaiapi.com/compatible-mode/v1",
         editorValue: "",
       },
       apiKey: {
@@ -2954,6 +2962,10 @@ export const opencodeProviderPresets: OpenCodeProviderPreset[] = [
     },
   },
   {
+    endpointCandidates: [
+      "https://token-plan.maas.qianwenaiapi.com/apps/anthropic/v1",
+      "https://token-plan.cn-beijing.maas.aliyuncs.com/apps/anthropic/v1",
+    ],
     name: "千问AI平台 Token Plan",
     family: "qianwen",
     planKey: "tokenPlan",
@@ -2965,8 +2977,7 @@ export const opencodeProviderPresets: OpenCodeProviderPreset[] = [
       npm: "@ai-sdk/anthropic",
       name: "千问AI平台 Token Plan",
       options: {
-        baseURL:
-          "https://token-plan.cn-beijing.maas.aliyuncs.com/apps/anthropic/v1",
+        baseURL: "https://token-plan.maas.qianwenaiapi.com/apps/anthropic/v1",
         apiKey: "",
         setCacheKey: true,
       },
@@ -2992,9 +3003,9 @@ export const opencodeProviderPresets: OpenCodeProviderPreset[] = [
       baseURL: {
         label: "Base URL",
         placeholder:
-          "https://token-plan.cn-beijing.maas.aliyuncs.com/apps/anthropic/v1",
+          "https://token-plan.maas.qianwenaiapi.com/apps/anthropic/v1",
         defaultValue:
-          "https://token-plan.cn-beijing.maas.aliyuncs.com/apps/anthropic/v1",
+          "https://token-plan.maas.qianwenaiapi.com/apps/anthropic/v1",
         editorValue: "",
       },
       apiKey: {
@@ -3009,6 +3020,10 @@ export const opencodeProviderPresets: OpenCodeProviderPreset[] = [
   // 按量付费走 OpenAI 兼容层（/compatible-mode/v1）；Token Plan 官方给的是
   // Anthropic 协议地址，且比 Claude Code 的多一段 /v1（AI SDK anthropic 惯例）。
   {
+    endpointCandidates: [
+      "https://ap-southeast-1.maas.qwencloudapi.com/compatible-mode/v1",
+      "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+    ],
     name: "QwenCloud",
     family: "qwencloud",
     planKey: "payg",
@@ -3018,7 +3033,8 @@ export const opencodeProviderPresets: OpenCodeProviderPreset[] = [
       npm: "@ai-sdk/openai-compatible",
       name: "QwenCloud",
       options: {
-        baseURL: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+        baseURL:
+          "https://ap-southeast-1.maas.qwencloudapi.com/compatible-mode/v1",
         apiKey: "",
         setCacheKey: true,
       },
@@ -3044,8 +3060,10 @@ export const opencodeProviderPresets: OpenCodeProviderPreset[] = [
     templateValues: {
       baseURL: {
         label: "Base URL",
-        placeholder: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
-        defaultValue: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+        placeholder:
+          "https://ap-southeast-1.maas.qwencloudapi.com/compatible-mode/v1",
+        defaultValue:
+          "https://ap-southeast-1.maas.qwencloudapi.com/compatible-mode/v1",
         editorValue: "",
       },
       apiKey: {
@@ -3095,6 +3113,10 @@ export const opencodeProviderPresets: OpenCodeProviderPreset[] = [
     },
   },
   {
+    endpointCandidates: [
+      "https://token-plan.maas.qwencloudapi.com/apps/anthropic/v1",
+      "https://token-plan.ap-southeast-1.maas.aliyuncs.com/apps/anthropic/v1",
+    ],
     name: "QwenCloud Token Plan",
     family: "qwencloud",
     planKey: "tokenPlan",
@@ -3105,8 +3127,7 @@ export const opencodeProviderPresets: OpenCodeProviderPreset[] = [
       npm: "@ai-sdk/anthropic",
       name: "QwenCloud Token Plan",
       options: {
-        baseURL:
-          "https://token-plan.ap-southeast-1.maas.aliyuncs.com/apps/anthropic/v1",
+        baseURL: "https://token-plan.maas.qwencloudapi.com/apps/anthropic/v1",
         apiKey: "",
         setCacheKey: true,
       },
@@ -3133,9 +3154,9 @@ export const opencodeProviderPresets: OpenCodeProviderPreset[] = [
       baseURL: {
         label: "Base URL",
         placeholder:
-          "https://token-plan.ap-southeast-1.maas.aliyuncs.com/apps/anthropic/v1",
+          "https://token-plan.maas.qwencloudapi.com/apps/anthropic/v1",
         defaultValue:
-          "https://token-plan.ap-southeast-1.maas.aliyuncs.com/apps/anthropic/v1",
+          "https://token-plan.maas.qwencloudapi.com/apps/anthropic/v1",
         editorValue: "",
       },
       apiKey: {
@@ -3613,7 +3634,6 @@ export const opencodeProviderPresets: OpenCodeProviderPreset[] = [
       },
     },
   },
-
   {
     name: "OpenCode Go",
     websiteUrl: "https://opencode.ai/go",
@@ -4908,5 +4928,34 @@ export const opencodeProviderPresets: OpenCodeProviderPreset[] = [
       },
     },
     icon: "aicoming",
+  },
+  {
+    // OpenAI 平台 API Key 直连 Responses（按量计费）
+    name: "OpenAI API",
+    websiteUrl: "https://platform.openai.com",
+    apiKeyUrl: "https://platform.openai.com/api-keys",
+    settingsConfig: {
+      npm: "@ai-sdk/openai",
+      name: "OpenAI API",
+      options: {
+        baseURL: "https://api.openai.com/v1",
+        apiKey: "",
+        setCacheKey: true,
+      },
+      models: {
+        "gpt-6.1-sol": { name: "GPT-6.1 Sol", reasoning: true },
+        "gpt-6-luna": { name: "GPT-6 Luna", reasoning: true },
+      },
+    },
+    category: "cn_official",
+    icon: "openai",
+    iconColor: "#00A67E",
+    templateValues: {
+      apiKey: {
+        label: "API Key",
+        placeholder: "sk-...",
+        editorValue: "",
+      },
+    },
   },
 ];

@@ -1,0 +1,33 @@
+{
+  "version": "4.0.26",
+  "items": [
+    {
+      "type": "new",
+      "zh": "新增 MCP 连通性检查，支持 stdio、HTTP 和 SSE",
+      "zh-TW": "新增 MCP 連線檢查，支援 stdio、HTTP 和 SSE",
+      "en": "Check MCP connectivity for stdio, HTTP and SSE servers",
+      "ja": "stdio・HTTP・SSE の MCP 接続チェックを追加"
+    },
+    {
+      "type": "new",
+      "zh": "新增可选 Codex 配额保护和子代理并发限制",
+      "zh-TW": "新增可選 Codex 配額保護和子代理並行限制",
+      "en": "Optional Codex quota protection and sub-agent concurrency limits",
+      "ja": "任意の Codex クォータ保護とサブエージェント同時実行数の設定を追加"
+    },
+    {
+      "type": "improve",
+      "zh": "支持自动汇率、原生配置编辑和登录链接偏好设置",
+      "zh-TW": "支援自動匯率、原生設定編輯和登入連結偏好設定",
+      "en": "Automatic exchange rates, native configuration editors and login-link preferences",
+      "ja": "自動為替レート、ネイティブ設定編集、ログインリンク設定に対応"
+    },
+    {
+      "type": "fix",
+      "zh": "增强本地路由防护，修复统计重复和 Windows 界面问题",
+      "zh-TW": "增強本機路由防護，修復統計重複和 Windows 介面問題",
+      "en": "Harden local routing and fix duplicate usage records and Windows UI issues",
+      "ja": "ローカルルーターの保護を強化し、使用量の重複と Windows の表示問題を修正"
+    }
+  ]
+}

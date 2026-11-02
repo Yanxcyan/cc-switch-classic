@@ -25,6 +25,7 @@ export interface OpenClawProviderPreset extends PresetFamilyFields {
   nameKey?: string; // i18n key for localized display name
   websiteUrl: string;
   apiKeyUrl?: string;
+  endpointCandidates?: string[];
   /** OpenClaw settings_config structure */
   settingsConfig: OpenClawProviderConfig;
   isOfficial?: boolean;
@@ -323,7 +324,6 @@ export const openclawProviderPresets: OpenClawProviderPreset[] = [
       modelCatalog: { "kimi-coding/kimi-for-coding": { alias: "Kimi" } },
     },
   },
-
   {
     name: "PackyCode",
     websiteUrl: "https://www.packyapi.ai",
@@ -2155,11 +2155,15 @@ export const openclawProviderPresets: OpenClawProviderPreset[] = [
     },
   },
   {
+    endpointCandidates: [
+      "https://api.a6api.vip/v1",
+      "https://api.a6api.com/v1",
+    ],
     name: "A6API",
-    websiteUrl: "https://www.a6api.com",
-    apiKeyUrl: "https://a6api.com/register?aff=AqNr",
+    websiteUrl: "https://www.a6api.vip",
+    apiKeyUrl: "https://a6api.vip/register?aff=AqNr",
     settingsConfig: {
-      baseUrl: "https://api.a6api.com/v1",
+      baseUrl: "https://api.a6api.vip/v1",
       apiKey: "",
       api: "openai-completions",
       models: [
@@ -4044,6 +4048,10 @@ export const openclawProviderPresets: OpenClawProviderPreset[] = [
     },
   },
   {
+    endpointCandidates: [
+      "https://maas.qianwenaiapi.com/compatible-mode/v1",
+      "https://dashscope.aliyuncs.com/compatible-mode/v1",
+    ],
     name: "千问AI平台",
     family: "qianwen",
     planKey: "payg",
@@ -4051,7 +4059,7 @@ export const openclawProviderPresets: OpenClawProviderPreset[] = [
     apiKeyUrl:
       "https://platform.qianwenai.com/home/api-keys?utm_content=g_20000002972",
     settingsConfig: {
-      baseUrl: "https://dashscope.aliyuncs.com/compatible-mode/v1",
+      baseUrl: "https://maas.qianwenaiapi.com/compatible-mode/v1",
       apiKey: "",
       api: "openai-completions",
       models: [
@@ -4068,8 +4076,8 @@ export const openclawProviderPresets: OpenClawProviderPreset[] = [
     templateValues: {
       baseUrl: {
         label: "Base URL",
-        placeholder: "https://dashscope.aliyuncs.com/compatible-mode/v1",
-        defaultValue: "https://dashscope.aliyuncs.com/compatible-mode/v1",
+        placeholder: "https://maas.qianwenaiapi.com/compatible-mode/v1",
+        defaultValue: "https://maas.qianwenaiapi.com/compatible-mode/v1",
         editorValue: "",
       },
       apiKey: {
@@ -4084,6 +4092,10 @@ export const openclawProviderPresets: OpenClawProviderPreset[] = [
     },
   },
   {
+    endpointCandidates: [
+      "https://token-plan.maas.qianwenaiapi.com/apps/anthropic",
+      "https://token-plan.cn-beijing.maas.aliyuncs.com/apps/anthropic",
+    ],
     name: "千问AI平台 Token Plan",
     family: "qianwen",
     planKey: "tokenPlan",
@@ -4092,7 +4104,7 @@ export const openclawProviderPresets: OpenClawProviderPreset[] = [
     apiKeyUrl:
       "https://platform.qianwenai.com/home/api-keys?utm_content=g_20000002978",
     settingsConfig: {
-      baseUrl: "https://token-plan.cn-beijing.maas.aliyuncs.com/apps/anthropic",
+      baseUrl: "https://token-plan.maas.qianwenaiapi.com/apps/anthropic",
       apiKey: "",
       api: "anthropic-messages",
       models: [
@@ -4120,10 +4132,8 @@ export const openclawProviderPresets: OpenClawProviderPreset[] = [
     templateValues: {
       baseUrl: {
         label: "Base URL",
-        placeholder:
-          "https://token-plan.cn-beijing.maas.aliyuncs.com/apps/anthropic",
-        defaultValue:
-          "https://token-plan.cn-beijing.maas.aliyuncs.com/apps/anthropic",
+        placeholder: "https://token-plan.maas.qianwenaiapi.com/apps/anthropic",
+        defaultValue: "https://token-plan.maas.qianwenaiapi.com/apps/anthropic",
         editorValue: "",
       },
       apiKey: {
@@ -4148,13 +4158,17 @@ export const openclawProviderPresets: OpenClawProviderPreset[] = [
   // modelCatalog 必须逐条覆盖 models：OpenClaw 把 agents.defaults.models
   // 当白名单，漏写的模型会在客户端里被隐藏。
   {
+    endpointCandidates: [
+      "https://ap-southeast-1.maas.qwencloudapi.com/apps/anthropic/v1",
+      "https://dashscope-intl.aliyuncs.com/apps/anthropic/v1",
+    ],
     name: "QwenCloud",
     family: "qwencloud",
     planKey: "payg",
     websiteUrl: "https://home.qwencloud.com/?utm_content=g_20000002974",
     apiKeyUrl: "https://home.qwencloud.com/api-keys?utm_content=g_20000002975",
     settingsConfig: {
-      baseUrl: "https://dashscope-intl.aliyuncs.com/apps/anthropic/v1",
+      baseUrl: "https://ap-southeast-1.maas.qwencloudapi.com/apps/anthropic/v1",
       apiKey: "",
       api: "anthropic-messages",
       models: [
@@ -4189,8 +4203,10 @@ export const openclawProviderPresets: OpenClawProviderPreset[] = [
     templateValues: {
       baseUrl: {
         label: "Base URL",
-        placeholder: "https://dashscope-intl.aliyuncs.com/apps/anthropic/v1",
-        defaultValue: "https://dashscope-intl.aliyuncs.com/apps/anthropic/v1",
+        placeholder:
+          "https://ap-southeast-1.maas.qwencloudapi.com/apps/anthropic/v1",
+        defaultValue:
+          "https://ap-southeast-1.maas.qwencloudapi.com/apps/anthropic/v1",
         editorValue: "",
       },
       apiKey: {
@@ -4270,6 +4286,10 @@ export const openclawProviderPresets: OpenClawProviderPreset[] = [
     },
   },
   {
+    endpointCandidates: [
+      "https://token-plan.maas.qwencloudapi.com/apps/anthropic/v1",
+      "https://token-plan.ap-southeast-1.maas.aliyuncs.com/apps/anthropic/v1",
+    ],
     name: "QwenCloud Token Plan",
     family: "qwencloud",
     planKey: "tokenPlan",
@@ -4277,8 +4297,7 @@ export const openclawProviderPresets: OpenClawProviderPreset[] = [
       "https://www.qwencloud.com/pricing/token-plan?utm_content=g_20000002980",
     apiKeyUrl: "https://home.qwencloud.com/api-keys?utm_content=g_20000002981",
     settingsConfig: {
-      baseUrl:
-        "https://token-plan.ap-southeast-1.maas.aliyuncs.com/apps/anthropic/v1",
+      baseUrl: "https://token-plan.maas.qwencloudapi.com/apps/anthropic/v1",
       apiKey: "",
       api: "anthropic-messages",
       models: [
@@ -4314,9 +4333,9 @@ export const openclawProviderPresets: OpenClawProviderPreset[] = [
       baseUrl: {
         label: "Base URL",
         placeholder:
-          "https://token-plan.ap-southeast-1.maas.aliyuncs.com/apps/anthropic/v1",
+          "https://token-plan.maas.qwencloudapi.com/apps/anthropic/v1",
         defaultValue:
-          "https://token-plan.ap-southeast-1.maas.aliyuncs.com/apps/anthropic/v1",
+          "https://token-plan.maas.qwencloudapi.com/apps/anthropic/v1",
         editorValue: "",
       },
       apiKey: {
@@ -4837,7 +4856,6 @@ export const openclawProviderPresets: OpenClawProviderPreset[] = [
       },
     },
   },
-
   {
     name: "AiHubMix",
     websiteUrl: "https://aihubmix.com",
@@ -7388,5 +7406,55 @@ export const openclawProviderPresets: OpenClawProviderPreset[] = [
       },
     },
     icon: "aicoming",
+  },
+  {
+    // OpenAI 平台 API Key 直连 Responses（按量计费）。前缀不用 openai：那是 OpenClaw 内置供应商的键
+    name: "OpenAI API",
+    websiteUrl: "https://platform.openai.com",
+    apiKeyUrl: "https://platform.openai.com/api-keys",
+    settingsConfig: {
+      baseUrl: "https://api.openai.com/v1",
+      apiKey: "",
+      api: "openai-responses",
+      models: [
+        {
+          id: "gpt-6.1-sol",
+          name: "GPT-6.1 Sol",
+          reasoning: true,
+          input: ["text", "image"],
+          contextWindow: 272000,
+          maxTokens: 128000,
+          cost: { input: 2, output: 10, cacheRead: 0.1, cacheWrite: 2.5 },
+        },
+        {
+          id: "gpt-6-luna",
+          name: "GPT-6 Luna",
+          reasoning: true,
+          input: ["text", "image"],
+          contextWindow: 272000,
+          maxTokens: 128000,
+          cost: { input: 0.1, output: 0.5, cacheRead: 0.01, cacheWrite: 0.125 },
+        },
+      ],
+    },
+    category: "cn_official",
+    icon: "openai",
+    iconColor: "#00A67E",
+    templateValues: {
+      apiKey: {
+        label: "API Key",
+        placeholder: "sk-...",
+        editorValue: "",
+      },
+    },
+    suggestedDefaults: {
+      model: {
+        primary: "openai-api/gpt-6.1-sol",
+      },
+      modelCatalog: {
+        "openai-api/gpt-6.1-sol": { alias: "GPT-6.1 Sol" },
+        "openai-api/gpt-6-luna": { alias: "GPT-6 Luna" },
+      },
+    },
   },
 ];

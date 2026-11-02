@@ -30,6 +30,7 @@ export interface PiProviderPreset extends PresetFamilyFields {
   providerKey: string;
   websiteUrl: string;
   apiKeyUrl?: string;
+  endpointCandidates?: string[];
   settingsConfig: {
     name: string;
     baseUrl: string;
@@ -1050,13 +1051,17 @@ const piProviderPresetDefinitions: PiProviderPreset[] = [
     iconColor: "#3370FF",
   },
   {
+    endpointCandidates: [
+      "https://api.a6api.vip/v1",
+      "https://api.a6api.com/v1",
+    ],
     name: "A6API",
     providerKey: "cc-switch-a6-api",
-    websiteUrl: "https://www.a6api.com",
-    apiKeyUrl: "https://a6api.com/register?aff=AqNr",
+    websiteUrl: "https://www.a6api.vip",
+    apiKeyUrl: "https://a6api.vip/register?aff=AqNr",
     settingsConfig: {
       name: "A6API",
-      baseUrl: "https://api.a6api.com/v1",
+      baseUrl: "https://api.a6api.vip/v1",
       api: "openai-completions",
       apiKey: "",
       models: [
@@ -1517,6 +1522,10 @@ const piProviderPresetDefinitions: PiProviderPreset[] = [
     iconColor: "#0F62FE",
   },
   {
+    endpointCandidates: [
+      "https://maas.qianwenaiapi.com/compatible-mode/v1",
+      "https://dashscope.aliyuncs.com/compatible-mode/v1",
+    ],
     name: "千问AI平台",
     family: "qianwen",
     planKey: "payg",
@@ -1526,7 +1535,7 @@ const piProviderPresetDefinitions: PiProviderPreset[] = [
       "https://platform.qianwenai.com/home/api-keys?utm_content=g_20000002972",
     settingsConfig: {
       name: "千问AI平台",
-      baseUrl: "https://dashscope.aliyuncs.com/compatible-mode/v1",
+      baseUrl: "https://maas.qianwenaiapi.com/compatible-mode/v1",
       api: "openai-completions",
       apiKey: "",
       models: [
@@ -1543,6 +1552,10 @@ const piProviderPresetDefinitions: PiProviderPreset[] = [
     iconColor: "#624AFF",
   },
   {
+    endpointCandidates: [
+      "https://token-plan.maas.qianwenaiapi.com/compatible-mode/v1",
+      "https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+    ],
     name: "千问AI平台 Token Plan",
     family: "qianwen",
     planKey: "tokenPlan",
@@ -1553,8 +1566,7 @@ const piProviderPresetDefinitions: PiProviderPreset[] = [
       "https://platform.qianwenai.com/home/api-keys?utm_content=g_20000002978",
     settingsConfig: {
       name: "千问AI平台 Token Plan",
-      baseUrl:
-        "https://token-plan.cn-beijing.maas.aliyuncs.com/compatible-mode/v1",
+      baseUrl: "https://token-plan.maas.qianwenaiapi.com/compatible-mode/v1",
       api: "openai-completions",
       apiKey: "",
       models: [
@@ -1576,6 +1588,10 @@ const piProviderPresetDefinitions: PiProviderPreset[] = [
   // 与上面国内条目是两套独立站点：域名、控制台、密钥互不通用。
   // 按量付费与 Token Plan 都走 OpenAI 兼容层（/compatible-mode/v1）。
   {
+    endpointCandidates: [
+      "https://ap-southeast-1.maas.qwencloudapi.com/compatible-mode/v1",
+      "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+    ],
     name: "QwenCloud",
     family: "qwencloud",
     planKey: "payg",
@@ -1584,7 +1600,8 @@ const piProviderPresetDefinitions: PiProviderPreset[] = [
     apiKeyUrl: "https://home.qwencloud.com/api-keys?utm_content=g_20000002975",
     settingsConfig: {
       name: "QwenCloud",
-      baseUrl: "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+      baseUrl:
+        "https://ap-southeast-1.maas.qwencloudapi.com/compatible-mode/v1",
       api: "openai-completions",
       apiKey: "",
       models: [
@@ -1631,6 +1648,10 @@ const piProviderPresetDefinitions: PiProviderPreset[] = [
     iconColor: "#6336E7",
   },
   {
+    endpointCandidates: [
+      "https://token-plan.maas.qwencloudapi.com/compatible-mode/v1",
+      "https://token-plan.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1",
+    ],
     name: "QwenCloud Token Plan",
     family: "qwencloud",
     planKey: "tokenPlan",
@@ -1640,8 +1661,7 @@ const piProviderPresetDefinitions: PiProviderPreset[] = [
     apiKeyUrl: "https://home.qwencloud.com/api-keys?utm_content=g_20000002981",
     settingsConfig: {
       name: "QwenCloud Token Plan",
-      baseUrl:
-        "https://token-plan.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1",
+      baseUrl: "https://token-plan.maas.qwencloudapi.com/compatible-mode/v1",
       api: "openai-completions",
       apiKey: "",
       models: [
@@ -1840,6 +1860,7 @@ const piProviderPresetDefinitions: PiProviderPreset[] = [
         piModel("minimax/minimax-m3.1-flash", {
           id: "MiniMax-M3.1-Flash",
           maxTokens: 131072,
+          thinkingProfile: "minimaxM31",
         }),
         piModel("minimax/minimax-m3", {
           id: "MiniMax-M3",
@@ -1871,6 +1892,7 @@ const piProviderPresetDefinitions: PiProviderPreset[] = [
         piModel("minimax/minimax-m3.1-flash", {
           id: "MiniMax-M3.1-Flash",
           maxTokens: 131072,
+          thinkingProfile: "minimaxM31",
         }),
         piModel("minimax/minimax-m3", {
           id: "MiniMax-M3",
