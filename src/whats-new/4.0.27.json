@@ -1,0 +1,33 @@
+{
+  "version": "4.0.27",
+  "items": [
+    {
+      "type": "new",
+      "zh": "顶栏新增 GitHub Copilot CLI 和 WorkBuddy",
+      "zh-TW": "頂欄新增 GitHub Copilot CLI 和 WorkBuddy",
+      "en": "Switch to GitHub Copilot CLI or WorkBuddy in the Classic header to manage providers and sessions",
+      "ja": "ヘッダーに GitHub Copilot CLI と WorkBuddy を追加"
+    },
+    {
+      "type": "new",
+      "zh": "从供应商页的「更多」菜单管理插件，技能仓库支持使用令牌访问私有仓库",
+      "zh-TW": "從供應商頁的「更多」選單管理外掛，技能儲存庫支援使用權杖存取私有儲存庫",
+      "en": "Manage plugins from the provider page’s More menu and access private skill repositories with a token",
+      "ja": "プロバイダーページのメニューからプラグインを管理。トークンで非公開のスキルリポジトリにもアクセス可能"
+    },
+    {
+      "type": "improve",
+      "zh": "代理设置新增出口 IP 检测，可为经路由的供应商设置费用倍率",
+      "zh-TW": "代理設定新增出口 IP 檢測，可為經路由的供應商設定費用倍率",
+      "en": "Check the outbound IP in proxy settings and set cost multipliers for routed providers",
+      "ja": "プロキシ設定で出口 IP を確認でき、ルーティングするプロバイダーごとに料金倍率を設定可能"
+    },
+    {
+      "type": "fix",
+      "zh": "修复 Codex 路由、OpenCode 历史用量及模型计价",
+      "zh-TW": "修正 Codex 路由、OpenCode 歷史用量及模型計價",
+      "en": "Improve Codex routing compatibility, usage imports from older OpenCode sessions, and model pricing",
+      "ja": "Codex のルーティング、OpenCode の使用量取り込み、モデル料金の計算を修正"
+    }
+  ]
+}

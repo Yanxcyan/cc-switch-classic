@@ -68,6 +68,14 @@ function presetBaseUrl(appId: AppId, preset: PresetEntry["preset"]): string {
   ) {
     return p.baseURL;
   }
+  if (appId === "copilot") {
+    const url = p.settingsConfig?.provider?.baseUrl;
+    return typeof url === "string" ? url : "";
+  }
+  if (appId === "workbuddy") {
+    const url = p.settingsConfig?.url;
+    return typeof url === "string" ? url : "";
+  }
   const configAppId =
     appId === "dsh" ? "mcode" : appId === "agy" ? "gemini" : appId;
   return extractBaseUrlForUsageDetection(configAppId, p.settingsConfig) ?? "";

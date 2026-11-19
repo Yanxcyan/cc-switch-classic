@@ -19,6 +19,8 @@ import { ompProviderPresets } from "@/config/ompProviderPresets";
 import { kimiProviderPresets } from "@/config/kimiProviderPresets";
 import { mcodeProviderPresets } from "@/config/mcodeProviderPresets";
 import { dshProviderPresets } from "@/config/dshProviderPresets";
+import { copilotProviderPresets } from "@/config/copilotProviderPresets";
+import { workbuddyProviderPresets } from "@/config/workbuddyProviderPresets";
 
 type Props = Parameters<typeof useApiKeyLink>[0];
 
@@ -67,6 +69,33 @@ function baseUrl(app: AppId, preset: object): string {
 }
 
 describe("API Key links across provider catalogs", () => {
+  it.each([
+    ["copilot", copilotProviderPresets, "https://api.a6api.com/v1"],
+    [
+      "workbuddy",
+      workbuddyProviderPresets,
+      "https://api.a6api.com/v1/chat/completions",
+    ],
+  ] as const)(
+    "recognizes legacy sponsor endpoints for %s",
+    (appId, presets, url) => {
+      render(
+        <LinkPreview
+          appId={appId}
+          category="third_party"
+          selectedPresetId={null}
+          presetEntries={presets.map((preset) => ({
+            id: preset.providerKey,
+            preset,
+          }))}
+          formWebsiteUrl="https://www.a6api.com"
+          formBaseUrl={url}
+        />,
+      );
+      expect(screen.queryByRole("link")).toBeNull();
+    },
+  );
+
   it.each(Object.entries(catalogs))(
     "%s recognizes a saved A6API endpoint from before the domain change",
     (app, presets) => {

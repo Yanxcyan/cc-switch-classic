@@ -4,7 +4,8 @@ import { AppSwitcher } from "@/classic/AppSwitcher";
 import { ClassicHeaderContext } from "@/classic/ClassicHeaderContext";
 import { AppPageHeader } from "@/classic/AppPageHeaderAdapter";
 import { FullScreenPanel } from "@/components/common/FullScreenPanel";
-import { APP_IDS, DEFAULT_VISIBLE_APPS } from "@/config/appConfig";
+import { APP_IDS } from "@/config/appSpecs";
+import { DEFAULT_VISIBLE_APPS } from "@/config/appConfig";
 import { APP_DISPLAY_NAME } from "@/components/shell/AppGlyph";
 
 describe("Classic navigation", () => {

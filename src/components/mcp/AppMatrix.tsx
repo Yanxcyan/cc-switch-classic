@@ -109,6 +109,9 @@ const APP_TOGGLE_COLORS: Record<AppId, string> = {
   dsh: "border-indigo-500 text-indigo-700 dark:text-indigo-400 bg-indigo-500/10",
   agy: "border-teal-500 text-teal-600 dark:text-teal-400 bg-teal-500/10",
   omp: "border-pink-500 text-pink-600 dark:text-pink-400 bg-pink-500/10",
+  copilot:
+    "border-slate-500 text-slate-700 dark:text-slate-300 bg-slate-500/10",
+  workbuddy: "border-teal-500 text-teal-700 dark:text-teal-300 bg-teal-500/10",
 };
 
 interface MatrixCellProps {

@@ -80,6 +80,8 @@ Skills 复用现有应用同步、导入、更新和迁移机制，并沿用 Kim
 
 残留的 `<文件>.lock`（上一个写入进程崩溃留下）不会被当成永久占用：锁里记录的 PID 已经不存在的直接接管，两个平台再用修改时间兜底；写入方还活着时仍然按冲突处理，不会两个进程同时改一个文件。
 
+若某个 profile 目录是指向另一个 profile 的链接（符号链接、Windows junction，或大小写、8.3 短名等路径别名），两者指向同一个 `cordis.patch.yml`。CC Switch 按文件的真实位置识别目标，同一个文件只加一把锁、只写一次，不会因为同一份文件被列出两遍而报并发冲突；没有别名时各 profile 仍各自独立写入。完成记录 `$DSH_HOME/.cc-switch-profile-sync.json` 按实体文件记名，别名期间只记录被指向的那个 profile 名。
+
 `headless` profile 的默认组合把 `credentials` 插件关掉了（`dsh --profile headless --dump-config` 里是 `disabled: true`），所以 `apiKeyEnv` 引用在 headless 里解析不到，用 CC Switch 添加的供应商在 headless 里会报 `MISSING_CREDENTIAL`；`web`、`acp` 和 Desktop 正常。需要在 headless 里用同一个 Key 时，把 `CC_SWITCH_DSH_<供应商>` 导出到环境变量，或在那个 profile 里启用 `credentials` 插件。
 
 ## 验证记录
@@ -88,8 +90,8 @@ Skills 复用现有应用同步、导入、更新和迁移机制，并沿用 Kim
 
 - `pnpm typecheck`、`pnpm format:check`、`pnpm build:renderer`、`cargo fmt --check`、`cargo clippy --lib -- -D warnings` 通过。
 - `cargo test --lib dsh -- --test-threads=1`：21 项通过（其中 1 项为名称匹配到的既有 WebSocket 测试）；覆盖出厂 `[]` 模板首次添加供应商和 MCP、`insert` 条目的读写与移除、空 profile 往返、登录凭据缺少 `refs`、原生工具结果及错误状态，以及保留压缩前原始对话和完整工具输出。
-- `cargo test --test dsh_commands`：2 项通过，覆盖完整供应商操作、原生配置保留、MCP 写入失败时的文件与数据库一致性。
-- `cargo test --test mcp_commands -- --test-threads=1`：36 项通过，默认 MCP 同步目标包含 `dsh`。
+- `cargo test --test integration dsh_commands::`：2 项通过，覆盖完整供应商操作、原生配置保留、MCP 写入失败时的文件与数据库一致性。
+- `cargo test --test integration mcp_commands:: -- --test-threads=1`：36 项通过，默认 MCP 同步目标包含 `dsh`。
 - 将实际 MCP 新增、修改和移除流程生成的补丁交给 DSH 发布包中的 `applyEntryPatches`：三阶段均无警告，新增后确实出现在插件列表中，修改和移除结果符合预期。
 - DeepSeek 预设 6 项前端测试通过；使用 `@deepseek-ai/dsh-llm-pi-ai@0.2.1-rc.2` 发布包中的推理档位和兼容字段校验函数，验证全部 113 个预设、387 个模型通过。
 - 前端全量首轮共 3269 项，3263 项通过、6 项失败。更新新增应用涉及的来源数量、隐藏应用 fixture、Skills 导入字段和图标文字定位断言后，涉及的 80 项用例分别复测全部通过；其中应用集成测试单独运行通过。

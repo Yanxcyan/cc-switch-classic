@@ -37,7 +37,9 @@ import { BackupListSection } from "@/components/settings/BackupListSection";
 import { WebdavSyncSection } from "@/components/settings/WebdavSyncSection";
 import { AboutSection } from "@/components/settings/AboutSection";
 import { RoutingSection } from "@/components/settings/sections/RoutingSection";
+import { PrivacyFilterConfigPanel } from "@/components/settings/PrivacyFilterConfigPanel";
 import { GlobalProxySettings } from "@/components/settings/GlobalProxySettings";
+import { IpDiagnostics } from "@/components/settings/IpDiagnostics";
 import { LogConfigPanel } from "@/components/settings/LogConfigPanel";
 import { GeneralSection } from "@/components/settings/sections/GeneralSection";
 import { AppConfigSection } from "@/components/settings/sections/AppConfigSection";
@@ -52,20 +54,7 @@ import { useImportExport } from "@/hooks/useImportExport";
 import type { SettingsFormState } from "@/hooks/useSettings";
 import { isTextEditableTarget } from "@/utils/domUtils";
 import { useUnsavedChangesRegistration } from "@/lib/unsavedChanges";
-
-const DIRECTORY_FIELDS = [
-  "claudeConfigDir",
-  "codexConfigDir",
-  "geminiConfigDir",
-  "grokConfigDir",
-  "opencodeConfigDir",
-  "openclawConfigDir",
-  "hermesConfigDir",
-  "piConfigDir",
-  "ompConfigDir",
-] as const;
-
-const normalizeDirectory = (value?: string) => value?.trim() || undefined;
+import { DIRECTORY_APPS, sanitizeDir } from "@/config/directoryApps";
 
 const SECTION_ICON: Record<
   SettingsSection,
@@ -386,10 +375,9 @@ export function SettingsPage({
   const directoriesDirty = Boolean(
     settings &&
       savedSettings &&
-      DIRECTORY_FIELDS.some(
-        (field) =>
-          normalizeDirectory(settings[field]) !==
-          normalizeDirectory(savedSettings[field]),
+      DIRECTORY_APPS.some(
+        ({ field }) =>
+          sanitizeDir(settings[field]) !== sanitizeDir(savedSettings[field]),
       ),
   );
   // Only directory drafts need an explicit Save. Theme, tray and other toggles
@@ -427,17 +415,20 @@ export function SettingsPage({
         return <RoutingSection onOpenApp={onOpenApp} />;
       case "network":
         return (
-          <SettingsBlock
-            title={t("settings.advanced.globalProxy.title")}
-            help={{
-              title: t("settings.advanced.globalProxy.title"),
-              body: t("settings.advanced.globalProxy.description"),
-            }}
-          >
-            <div className="rounded-panel border border-border bg-surface p-5">
-              <GlobalProxySettings />
-            </div>
-          </SettingsBlock>
+          <>
+            <SettingsBlock
+              title={t("settings.advanced.globalProxy.title")}
+              help={{
+                title: t("settings.advanced.globalProxy.title"),
+                body: t("settings.advanced.globalProxy.description"),
+              }}
+            >
+              <div className="rounded-panel border border-border bg-surface p-5">
+                <GlobalProxySettings />
+              </div>
+            </SettingsBlock>
+            <IpDiagnostics />
+          </>
         );
       case "data":
         return (
@@ -533,6 +524,15 @@ export function SettingsPage({
               </div>
             </SettingsBlock>
             <SettingsBlock
+              title={t("settings.advanced.privacyFilter.title")}
+              help={{
+                title: t("settings.advanced.privacyFilter.title"),
+                body: t("settings.advanced.privacyFilter.description"),
+              }}
+            >
+              <PrivacyFilterConfigPanel />
+            </SettingsBlock>
+            <SettingsBlock
               title={t("settings.advanced.logConfig.title")}
               help={{
                 title: t("settings.advanced.logConfig.title"),
@@ -556,7 +556,13 @@ export function SettingsPage({
           </>
         );
       case "about":
-        return <AboutSection isPortable={isPortable} />;
+        return (
+          <AboutSection
+            isPortable={isPortable}
+            autoUpdateEnabled={settings?.autoUpdateEnabled ?? false}
+            onAutoSave={handleAutoSave}
+          />
+        );
     }
   };
 

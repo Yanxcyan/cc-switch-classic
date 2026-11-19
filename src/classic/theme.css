@@ -1,5 +1,18 @@
 /* Classic skin. Keep upstream token names so all v4 business pages inherit it.
  * The extra specificity makes these overrides independent of import order. */
+:root:not([data-density="comfortable"]) {
+  --fs-badge: 10px;
+  --fs-body: 14px;
+  --h-control: 36px;
+  --h-control-sm: 32px;
+}
+
+html:root[data-density="comfortable"] {
+  --fs-body: 15px;
+  --h-control: 40px;
+  --h-control-sm: 36px;
+}
+
 :root:root {
   --background: 0 0% 100%;
   --foreground: 240 10% 3.9%;

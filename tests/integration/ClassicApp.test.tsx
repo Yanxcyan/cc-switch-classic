@@ -92,6 +92,11 @@ vi.mock("@/components/prompts/PromptPanel", () => ({
 vi.mock("@/components/skills/UnifiedSkillsPanel", () => ({
   default: () => <div>skills</div>,
 }));
+vi.mock("@/components/plugins/PluginsPage", () => ({
+  PluginsPage: ({ initialApp }: { initialApp: string }) => (
+    <div data-testid="plugins">{initialApp}</div>
+  ),
+}));
 vi.mock("@/components/mcp/UnifiedMcpPanel", async () => {
   const { useUnsavedChangesTracker } = await vi.importActual<
     typeof import("@/lib/unsavedChanges")
@@ -174,6 +179,19 @@ describe("ClassicApp navigation", () => {
     fireEvent.click(screen.getByText("Discard"));
     expect(await screen.findByTestId("settings")).toHaveTextContent("general");
     expect(screen.queryByLabelText("mcp draft")).toBeNull();
+  });
+
+  it("opens plugin management from the Classic provider menu", async () => {
+    mountApp();
+    await ready();
+    const more = screen.getByRole("button", { name: "appPage.moreActions" });
+    fireEvent.keyDown(more, { key: "ArrowDown" });
+    fireEvent.click(
+      await screen.findByRole("menuitem", { name: "nav.plugins" }),
+    );
+    expect(await screen.findByTestId("plugins")).toHaveTextContent("claude");
+    fireEvent.click(screen.getByRole("button", { name: "common.back" }));
+    await ready();
   });
 
   it("resets an internal auth tab when Ctrl+, explicitly requests general again", async () => {

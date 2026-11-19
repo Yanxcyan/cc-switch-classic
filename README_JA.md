@@ -2,7 +2,7 @@
 
 # CC Switch Classic
 
-### Claude Code、Claude Desktop、Codex、Gemini CLI、Grok Build、OpenCode、OpenClaw、Hermes Agent、Pi、MiniMax Code、Kimi Code、Oh My Pi のオールインワン管理ツール
+### Claude Code、Claude Desktop、Codex、Gemini CLI、Grok Build、OpenCode、OpenClaw、Hermes Agent、Pi、MiniMax Code、Kimi Code、Oh My Pi、DeepSeek Harness、Antigravity CLI、GitHub Copilot CLI、WorkBuddy のオールインワン管理ツール
 
 **ワンクリックで API プロバイダを切り替え、MCP・Skills・プロンプトを一元管理。JSON / TOML / YAML の設定ファイルを手作業で編集する必要はもうありません。**
 
@@ -27,7 +27,7 @@ Claude Code、Codex、Gemini CLI などの AI コーディングツールは、�
 
 **CC Switch** は、こうした作業を 1 つのデスクトップアプリに集約します。プリセットを選んでキーを入力すれば、ワンクリックで切り替えられます。切り替え時に置き換えるのはアドレス、キー、モデルといった接続情報だけで、自分で追加したプラグイン、フック、MCP、コメントはそのまま残ります。
 
-- **1 つのアプリで 12 のツール** — Claude Code、Claude Desktop、Codex、Gemini CLI、Grok Build、OpenCode、OpenClaw、Hermes、Pi、MiniMax Code、Kimi Code、Oh My Pi
+- **1 つのアプリで 16 のツール** — Claude Code、Claude Desktop、Codex、Gemini CLI、Grok Build、OpenCode、OpenClaw、Hermes、Pi、MiniMax Code、Kimi Code、Oh My Pi、DeepSeek Harness、Antigravity CLI、GitHub Copilot CLI、WorkBuddy
 - **手動編集は不要** — AWS Bedrock、NVIDIA NIM、コミュニティリレーなど 90 以上のプロバイダプリセットを内蔵
 - **直接接続・ルーティング・集約を用途に応じて選択** — 直接接続はツールがプロバイダへ直接つなぎます。ルーティングはローカルで転送し、API 形式の変換と自動フェイルオーバーにより、Claude Code で GPT を、Codex で Claude を使えるようにします。集約は複数のプロバイダのモデルを Claude Code や Codex の 1 つのモデル一覧にまとめ、選んだモデルに応じてそのプロバイダへリクエストを送ります
 - **MCP・Skills・プロンプトを一元管理** — MCP と Skills は一度追加すれば、ツールごとにチェックを入れて同期。プロンプトはツールごとに個別に管理
@@ -130,7 +130,11 @@ Arch Linux では Classic AppImage を利用できます。上流の Homebrew ca
 | Pi | 共存 | – | – | – | ✓ | ✓ | AGENTS.md、SYSTEM.md、プロンプトテンプレート | ✓ | ✓ |
 | MiniMax Code | 共存 | – | – | – | ✓ | ✓ | AGENTS.md | ✓ | ✓ |
 | Kimi Code | 共存 | – | – | – | ✓ | ✓ | AGENTS.md | ✓ | ✓ |
-| Oh My Pi | 共存 | – | – | – | ✓ | ✓ | AGENTS.md | ✓ | – |
+| Oh My Pi | 共存 | – | – | – | ✓ | ✓ | AGENTS.md | ✓ | ✓ |
+| DeepSeek Harness | 共存 | – | – | – | ✓ | ✓ | ✓ | ✓ | ✓ |
+| Antigravity CLI | 起動 | – | – | – | ✓ | ✓ | ✓ | ✓ | ✓ |
+| GitHub Copilot CLI | 起動 / 共存 | – | – | – | ✓ | ✓ | ✓ | ✓ | ✓ |
+| WorkBuddy | 共存 | – | – | – | ✓ | ✓ | ✓ | ✓ | ✓ |
 
 - **切り替え**：同時に有効にできるプロバイダは 1 つだけです。**共存**：複数のプロバイダを同時にツール自身の設定に書き込み、ツール内で選んで使用します。
 - **ローカルルーティング**：CC Switch がローカルでリクエストを転送し、API 形式を変換します。詳しくは下記の[ローカルルーティング & フェイルオーバー](#ローカルルーティング--フェイルオーバー)をご覧ください。Claude Desktop のプロバイダでは「直接接続」か「モデルマッピング」を選択でき、「モデルマッピング」を選ぶとローカルルーティング経由で転送されます。
@@ -193,14 +197,15 @@ Arch Linux では Classic AppImage を利用できます。上流の Homebrew ca
 - **CLI ツール管理** — サイドバーの「アプリ」ページで Claude Code、Codex などのコマンドラインツールの現在のバージョンと最新バージョンを確認し、ワンクリックでインストール、アップグレード、一括アップグレード。重複インストールの診断にも対応。Windows では WSL 内のツールも管理可能（よくある質問を参照）
 - **Deep Link**（`ccswitch://`）— リンクからプロバイダ、MCP サーバー、プロンプトをワンクリックでインポート、またはスキルリポジトリを追加。リンクは [オンライン生成ツール](https://ccswitch.io/deplink.html) で作成可能。サイトにインポートボタンを置きたい運営者は [連携ガイド](https://github.com/farion1231/cc-switch/blob/main/docs/guides/deeplink-site-integration-guide-ja.md) を参照
 - **便利ツール** — Claude Code の初回確認のスキップ、AI 署名の非表示、VS Code の Claude Code 拡張を CC Switch のプロバイダ切り替えに追従させる機能など
-- ダーク / ライト / システムテーマ、自動起動、自動アップデーター、アトミック書き込み、自動バックアップ（「設定 → データ」ですべてのバックアップの場所と使用容量を確認可能）、多言語対応（簡体中文/繁體中文/英/日、コミュニティ翻訳のトルコ語）
+- プロバイダーページの「その他」メニューから、Claude Code、Codex、Grok Build、MiniMax Code、OpenClaw、Pi のプラグインを管理できます。
+- ダーク / ライト / システムテーマ、自動起動、自動アップデーター、アトミック書き込み、自動バックアップ（「設定 → データ」ですべてのバックアップの場所と使用容量を確認可能）、多言語対応（簡体字中国語、繁体字中国語、英語、日本語、韓国語、トルコ語、ロシア語、ドイツ語）
 
 ## よくある質問
 
 <details>
 <summary><strong>CC Switch はどの AI ツールに対応していますか？</strong></summary>
 
-CC Switch は **Claude Code**、**Claude Desktop**、**Codex**、**Gemini CLI**、**Grok Build**、**OpenCode**、**OpenClaw**、**Hermes**、**Pi**、**MiniMax Code**、**Kimi Code**、**Oh My Pi** の 12 のツールに対応しています。各ツールに専用のプロバイダプリセットと設定管理が用意されています。ツールごとに対応している機能は[ツール別の対応機能](#ツール別の対応機能)をご覧ください。
+CC Switch は **Claude Code**、**Claude Desktop**、**Codex**、**Gemini CLI**、**Grok Build**、**OpenCode**、**OpenClaw**、**Hermes**、**Pi**、**MiniMax Code**、**Kimi Code**、**Oh My Pi**、**DeepSeek Harness**、**Antigravity CLI**、**GitHub Copilot CLI**、**WorkBuddy** の 16 のツールに対応しています。各ツールに専用のプロバイダプリセットと設定管理が用意されています。ツールごとに対応している機能は[ツール別の対応機能](#ツール別の対応機能)をご覧ください。
 
 </details>
 

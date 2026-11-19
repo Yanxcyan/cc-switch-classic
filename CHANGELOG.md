@@ -5,6 +5,12 @@ All notable changes to CC Switch will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## Classic 4.0.27 - 2026-11-20
+
+- Sync application changes from upstream v4.0.26 through [v4.0.36](https://github.com/farion1231/cc-switch/releases/tag/v4.0.36).
+- Manage GitHub Copilot CLI and WorkBuddy providers from the Classic header. Open plugin management from the provider page to install, enable, update or remove supported tools’ plugins.
+- Add private skill repositories, provider cost multipliers, IP diagnostics and display density settings. Update session readers, model routing, pricing and usage imports.
+
 ## Classic 4.0.26 - 2026-11-03
 
 - Sync upstream CC Switch v4.0.23–v4.0.25 application changes through commit `5c0cc933f3619e0a31132de2005852ca65cfb2ec`: local-router browser protection, MCP connectivity checks, Codex quota protection and sub-agent limits, automatic exchange rates, native provider editors, login-link preferences, and routing, usage, and Windows fixes.

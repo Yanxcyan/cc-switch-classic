@@ -2,7 +2,11 @@ import { useContext, type ComponentProps } from "react";
 import { createPortal } from "react-dom";
 import { AppPageHeader as OriginalHeader } from "../components/shell/AppPageHeader";
 import { ClassicHeaderContext } from "./ClassicHeaderContext";
-export { WindowControlsContext } from "../components/shell/AppPageHeader";
+export {
+  WindowControlsContext,
+  ModalDragStrip,
+  usePageHeaderBottom,
+} from "../components/shell/AppPageHeader";
 
 export function AppPageHeader(props: ComponentProps<typeof OriginalHeader>) {
   const slots = useContext(ClassicHeaderContext);

@@ -36,13 +36,14 @@ const buttonVariants = cva(
           "border border-transparent bg-stack-solid text-stack-on font-semibold hover:brightness-110",
       },
       size: {
-        default: "h-9 px-4 py-2",
-        sm: "h-8 px-3",
+        default: "h-control px-4 py-2",
+        sm: "h-control-sm px-3",
         lg: "h-10 px-8",
-        icon: "h-9 w-9 p-0",
-        compact: "h-8 px-3 text-sm",
-        regular: "h-9 px-4 text-sm",
-        "icon-compact": "h-8 w-8 p-0 text-fg-2 hover:text-fg-1",
+        icon: "h-control w-control p-0",
+        compact: "h-control-sm px-3 text-sm",
+        regular: "h-control px-4 text-sm",
+        "icon-compact":
+          "h-control-sm w-control-sm p-0 text-fg-2 hover:text-fg-1",
       },
     },
     defaultVariants: {

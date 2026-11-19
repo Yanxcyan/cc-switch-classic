@@ -85,6 +85,7 @@ export function ClassicHeader(props: ClassicHeaderProps) {
         />
       )}
       <header
+        data-classic-page-header
         className="z-50 flex h-16 shrink-0 items-center gap-3 border-b border-border bg-background/80 px-6 backdrop-blur-md"
         {...DRAG_REGION_ATTR}
         style={DRAG_REGION_STYLE}
